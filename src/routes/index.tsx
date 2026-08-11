@@ -193,9 +193,9 @@ function Index() {
 
 
 
-          <p data-reveal className="mt-6 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
-            Um encontro ao vivo para você acessar as instruções da sua alma e nunca mais jogar a
-            vida no <strong className="font-semibold text-gold">Modo Difícil</strong>.
+          <p data-reveal className="mt-6 max-w-xl whitespace-pre-line text-[17px] leading-relaxed text-muted-foreground">
+            Um encontro ao vivo para você acessar as instruções da sua alma através de uma tecnologia milenar e nunca mais jogar a
+            vida no{"\u00A0"}\n<strong className="font-semibold text-gold">Modo Difícil...</strong>
           </p>
 
 
