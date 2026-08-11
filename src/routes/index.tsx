@@ -138,7 +138,9 @@ function Index() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    submittedRef.current = true;
     setIsSubmitting(true);
+    fbqTrackCustom("EnviouFormulario");
     setTimeout(() => {
       window.location.href = "/obrigado";
     }, 1200);
