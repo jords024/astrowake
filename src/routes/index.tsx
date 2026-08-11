@@ -130,7 +130,7 @@ function Index() {
             />
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
-            <div className="absolute inset-0 bg-background/70 lg:hidden" />
+            <div className="absolute inset-0 bg-background/80 lg:hidden" />
             <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
           </div>
