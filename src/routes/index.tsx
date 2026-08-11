@@ -103,8 +103,9 @@ function Index() {
   useEffect(() => {
     if (pixelFired.current) return;
     pixelFired.current = true;
-    fbqTrack("PageView");
+    trackPageView();
   }, []);
+
 
   useEffect(() => {
     document.body.style.overflow = modalOpen ? "hidden" : "";
