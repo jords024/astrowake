@@ -14,8 +14,10 @@ import {
 } from "lucide-react";
 
 
+import { trackPageView } from "../lib/fbq";
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
 import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -97,8 +99,17 @@ function Index() {
     };
   }, []);
 
+  const pixelFired = useRef(false);
+  useEffect(() => {
+    if (pixelFired.current) return;
+    pixelFired.current = true;
+    trackPageView();
+  }, []);
+
+
   useEffect(() => {
     document.body.style.overflow = modalOpen ? "hidden" : "";
+
     return () => {
       document.body.style.overflow = "";
     };
