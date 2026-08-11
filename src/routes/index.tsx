@@ -189,7 +189,7 @@ function Index() {
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
                 <span>
                   <strong className="font-semibold text-foreground">{item.title}</strong>
-                  <span className="text-muted-foreground"> — {item.text}</span>
+                  <span className="whitespace-pre-line text-muted-foreground"> — {item.text}</span>
                 </span>
               </li>
             ))}
