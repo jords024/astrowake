@@ -207,7 +207,7 @@ function Index() {
           <button
             data-reveal
             onClick={() => setModalOpen(true)}
-            className="group mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03]"
+            className="group mt-9 inline-flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
           >
             Quero participar
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
