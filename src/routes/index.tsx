@@ -145,7 +145,7 @@ function Index() {
 
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-end px-5 pb-16 pt-[38vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-start px-5 pb-16 pt-[7vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
           <h1
             data-reveal
             className="max-w-[15ch] font-sans text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl lg:text-7xl"
@@ -153,6 +153,11 @@ function Index() {
             ASTROWAKE:
             <span className="mt-1 block text-gold">Hackeando a Realidade</span>
           </h1>
+
+          {/* Espaço para o rosto do Crassus aparecer no mobile */}
+          <div aria-hidden className="h-[34vh] sm:hidden" />
+
+
 
           <p data-reveal className="mt-6 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
             Um encontro ao vivo para você acessar as instruções da sua alma e nunca mais jogar a
