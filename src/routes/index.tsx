@@ -170,7 +170,7 @@ function Index() {
               <Calendar className="h-4 w-4 text-gold" />
               Nesta quinta-feira
             </span>
-            <span className="h-4 w-px bg-border" />
+            <span className="hidden h-4 w-px bg-border sm:block" />
             <span className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-gold" />
               20h • Horário de Brasília
