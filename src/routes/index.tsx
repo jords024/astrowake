@@ -119,68 +119,85 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       {/* ==================== HERO ==================== */}
-      <section ref={parallaxRef} className="relative overflow-hidden">
+      <section ref={parallaxRef} className="relative min-h-screen overflow-hidden">
         {/* Parallax background */}
         <div data-parallax-layers className="absolute inset-0">
           <div data-parallax-layer="1" className="absolute inset-0">
             <img
               src={crassusAsset.url}
               alt="Crassus Gobbi em atmosfera cósmica dourada"
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-cover object-[70%_center] lg:object-right"
             />
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_30%,oklch(0.8_0.14_82/0.18),transparent_55%)]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/70" />
+            <div className="absolute inset-0 bg-background/70 lg:hidden" />
+            <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_28%,oklch(0.09_0_0/0.75)_42%,transparent_58%)]" />
+            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
           </div>
         </div>
 
-        <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-center px-6 py-28 sm:py-36">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-center px-6 py-24">
           <div data-reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-soft">
               <Sparkles className="h-3.5 w-3.5" />
-              Evento ao vivo e 100% gratuito • Quinta-feira às 20h
+              Evento ao vivo e 100% gratuito • Quinta às 20h
             </span>
           </div>
 
           <h1
             data-reveal
-            className="mt-7 max-w-3xl font-display text-4xl leading-[1.08] font-medium text-white sm:text-6xl lg:text-[4.4rem]"
+            className="mt-6 max-w-[15ch] font-sans text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-6xl lg:text-7xl"
           >
-            Aprenda a fazer a sua{" "}
-            <span className="text-gold-gradient italic">limpeza energética</span> e alinhar o
-            seu campo para se proteger no dia a dia.
+            ASTROWAKE:
+            <span className="mt-1 block text-gold">Hackeando a Realidade</span>
           </h1>
 
-          <p data-reveal className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            O passo a passo prático para destravar o seu dinheiro, trazer paz para o seu
-            relacionamento e ter uma vida leve e fluida — sem misticismo raso e sem decoreba.
+          <p data-reveal className="mt-6 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
+            Um encontro ao vivo para você acessar as instruções da sua alma através de uma
+            tecnologia milenar e nunca mais jogar a vida no{" "}
+            <strong className="font-semibold text-gold">Modo Difícil</strong>.
+          </p>
+          <p data-reveal className="mt-3 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
+            Entenda suas emoções e tome decisões com total{" "}
+            <strong className="font-semibold text-gold">CONSCIÊNCIA</strong>, sem misticismo
+            raso e sem decoreba.
           </p>
 
           {/* Date & time bar */}
-          <div data-reveal className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-foreground/90">
+          <div data-reveal className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-foreground/90">
             <span className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-gold" />
-              Nesta Quinta-Feira
+              Nesta quinta-feira
             </span>
             <span className="h-4 w-px bg-border" />
             <span className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-gold" />
-              Às 20h00 (Horário de Brasília)
+              20h • Horário de Brasília
             </span>
           </div>
 
           {/* Checklist */}
-          <ul data-reveal className="mt-8 space-y-3">
+          <ul data-reveal className="mt-7 max-w-xl space-y-3">
             {[
-              "Desative a exaustão física e a queimação na nuca após dias difíceis.",
-              "Elimine os ruídos e vazamentos que travam a sua vida financeira.",
-              "Resgate a sua presença e o carinho dentro da sua casa sem brigas.",
-            ].map((item, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-[15px] text-foreground/90">
+              {
+                title: "Carreira & Escolhas:",
+                text: "Entenda seus pontos fortes e decida com mais clareza onde colocar sua energia profissional.",
+              },
+              {
+                title: "Relações Pessoais:",
+                text: "Reconheça seus limites e construa relações mais claras, sem se anular para evitar conflitos.",
+              },
+              {
+                title: "Direção de Vida:",
+                text: "Organize seus próximos passos com mais contexto e menos ansiedade sobre o que vem pela frente.",
+              },
+            ].map((item) => (
+              <li key={item.title} className="flex items-start gap-3 text-[15px] text-foreground/90">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
-                {item}
+                <span>
+                  <strong className="font-semibold text-foreground">{item.title}</strong>{" "}
+                  {item.text}
+                </span>
               </li>
             ))}
           </ul>
@@ -189,9 +206,9 @@ function Index() {
           <button
             data-reveal
             onClick={() => setModalOpen(true)}
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03]"
+            className="group mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03]"
           >
-            Quero garantir minha vaga
+            Quero participar
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
 
@@ -199,6 +216,8 @@ function Index() {
             <Lock className="h-3.5 w-3.5 text-gold" />
             Seus dados estão 100% seguros. Livre de spam.
           </p>
+        </div>
+
         </div>
       </section>
 
