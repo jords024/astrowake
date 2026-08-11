@@ -217,8 +217,6 @@ function Index() {
             Seus dados estão 100% seguros. Livre de spam.
           </p>
         </div>
-
-        </div>
       </section>
 
       {/* ==================== QUEM É CRASSUS ==================== */}
