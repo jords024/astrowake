@@ -130,24 +130,24 @@ function Index() {
             />
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
-            <div className="absolute inset-0 bg-background/70 lg:hidden" />
+            <div className="absolute inset-0 bg-background/80 lg:hidden" />
             <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
           </div>
 
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-center px-6 py-24">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-start px-5 py-20 sm:justify-center sm:px-6 sm:py-24">
           <div data-reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-soft">
-              <Sparkles className="h-3.5 w-3.5" />
+            <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3.5 py-1.5 text-center text-[10px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-gold-soft sm:px-4 sm:text-[11px] sm:tracking-[0.22em]">
+              <Sparkles className="h-3.5 w-3.5 shrink-0" />
               Evento ao vivo e 100% gratuito • Quinta às 20h
             </span>
           </div>
 
           <h1
             data-reveal
-            className="mt-6 max-w-[15ch] font-sans text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-6xl lg:text-7xl"
+            className="mt-6 max-w-[15ch] font-sans text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl lg:text-7xl"
           >
             ASTROWAKE:
             <span className="mt-1 block text-gold">Hackeando a Realidade</span>
@@ -170,7 +170,7 @@ function Index() {
               <Calendar className="h-4 w-4 text-gold" />
               Nesta quinta-feira
             </span>
-            <span className="h-4 w-px bg-border" />
+            <span className="hidden h-4 w-px bg-border sm:block" />
             <span className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-gold" />
               20h • Horário de Brasília
@@ -207,26 +207,28 @@ function Index() {
           <button
             data-reveal
             onClick={() => setModalOpen(true)}
-            className="group mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03]"
+            className="group mt-9 inline-flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
           >
             Quero participar
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
 
           {/* Price anchor + scarcity */}
-          <div data-reveal className="mt-7 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <div data-reveal className="mt-7">
             <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">
               Valor do ingresso
             </span>
-            <span className="text-2xl font-bold text-muted-foreground/60 line-through">
-              R$197,00
-            </span>
-            <ArrowRight className="h-5 w-5 text-gold" />
-            <span className="font-display text-3xl font-semibold text-gold">R$0,00</span>
+            <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span className="text-2xl font-bold text-muted-foreground/60 line-through">
+                R$197,00
+              </span>
+              <ArrowRight className="h-5 w-5 shrink-0 self-center text-gold" />
+              <span className="font-display text-3xl font-semibold text-gold">R$0,00</span>
+            </div>
+            <p className="mt-2 text-xs uppercase tracking-[0.16em] text-foreground/80">
+              Ingresso ao vivo • Máximo 400 pessoas
+            </p>
           </div>
-          <p data-reveal className="mt-2 text-xs uppercase tracking-[0.16em] text-foreground/80">
-            Ingresso ao vivo • Máximo 400 pessoas
-          </p>
 
           <p data-reveal className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
             <Lock className="h-3.5 w-3.5 text-gold" />
@@ -299,7 +301,7 @@ function Index() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
+            <div className="grid grid-cols-1 gap-3 pt-4 sm:grid-cols-3 sm:gap-4">
               {[
                 { value: "+5.000", label: "Atendimentos de consultório" },
                 { value: "45+", label: "Anos de tradição familiar" },
@@ -307,12 +309,12 @@ function Index() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-border bg-card/60 px-4 py-5 text-center"
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-card/60 px-5 py-4 text-center sm:flex-col sm:justify-center sm:px-4 sm:py-5"
                 >
                   <p className="font-display text-3xl font-semibold text-gold-gradient sm:text-4xl">
                     {stat.value}
                   </p>
-                  <p className="mt-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                  <p className="text-left text-[11px] font-medium uppercase tracking-wide text-muted-foreground sm:mt-2 sm:text-center">
                     {stat.label}
                   </p>
                 </div>
