@@ -147,7 +147,7 @@ function Index() {
 
           <h1
             data-reveal
-            className="mt-6 max-w-[15ch] font-sans text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-6xl lg:text-7xl"
+            className="mt-6 max-w-[15ch] font-sans text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl lg:text-7xl"
           >
             ASTROWAKE:
             <span className="mt-1 block text-gold">Hackeando a Realidade</span>
