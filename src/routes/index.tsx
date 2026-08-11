@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 
-import { trackPageView } from "../lib/fbq";
+import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
 import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
 
