@@ -181,15 +181,15 @@ function Index() {
           {/* Checklist */}
           <ul data-reveal className="mt-7 max-w-xl space-y-2.5">
             {[
-              { title: "Carreira & Escolhas", text: "clareza para onde colocar sua energia" },
+              { title: "Carreira & Escolhas", text: "clareza para onde colocar sua energia para\nprosperar de verdade" },
               { title: "Relações Pessoais", text: "limites claros, sem se anular" },
-              { title: "Direção de Vida", text: "próximos passos com menos ansiedade" },
+              { title: "Direção de Vida", text: "seus\u00A0próximos passos com menos ansiedade" },
             ].map((item) => (
               <li key={item.title} className="flex items-start gap-3 text-[15px] text-foreground/90">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
                 <span>
                   <strong className="font-semibold text-foreground">{item.title}</strong>
-                  <span className="text-muted-foreground"> — {item.text}</span>
+                  <span className="whitespace-pre-line text-muted-foreground"> — {item.text}</span>
                 </span>
               </li>
             ))}
