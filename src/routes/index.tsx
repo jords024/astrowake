@@ -134,9 +134,9 @@ function Index() {
             </picture>
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
-            {/* Mobile: véu vertical — rosto visível no topo, texto legível embaixo */}
-            <div className="absolute inset-x-0 top-0 h-[72vh] lg:hidden bg-[linear-gradient(180deg,oklch(0.09_0_0/0.35)_0%,oklch(0.09_0_0/0.2)_30%,oklch(0.09_0_0/0.75)_66%,oklch(0.09_0_0)_98%)]" />
-            <div className="absolute inset-x-0 top-[70vh] bottom-0 bg-background lg:hidden" />
+            {/* Mobile: fade suave e contínuo da foto para o fundo */}
+            <div className="absolute inset-x-0 top-0 h-[78vh] lg:hidden bg-[linear-gradient(180deg,oklch(0.09_0_0/0.15)_0%,oklch(0.09_0_0/0.1)_28%,oklch(0.09_0_0/0.45)_52%,oklch(0.09_0_0/0.85)_72%,oklch(0.09_0_0)_92%)]" />
+            <div className="absolute inset-x-0 top-[77vh] bottom-0 bg-background lg:hidden" />
             <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
             <div className="absolute inset-x-0 bottom-0 h-32 hidden lg:block bg-gradient-to-t from-background to-transparent" />
           </div>
@@ -145,32 +145,20 @@ function Index() {
 
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-end px-5 pb-16 pt-[44vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
-          <div data-reveal>
-            <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3.5 py-1.5 text-center text-[10px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-gold-soft sm:px-4 sm:text-[11px] sm:tracking-[0.22em]">
-              <Sparkles className="h-3.5 w-3.5 shrink-0" />
-              Evento ao vivo e 100% gratuito • Quinta às 20h
-            </span>
-          </div>
-
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-end px-5 pb-16 pt-[38vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
           <h1
             data-reveal
-            className="mt-6 max-w-[15ch] font-sans text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl lg:text-7xl"
+            className="max-w-[15ch] font-sans text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl lg:text-7xl"
           >
             ASTROWAKE:
             <span className="mt-1 block text-gold">Hackeando a Realidade</span>
           </h1>
 
           <p data-reveal className="mt-6 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
-            Um encontro ao vivo para você acessar as instruções da sua alma através de uma
-            tecnologia milenar e nunca mais jogar a vida no{" "}
-            <strong className="font-semibold text-gold">Modo Difícil</strong>.
+            Um encontro ao vivo para você acessar as instruções da sua alma e nunca mais jogar a
+            vida no <strong className="font-semibold text-gold">Modo Difícil</strong>.
           </p>
-          <p data-reveal className="mt-3 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
-            Entenda suas emoções e tome decisões com total{" "}
-            <strong className="font-semibold text-gold">CONSCIÊNCIA</strong>, sem misticismo
-            raso e sem decoreba.
-          </p>
+
 
           {/* Date & time bar */}
           <div data-reveal className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-foreground/90">
