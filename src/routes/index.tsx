@@ -9,10 +9,10 @@ import {
   Calendar,
   Clock,
   Lock,
-  Sparkles,
   X,
   ShieldCheck,
 } from "lucide-react";
+
 
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
 import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
