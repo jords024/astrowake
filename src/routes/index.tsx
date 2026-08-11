@@ -301,7 +301,7 @@ function Index() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
+            <div className="grid grid-cols-1 gap-3 pt-4 sm:grid-cols-3 sm:gap-4">
               {[
                 { value: "+5.000", label: "Atendimentos de consultório" },
                 { value: "45+", label: "Anos de tradição familiar" },
@@ -309,12 +309,12 @@ function Index() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-border bg-card/60 px-4 py-5 text-center"
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-card/60 px-5 py-4 text-center sm:flex-col sm:justify-center sm:px-4 sm:py-5"
                 >
                   <p className="font-display text-3xl font-semibold text-gold-gradient sm:text-4xl">
                     {stat.value}
                   </p>
-                  <p className="mt-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                  <p className="text-left text-[11px] font-medium uppercase tracking-wide text-muted-foreground sm:mt-2 sm:text-center">
                     {stat.label}
                   </p>
                 </div>
