@@ -48,6 +48,27 @@ function Index() {
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({ nome: "", email: "", whatsapp: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittedRef = useRef(false);
+
+  const openModal = (origem: string) => {
+    submittedRef.current = false;
+    setModalOpen(true);
+    // Lead abriu o formulário (chegou até esse ponto)
+    fbqTrack("InitiateCheckout", { content_name: "Formulario Astrowake", origem });
+    fbqTrackCustom("AbriuFormulario", { origem });
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    if (!submittedRef.current) {
+      // Abriu o formulário e desistiu sem enviar
+      fbqTrackCustom("AbandonouFormulario", {
+        preencheu_nome: Boolean(formData.nome),
+        preencheu_email: Boolean(formData.email),
+        preencheu_whatsapp: Boolean(formData.whatsapp),
+      });
+    }
+  };
 
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
