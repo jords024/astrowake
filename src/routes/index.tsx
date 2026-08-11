@@ -233,7 +233,7 @@ function Index() {
           {/* CTA opens modal */}
           <button
             data-reveal
-            onClick={() => setModalOpen(true)}
+            onClick={() => openModal("hero_cta")}
             className="group mt-9 inline-flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
           >
             Quero participar
@@ -355,7 +355,7 @@ function Index() {
       {modalOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
-          onClick={() => setModalOpen(false)}
+          onClick={() => closeModal()}
         >
           <div
             className="relative w-full max-w-md overflow-hidden rounded-[1.5rem] border border-gold/25 bg-card shadow-[var(--shadow-gold)]"
@@ -364,7 +364,7 @@ function Index() {
             <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(ellipse_at_top,oklch(0.8_0.14_82/0.28),transparent_70%)]" />
 
             <button
-              onClick={() => setModalOpen(false)}
+              onClick={() => closeModal()}
               aria-label="Fechar"
               className="absolute right-4 top-4 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10 hover:text-white"
             >
