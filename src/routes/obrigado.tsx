@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
 import { CheckCircle2, Calendar, Clock, MessagesSquare } from "lucide-react";
+import { fbqTrack, trackPageView } from "../lib/fbq";
 
 const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/Bidw8pFNLtJ6COqH97EOQ7";
+
 
 export const Route = createFileRoute("/obrigado")({
   head: () => ({
