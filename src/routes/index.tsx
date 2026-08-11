@@ -124,17 +124,22 @@ function Index() {
         {/* Parallax background */}
         <div data-parallax-layers className="absolute inset-0">
           <div data-parallax-layer="1" className="absolute inset-y-0 right-0 w-full lg:w-[68%]">
-            <img
-              src={crassusAsset.url}
-              alt="Crassus Gobbi em atmosfera cósmica dourada"
-              className="h-full w-full object-cover object-center"
-            />
+            <picture>
+              <source media="(min-width: 1024px)" srcSet={crassusAsset.url} />
+              <img
+                src={crassusMobileAsset.url}
+                alt="Crassus Gobbi em atmosfera cósmica dourada"
+                className="h-full w-full object-cover object-[50%_18%] lg:object-center"
+              />
+            </picture>
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
-            <div className="absolute inset-0 bg-background/80 lg:hidden" />
+            {/* Mobile: véu vertical — rosto visível no topo, texto legível embaixo */}
+            <div className="absolute inset-0 lg:hidden bg-[linear-gradient(180deg,oklch(0.09_0_0/0.35)_0%,oklch(0.09_0_0/0.25)_22%,oklch(0.09_0_0/0.72)_48%,oklch(0.09_0_0/0.94)_68%,oklch(0.09_0_0)_100%)]" />
             <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
           </div>
+
 
         </div>
 
