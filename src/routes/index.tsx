@@ -1,24 +1,400 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Calendar,
+  Clock,
+  Lock,
+  Sparkles,
+  X,
+  ShieldCheck,
+} from "lucide-react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Astrowake — Limpeza Energética para a sua Vida" },
+      {
+        name: "description",
+        content:
+          "Aprenda a fazer a sua limpeza energética e alinhar o seu campo. Evento ao vivo, gratuito, nesta quinta-feira às 20h com Crassus Gobbi.",
+      },
+      { property: "og:title", content: "Astrowake — Limpeza Energética para a sua Vida" },
+      {
+        property: "og:description",
+        content:
+          "Aprenda a fazer a sua limpeza energética e alinhar o seu campo. Evento ao vivo, gratuito, nesta quinta-feira às 20h com Crassus Gobbi.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: crassusAsset.url },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: crassusAsset.url },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const parallaxRef = useRef<HTMLDivElement>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [formData, setFormData] = useState({ nome: "", email: "", whatsapp: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const heroEl = parallaxRef.current?.querySelector("[data-parallax-layers]");
+    if (heroEl) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroEl,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0,
+        },
+      });
+      tl.to(
+        heroEl.querySelectorAll('[data-parallax-layer="1"]'),
+        { yPercent: 40, ease: "none" },
+        0
+      );
+      tl.to(
+        heroEl.querySelectorAll('[data-parallax-layer="2"]'),
+        { yPercent: 18, ease: "none" },
+        0
+      );
+    }
+
+    const lenis = new Lenis({ autoRaf: false });
+    lenis.on("scroll", ScrollTrigger.update);
+    const raf = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+
+    // Gentle reveal
+    gsap.fromTo(
+      "[data-reveal]",
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", stagger: 0.12 }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      gsap.ticker.remove(raf);
+      lenis.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = modalOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [modalOpen]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setTimeout(() => {
+      window.location.href = "/obrigado";
+    }, 1200);
+  };
+
+  const setField =
+    (key: keyof typeof formData) =>
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      setFormData({ ...formData, [key]: e.target.value });
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background text-foreground antialiased">
+      {/* ==================== HERO ==================== */}
+      <section ref={parallaxRef} className="relative overflow-hidden">
+        {/* Parallax background */}
+        <div data-parallax-layers className="absolute inset-0">
+          <div data-parallax-layer="1" className="absolute inset-0">
+            <img
+              src={crassusAsset.url}
+              alt="Crassus Gobbi em atmosfera cósmica dourada"
+              className="h-full w-full object-cover object-center"
+            />
+          </div>
+          <div data-parallax-layer="2" className="absolute inset-0">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_30%,oklch(0.8_0.14_82/0.18),transparent_55%)]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/70" />
+          </div>
+        </div>
+
+        <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-center px-6 py-28 sm:py-36">
+          <div data-reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-soft">
+              <Sparkles className="h-3.5 w-3.5" />
+              Evento ao vivo e 100% gratuito • Quinta-feira às 20h
+            </span>
+          </div>
+
+          <h1
+            data-reveal
+            className="mt-7 max-w-3xl font-display text-4xl leading-[1.08] font-medium text-white sm:text-6xl lg:text-[4.4rem]"
+          >
+            Aprenda a fazer a sua{" "}
+            <span className="text-gold-gradient italic">limpeza energética</span> e alinhar o
+            seu campo para se proteger no dia a dia.
+          </h1>
+
+          <p data-reveal className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            O passo a passo prático para destravar o seu dinheiro, trazer paz para o seu
+            relacionamento e ter uma vida leve e fluida — sem misticismo raso e sem decoreba.
+          </p>
+
+          {/* Date & time bar */}
+          <div data-reveal className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-foreground/90">
+            <span className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-gold" />
+              Nesta Quinta-Feira
+            </span>
+            <span className="h-4 w-px bg-border" />
+            <span className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-gold" />
+              Às 20h00 (Horário de Brasília)
+            </span>
+          </div>
+
+          {/* Checklist */}
+          <ul data-reveal className="mt-8 space-y-3">
+            {[
+              "Desative a exaustão física e a queimação na nuca após dias difíceis.",
+              "Elimine os ruídos e vazamentos que travam a sua vida financeira.",
+              "Resgate a sua presença e o carinho dentro da sua casa sem brigas.",
+            ].map((item, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-[15px] text-foreground/90">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA opens modal */}
+          <button
+            data-reveal
+            onClick={() => setModalOpen(true)}
+            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-8 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.03]"
+          >
+            Quero garantir minha vaga
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+
+          <p data-reveal className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
+            <Lock className="h-3.5 w-3.5 text-gold" />
+            Seus dados estão 100% seguros. Livre de spam.
+          </p>
+        </div>
+      </section>
+
+      {/* ==================== QUEM É CRASSUS ==================== */}
+      <section className="relative overflow-hidden py-24 sm:py-32">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-[radial-gradient(ellipse_at_bottom,oklch(0.8_0.14_82/0.08),transparent_60%)]" />
+
+        <div className="mx-auto grid max-w-6xl items-start gap-14 px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          {/* Portrait */}
+          <div className="relative mx-auto w-full max-w-md lg:sticky lg:top-16">
+            <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-gold/25 via-transparent to-gold/15 blur-2xl" />
+            <div className="relative overflow-hidden rounded-[1.5rem] border border-gold/20">
+              <img
+                src={crassusAsset.url}
+                alt="Crassus Gobbi"
+                className="aspect-[4/5] w-full object-cover object-center"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/60 to-transparent p-6 pt-16">
+                <p className="font-display text-2xl font-medium text-white">Crassus Gobbi</p>
+                <p className="mt-1 text-sm text-gold-soft">
+                  Criador do Método Astrowake • +5.000 Atendimentos
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Narrative */}
+          <div className="space-y-6">
+            <p className="text-xs font-bold uppercase tracking-[0.28em] text-gold">Quem vai te guiar</p>
+
+            <p className="font-display text-2xl leading-snug font-medium text-white sm:text-3xl">
+              Astrologia de verdade não é sobre prever o futuro. É sobre tomar as rédeas da sua
+              vida e da sua prosperidade.
+            </p>
+
+            <div className="space-y-5 text-[16px] leading-relaxed text-foreground/85">
+              <p>
+                Eu cresci dentro da astrologia. A minha mãe atua há mais de 45 anos no mercado, e
+                desde muito cedo eu vi o impacto que o mapa astral tinha na vida das pessoas. Mas eu
+                precisei construir o meu próprio caminho.
+              </p>
+              <p>
+                Aos 28 anos, eu era empresário, dono de 5 empresas em Porto Alegre, usava blazer e
+                vivia no ritmo acelerado do mercado. Por fora, parecia sucesso. Por dentro, eu estava
+                exausto, rasgando dinheiro na tentativa e erro e pilotando a minha vida no escuro.
+              </p>
+              <p>
+                A grande virada aconteceu quando eu parei de tratar a astrologia como teoria e passei
+                a aplicar o mapa como uma ferramenta de estratégia financeira e direção da minha vida.
+              </p>
+              <p>
+                Eu alinhei a minha carreira e o meu trabalho ao meu momento da época e comecei a viver
+                a astrologia real. O resultado? Conquistei a minha independência financeira, fechei
+                meus antigos negócios e hoje vivo com liberdade total, viajando o mundo e trabalhando
+                no meu estilo, atendendo pessoas online pelo mundo.
+              </p>
+              <p className="rounded-xl border border-gold/20 bg-gold/[0.06] p-5">
+                Após mais de 5.000 atendimentos individuais, eu criei o evento{" "}
+                <span className="font-semibold text-gold-soft">Astrowake</span> para te entregar esse
+                mesmo manual. Eu não vou te ensinar a virar astrólogo nem te passar decoreba teórica.
+                Eu vou te mostrar como usar essa tecnologia milenar pra você tomar decisões inteligentes
+                na sua carreira, no seu dinheiro e nos seus relacionamentos.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4 pt-4">
+              {[
+                { value: "+5.000", label: "Atendimentos de consultório" },
+                { value: "45+", label: "Anos de tradição familiar" },
+                { value: "100%", label: "Prático e sem decoreba" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-2xl border border-border bg-card/60 px-4 py-5 text-center"
+                >
+                  <p className="font-display text-3xl font-semibold text-gold-gradient sm:text-4xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== MODAL / POPUP ==================== */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-md overflow-hidden rounded-[1.5rem] border border-gold/25 bg-card shadow-[var(--shadow-gold)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(ellipse_at_top,oklch(0.8_0.14_82/0.28),transparent_70%)]" />
+
+            <button
+              onClick={() => setModalOpen(false)}
+              aria-label="Fechar"
+              className="absolute right-4 top-4 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10 hover:text-white"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="relative p-7 sm:p-8">
+              <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-gold-soft">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Vaga gratuita
+              </span>
+
+              <h2 className="mt-5 font-display text-3xl font-medium text-white">
+                Garanta Sua Vaga Gratuita
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Preencha os dados abaixo para receber o link VIP da sala ao vivo:
+              </p>
+
+              <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                <div>
+                  <label htmlFor="nome" className="mb-1.5 block text-xs font-semibold text-foreground/80">
+                    Seu Nome Completo
+                  </label>
+                  <input
+                    id="nome"
+                    type="text"
+                    required
+                    placeholder="Ex.: Maria Silva"
+                    value={formData.nome}
+                    onChange={setField("nome")}
+                    className="w-full rounded-xl border border-input bg-background/70 px-4 py-3.5 text-sm text-white placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="mb-1.5 block text-xs font-semibold text-foreground/80">
+                    Seu Melhor E-mail
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="voce@email.com"
+                    value={formData.email}
+                    onChange={setField("email")}
+                    className="w-full rounded-xl border border-input bg-background/70 px-4 py-3.5 text-sm text-white placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="whatsapp" className="mb-1.5 block text-xs font-semibold text-foreground/80">
+                    Seu WhatsApp com DDD
+                  </label>
+                  <input
+                    id="whatsapp"
+                    type="tel"
+                    required
+                    placeholder="(11) 99999-9999"
+                    value={formData.whatsapp}
+                    onChange={setField("whatsapp")}
+                    className="w-full rounded-xl border border-input bg-background/70 px-4 py-3.5 text-sm text-white placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-all"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-deep via-gold to-gold-soft px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground shadow-[var(--shadow-gold)] transition-transform duration-300 hover:scale-[1.02] disabled:opacity-80"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground" />
+                      Garantindo vaga...
+                    </>
+                  ) : (
+                    <>
+                      Quero garantir minha vaga
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              <p className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                <Lock className="h-3.5 w-3.5 text-gold" />
+                Seus dados estão 100% seguros. Livre de spam.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+export default Index;
