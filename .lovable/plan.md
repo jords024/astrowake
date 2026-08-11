@@ -8,8 +8,8 @@ Página de captura em português, estética preta e dourada, luxuosa e minimalis
 
 1. **Hero + formulário**
    - Fundo: a imagem enviada (retrato cósmico), com camadas de parallax suave no scroll e gradiente escuro para legibilidade.
-   - Coluna esquerda: badge "EVENTO AO VIVO E 100% GRATUITO • QUINTA-FEIRA ÀS 20H", headline com "limpeza energética" em dourado, subheadline, barra de data/horário e checklist de 3 benefícios.
-   - Coluna direita: card em vidro (glassmorphism) com Nome, E-mail e WhatsApp, botão dourado "QUERO GARANTIR MINHA VAGA" com estado de carregamento e selo de segurança.
+   - Conteúdo: badge "EVENTO AO VIVO E 100% GRATUITO • QUINTA-FEIRA ÀS 20H", headline com "limpeza energética" em dourado, subheadline, barra de data/horário e checklist de 3 benefícios.
+   - Botão dourado "QUERO GARANTIR MINHA VAGA" que abre um modal (pop-up): card em vidro (glassmorphism) com Nome, E-mail e WhatsApp, botão de envio com estado de carregamento e selo de segurança.
    - Ao enviar, redireciona para `/obrigado`.
 
 2. **Seção de autoridade "Quem é Crassus Gobbi"**
