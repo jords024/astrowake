@@ -174,30 +174,22 @@ function Index() {
           </div>
 
           {/* Checklist */}
-          <ul data-reveal className="mt-7 max-w-xl space-y-3">
+          <ul data-reveal className="mt-7 max-w-xl space-y-2.5">
             {[
-              {
-                title: "Carreira & Escolhas:",
-                text: "Entenda seus pontos fortes e decida com mais clareza onde colocar sua energia profissional.",
-              },
-              {
-                title: "Relações Pessoais:",
-                text: "Reconheça seus limites e construa relações mais claras, sem se anular para evitar conflitos.",
-              },
-              {
-                title: "Direção de Vida:",
-                text: "Organize seus próximos passos com mais contexto e menos ansiedade sobre o que vem pela frente.",
-              },
+              { title: "Carreira & Escolhas", text: "clareza para onde colocar sua energia" },
+              { title: "Relações Pessoais", text: "limites claros, sem se anular" },
+              { title: "Direção de Vida", text: "próximos passos com menos ansiedade" },
             ].map((item) => (
               <li key={item.title} className="flex items-start gap-3 text-[15px] text-foreground/90">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
                 <span>
-                  <strong className="font-semibold text-foreground">{item.title}</strong>{" "}
-                  {item.text}
+                  <strong className="font-semibold text-foreground">{item.title}</strong>
+                  <span className="text-muted-foreground"> — {item.text}</span>
                 </span>
               </li>
             ))}
           </ul>
+
 
           {/* CTA opens modal */}
           <button
