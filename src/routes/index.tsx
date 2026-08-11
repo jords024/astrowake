@@ -126,7 +126,7 @@ function Index() {
             <img
               src={crassusAsset.url}
               alt="Crassus Gobbi em atmosfera cósmica dourada"
-              className="h-full w-full object-cover object-[70%_center] lg:object-right"
+              className="h-full w-full object-cover object-[62%_top] lg:object-[58%_top]"
             />
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
