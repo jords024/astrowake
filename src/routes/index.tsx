@@ -137,7 +137,7 @@ function Index() {
 
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-center px-6 py-24">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-start px-5 py-20 sm:justify-center sm:px-6 sm:py-24">
           <div data-reveal>
             <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-soft sm:tracking-[0.22em]">
               <Sparkles className="h-3.5 w-3.5 shrink-0" />
