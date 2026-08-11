@@ -135,7 +135,7 @@ function Index() {
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
             {/* Mobile: fade suave e contínuo da foto para o fundo */}
-            <div className="absolute inset-x-0 top-0 h-[78vh] lg:hidden bg-[linear-gradient(180deg,oklch(0.09_0_0/0.15)_0%,oklch(0.09_0_0/0.1)_28%,oklch(0.09_0_0/0.45)_52%,oklch(0.09_0_0/0.85)_72%,oklch(0.09_0_0)_92%)]" />
+            <div className="absolute inset-x-0 top-0 h-[78vh] lg:hidden bg-[linear-gradient(180deg,oklch(0.09_0_0/0.7)_0%,oklch(0.09_0_0/0.5)_12%,oklch(0.09_0_0/0.12)_28%,oklch(0.09_0_0/0.35)_52%,oklch(0.09_0_0/0.85)_72%,oklch(0.09_0_0)_92%)]" />
             <div className="absolute inset-x-0 top-[77vh] bottom-0 bg-background lg:hidden" />
             <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
             <div className="absolute inset-x-0 bottom-0 h-32 hidden lg:block bg-gradient-to-t from-background to-transparent" />
@@ -145,7 +145,7 @@ function Index() {
 
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-end px-5 pb-16 pt-[38vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-start px-5 pb-16 pt-[7vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
           <h1
             data-reveal
             className="max-w-[15ch] font-sans text-4xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl lg:text-7xl"
@@ -153,6 +153,11 @@ function Index() {
             ASTROWAKE:
             <span className="mt-1 block text-gold">Hackeando a Realidade</span>
           </h1>
+
+          {/* Espaço para o rosto do Crassus aparecer no mobile */}
+          <div aria-hidden className="h-[34vh] sm:hidden" />
+
+
 
           <p data-reveal className="mt-6 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
             Um encontro ao vivo para você acessar as instruções da sua alma e nunca mais jogar a
