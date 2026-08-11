@@ -122,18 +122,19 @@ function Index() {
       <section ref={parallaxRef} className="relative min-h-screen overflow-hidden">
         {/* Parallax background */}
         <div data-parallax-layers className="absolute inset-0">
-          <div data-parallax-layer="1" className="absolute inset-0">
+          <div data-parallax-layer="1" className="absolute inset-y-0 right-0 w-full lg:w-[68%]">
             <img
               src={crassusAsset.url}
               alt="Crassus Gobbi em atmosfera cósmica dourada"
-              className="h-full w-full object-cover object-[62%_top] lg:object-[28%_top]"
+              className="h-full w-full object-cover object-center"
             />
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
             <div className="absolute inset-0 bg-background/70 lg:hidden" />
-            <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_28%,oklch(0.09_0_0/0.75)_42%,transparent_58%)]" />
+            <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
           </div>
+
         </div>
 
         <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-center px-6 py-24">
