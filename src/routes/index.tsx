@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
+import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -122,22 +123,29 @@ function Index() {
       <section ref={parallaxRef} className="relative min-h-screen overflow-hidden">
         {/* Parallax background */}
         <div data-parallax-layers className="absolute inset-0">
-          <div data-parallax-layer="1" className="absolute inset-y-0 right-0 w-full lg:w-[68%]">
-            <img
-              src={crassusAsset.url}
-              alt="Crassus Gobbi em atmosfera cósmica dourada"
-              className="h-full w-full object-cover object-center"
-            />
+          <div data-parallax-layer="1" className="absolute inset-x-0 top-0 h-[72vh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[68%]">
+            <picture>
+              <source media="(min-width: 1024px)" srcSet={crassusAsset.url} />
+              <img
+                src={crassusMobileAsset.url}
+                alt="Crassus Gobbi em atmosfera cósmica dourada"
+                className="h-full w-full object-cover object-[50%_28%] lg:object-center"
+              />
+            </picture>
           </div>
           <div data-parallax-layer="2" className="absolute inset-0">
-            <div className="absolute inset-0 bg-background/80 lg:hidden" />
+            {/* Mobile: véu vertical — rosto visível no topo, texto legível embaixo */}
+            <div className="absolute inset-x-0 top-0 h-[72vh] lg:hidden bg-[linear-gradient(180deg,oklch(0.09_0_0/0.35)_0%,oklch(0.09_0_0/0.2)_30%,oklch(0.09_0_0/0.75)_66%,oklch(0.09_0_0)_98%)]" />
+            <div className="absolute inset-x-0 top-[70vh] bottom-0 bg-background lg:hidden" />
             <div className="absolute inset-0 hidden lg:block bg-[linear-gradient(90deg,oklch(0.09_0_0)_0%,oklch(0.09_0_0)_26%,oklch(0.09_0_0/0.7)_38%,transparent_52%)]" />
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-32 hidden lg:block bg-gradient-to-t from-background to-transparent" />
           </div>
+
+
 
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-start px-5 py-20 sm:justify-center sm:px-6 sm:py-24">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-start justify-end px-5 pb-16 pt-[44vh] sm:justify-center sm:px-6 sm:pb-24 sm:pt-24">
           <div data-reveal>
             <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3.5 py-1.5 text-center text-[10px] font-semibold uppercase leading-relaxed tracking-[0.12em] text-gold-soft sm:px-4 sm:text-[11px] sm:tracking-[0.22em]">
               <Sparkles className="h-3.5 w-3.5 shrink-0" />
