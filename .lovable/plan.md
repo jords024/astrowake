@@ -19,23 +19,20 @@ Ingresso ao vivo • Vagas limitadas: máximo 400 pessoas
 
 ## Análise — a ideia é boa para essa audiência?
 
-**Resumo: sim, mas a execução importa muito mais que a ideia.** Ancoragem de preço + escassez é uma das técnicas mais testadas de conversão — mas justamente por ser conhecida, o "nível de consciência alto" da audiência faz com que ela funcione **quando parece verdade e falha quando parece manipulação**.
+**Ponto importante (esclarecido):** R$197 é o **preço real do ingresso** do evento — não um número inventado para riscar. Nesta edição ao vivo, o ingresso é liberado por R$0. Ou seja, a "ancoragem" aqui é uma **oferta verdadeira**: o usuário recebe, grátis, algo que normalmente custaria R$197. Isso muda tudo: não há manipulação, há valor real sendo entregue de graça.
 
-### O que funciona a favor
-- **Percepção de valor real:** o evento entrega conteúdo denso (o "manual" de astrologia aplicada). Âncorar isso em R$197 dá um número concreto ao valor do conteúdo, em vez de deixá-lo abstrato. Para quem é cético, "vale R$197 e está R$0" comunica a proposta antes do clique.
-- **Escassez credível:** "máximo 400 pessoas" é um limite plausível para uma sala ao vivo (não um "só 3 vagas restantes" que soa falso). Audiência consciente aceita capacidade real de sala muito mais que falsa urgência de estoque.
-- **Reduz o risco percebido:** "grátis + vaga limitada" convida a garantir o lugar sem custo — baixa fricção, decisão fácil.
+### Por que funciona (e funciona bem nesse público)
+- **Âncora real, não fabricada:** o "R$197 → R$0" deixa de ser um truque e vira comunicação honesta de valor. Audiência com consciência alta rejeita preço fake, mas **responde bem a uma oferta real** — "o ingresso vale R$197 e você recebe de graça hoje" é um fato, não uma pegadinha. Isso constrói confiança em vez de desgastá-la.
+- **Percepção de valor concreta:** o número dá dimensão material ao conteúdo (o "manual" de astrologia aplicada), que de outra forma ficaria abstrato. O cético entende o que está ganhando antes do clique.
+- **Escassez credível:** "máximo 400 pessoas" é um limite plausível de capacidade de sala ao vivo (não um "só 3 vagas restantes" que soa falso). Limite real de sala é aceito com naturalidade por públicos alertas.
+- **Baixa fricção:** "grátis + vaga limitada" convida a garantir o lugar sem custo. Decisão fácil, risco percebido zero.
 
-### O risco
-- **Âncora fabricada:** se a audiência perceber o R$197 como um "preço inventado só para riscar", o efeito inverte — o usuário sente que está sendo "ludibriado" e a credibilidade (o maior ativo desta página) cai. É o risco clássico em públicos alertas.
-- **Não matar o gancho:** a promessa do hero é "sem misticismo, sem decoreba, 100% prático". Um anúncio de preço agressivo demais pode soar comercial e conflitar com essa voz honesta.
+### O que ainda merece cuidado (execução)
+- **Contraste com a voz da página:** a promessa do hero é "sem misticismo, sem decoreba, 100% prático". O bloco de preço deve manter o tom de luxo discreto (dourado + serifado suave), sem apelar para urgência gritada (sem vermelho, sem "ÚLTIMAS VAGAS"). Valor e exclusividade, não pressa.
+- **Escassez honesta:** "máximo 400 pessoas" é credível e suficiente. Evitar contadores dinâmicos de "restam N" que pareçam truque.
 
-### Recomendação de execução
-1. **Framear como "VALOR DO EVENTO", não "preço do produto":** em vez de um preço solto, deixe claro que R$197 é o valor de referência do conteúdo que ele recebe grátis hoje. Isso transforma a âncora em comunicação de valor, não em "desconto fake".
-2. **Escassez real e discreta:** manter "máximo 400 pessoas" (capacidade da sala), sem contadores de "restam N" que pareçam truque.
-3. **Tom consistente:** dourado + serifado suave, sem elementos de "urgenzinha" (sem vermelho, sem "ÚLTIMAS VAGAS" gritado). Luxo em vez de pressa.
-
-Se a âncora for apresentada assim, ela **fortalece** a percepção de valor e conversão sem ferir a confiança. Se virar um "preço fake riscado", o efeito é negativo justamente no público que a página mais quer converter.
+### Conclusão
+Como o R$197 é o preço real do ingresso e o evento é gratuito, a âncora **fortalece** a percepção de valor e a conversão sem ferir a confiança — é uma oferta genuína apresentada com clareza. Esse é exatamente o tipo de âncora que funciona em audiência consciente: verdadeira, concreta e com escassez real.
 
 ## Técnico
 
