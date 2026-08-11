@@ -15,6 +15,15 @@ export function fbqTrack(event: string, params?: Record<string, unknown>) {
   }
 }
 
+export function fbqTrackCustom(event: string, params?: Record<string, unknown>) {
+  if (typeof window === "undefined" || typeof window.fbq !== "function") return;
+  if (params) {
+    window.fbq("trackCustom", event, params);
+  } else {
+    window.fbq("trackCustom", event);
+  }
+}
+
 // O script base já dispara o PageView do carregamento inicial.
 // Este helper evita duplicar esse primeiro disparo em navegações SPA.
 let initialPageViewDone = false;
