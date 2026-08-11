@@ -29,7 +29,16 @@ export const Route = createFileRoute("/obrigado")({
 });
 
 function Obrigado() {
+  const fired = useRef(false);
+  useEffect(() => {
+    if (fired.current) return;
+    fired.current = true;
+    trackPageView();
+    fbqTrack("Lead");
+  }, []);
+
   return (
+
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 py-20">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.8_0.14_82/0.12),transparent_55%)]" />
 
