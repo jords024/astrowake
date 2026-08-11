@@ -99,8 +99,16 @@ function Index() {
     };
   }, []);
 
+  const pixelFired = useRef(false);
+  useEffect(() => {
+    if (pixelFired.current) return;
+    pixelFired.current = true;
+    fbqTrack("PageView");
+  }, []);
+
   useEffect(() => {
     document.body.style.overflow = modalOpen ? "hidden" : "";
+
     return () => {
       document.body.style.overflow = "";
     };
