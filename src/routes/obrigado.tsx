@@ -64,6 +64,7 @@ function Obrigado() {
           href={WHATSAPP_GROUP_URL}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => fbqTrackCustom("ClicouGrupoWhatsApp")}
           className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-bold text-background shadow-[var(--shadow-gold)] transition-opacity hover:opacity-90"
         >
           <MessagesSquare className="h-5 w-5" />
