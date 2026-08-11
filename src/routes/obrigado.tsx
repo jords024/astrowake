@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, Calendar, Clock } from "lucide-react";
+import { CheckCircle2, Calendar, Clock, MessagesSquare } from "lucide-react";
+
+const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/Bidw8pFNLtJ6COqH97EOQ7";
 
 export const Route = createFileRoute("/obrigado")({
   head: () => ({
@@ -42,9 +44,19 @@ function Obrigado() {
         </h1>
 
         <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-          O link VIP da sala ao vivo chegará no seu e-mail e WhatsApp. Fique de olho na sua caixa de
-          entrada.
+          Tudo acontece no grupo do WhatsApp. Clique no botão abaixo e entre no
+          grupo VIP para não perder nada.
         </p>
+
+        <a
+          href={WHATSAPP_GROUP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-bold text-background shadow-[var(--shadow-gold)] transition-opacity hover:opacity-90"
+        >
+          <MessagesSquare className="h-5 w-5" />
+          Entrar no grupo do WhatsApp
+        </a>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-foreground/90">
           <span className="flex items-center gap-2">
