@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
+import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
