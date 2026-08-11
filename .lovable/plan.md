@@ -14,7 +14,8 @@ Página de captura em português, estética preta e dourada, luxuosa e minimalis
 
 2. **Seção de autoridade "Quem é Crassus Gobbi"**
    - Retrato com legenda (nome + "Criador do Método Astrowake • +5.000 Atendimentos").
-   - Narrativa de marca em 4 parágrafos e três números: +5.000 atendimentos, 100% sem decoreba, 10 anos de prática.
+   - Título "Quem vai te guiar" seguido do texto de narrativa completo fornecido, com o parágrafo final destacado.
+   - Três números no rodapé da seção: "+5.000 Atendimentos de consultório", "45+ Anos de tradição familiar", "100% Prático e sem decoreba".
 
 3. **Rota `/obrigado`** — página de agradecimento simples no mesmo estilo, confirmando a inscrição e orientando sobre o link da sala.
 
