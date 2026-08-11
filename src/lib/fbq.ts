@@ -14,3 +14,16 @@ export function fbqTrack(event: string, params?: Record<string, unknown>) {
     window.fbq("track", event);
   }
 }
+
+// O script base já dispara o PageView do carregamento inicial.
+// Este helper evita duplicar esse primeiro disparo em navegações SPA.
+let initialPageViewDone = false;
+
+export function trackPageView() {
+  if (!initialPageViewDone) {
+    initialPageViewDone = true;
+    return;
+  }
+  fbqTrack("PageView");
+}
+
