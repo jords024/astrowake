@@ -213,6 +213,21 @@ function Index() {
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
 
+          {/* Price anchor + scarcity */}
+          <div data-reveal className="mt-7 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">
+              Valor do ingresso
+            </span>
+            <span className="text-2xl font-bold text-muted-foreground/60 line-through">
+              R$197,00
+            </span>
+            <ArrowRight className="h-5 w-5 text-gold" />
+            <span className="font-display text-3xl font-semibold text-gold">R$0,00</span>
+          </div>
+          <p data-reveal className="mt-2 text-xs uppercase tracking-[0.16em] text-foreground/80">
+            Ingresso ao vivo • Máximo 400 pessoas
+          </p>
+
           <p data-reveal className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
             <Lock className="h-3.5 w-3.5 text-gold" />
             Seus dados estão 100% seguros. Livre de spam.
