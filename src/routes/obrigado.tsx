@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { CheckCircle2, Calendar, Clock, MessagesSquare } from "lucide-react";
-import { fbqTrack, trackPageView } from "../lib/fbq";
+import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 
 const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/Bidw8pFNLtJ6COqH97EOQ7";
 
@@ -64,6 +64,7 @@ function Obrigado() {
           href={WHATSAPP_GROUP_URL}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => fbqTrackCustom("ClicouGrupoWhatsApp")}
           className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-bold text-background shadow-[var(--shadow-gold)] transition-opacity hover:opacity-90"
         >
           <MessagesSquare className="h-5 w-5" />
