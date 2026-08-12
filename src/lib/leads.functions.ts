@@ -6,11 +6,11 @@ export type LeadInput = {
   nome: string;
   email: string;
   whatsapp: string;
-  origem?: string;
-  referrer?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
+  origem?: string | undefined;
+  referrer?: string | undefined;
+  utm_source?: string | undefined;
+  utm_medium?: string | undefined;
+  utm_campaign?: string | undefined;
 };
 
 export type LeadRow = {
