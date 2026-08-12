@@ -283,7 +283,7 @@ function StatCard({
   icon: React.ReactNode;
   label: string;
   value: string | number;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <div className="rounded-2xl border border-gold/20 bg-white/[0.03] p-5">
