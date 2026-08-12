@@ -131,3 +131,21 @@ export const checkIsAdmin = createServerFn({ method: "GET" })
     });
     return { isAdmin: Boolean(data) };
   });
+
+// Bootstrap: o primeiro usuário cadastrado vira administrador.
+export const claimAdminIfFirst = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { count, error } = await supabaseAdmin
+      .from("user_roles")
+      .select("id", { count: "exact", head: true })
+      .eq("role", "admin");
+    if (error) throw new Error(error.message);
+    if ((count ?? 0) > 0) return { promoted: false };
+    const { error: insertError } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: context.userId, role: "admin" });
+    if (insertError) throw new Error(insertError.message);
+    return { promoted: true };
+  });
