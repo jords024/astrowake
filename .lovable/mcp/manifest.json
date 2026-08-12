@@ -49,7 +49,29 @@
             }
           }
         },
-        "outputSchema": null
+        "outputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "leads": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              }
+            },
+            "count": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "leads",
+            "count"
+          ]
+        }
       },
       {
         "name": "lead_stats",
@@ -73,7 +95,79 @@
             }
           }
         },
-        "outputSchema": null
+        "outputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "janela_dias": {
+              "type": "number"
+            },
+            "total_na_janela": {
+              "type": "number"
+            },
+            "ultimas_24h": {
+              "type": "number"
+            },
+            "ultimos_7_dias": {
+              "type": "number"
+            },
+            "horario_pico_utc": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cidades": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "total": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "label",
+                  "total"
+                ]
+              }
+            },
+            "origens": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "total": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "label",
+                  "total"
+                ]
+              }
+            }
+          },
+          "required": [
+            "janela_dias",
+            "total_na_janela",
+            "ultimas_24h",
+            "ultimos_7_dias",
+            "horario_pico_utc",
+            "cidades",
+            "origens"
+          ]
+        }
       }
     ]
   }

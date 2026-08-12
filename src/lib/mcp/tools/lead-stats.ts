@@ -24,6 +24,15 @@ export default defineTool({
   inputSchema: {
     days: z.number().int().min(1).max(365).default(30).describe("Janela de análise em dias."),
   },
+  outputSchema: {
+    janela_dias: z.number(),
+    total_na_janela: z.number(),
+    ultimas_24h: z.number(),
+    ultimos_7_dias: z.number(),
+    horario_pico_utc: z.string().nullable(),
+    cidades: z.array(z.object({ label: z.string(), total: z.number() })),
+    origens: z.array(z.object({ label: z.string(), total: z.number() })),
+  },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ days }, ctx) => {
     if (!ctx.isAuthenticated()) {

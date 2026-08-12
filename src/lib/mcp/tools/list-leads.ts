@@ -16,6 +16,10 @@ export default defineTool({
       .optional()
       .describe("Data ISO 8601: retorna apenas leads criados a partir dela."),
   },
+  outputSchema: {
+    leads: z.array(z.record(z.string(), z.unknown())),
+    count: z.number(),
+  },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit, search, since }, ctx) => {
     if (!ctx.isAuthenticated()) {
