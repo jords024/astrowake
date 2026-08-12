@@ -15,6 +15,7 @@ import {
 
 
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
+import { submitLead } from "../lib/leads.functions";
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
 import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
 
@@ -49,9 +50,11 @@ function Index() {
   const [formData, setFormData] = useState({ nome: "", email: "", whatsapp: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittedRef = useRef(false);
+  const origemRef = useRef<string>("hero");
 
   const openModal = (origem: string) => {
     submittedRef.current = false;
+    origemRef.current = origem;
     setModalOpen(true);
     // Lead abriu o formulário (chegou até esse ponto)
     fbqTrack("InitiateCheckout", { content_name: "Formulario Astrowake", origem });
@@ -136,15 +139,31 @@ function Index() {
     };
   }, [modalOpen]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     submittedRef.current = true;
     setIsSubmitting(true);
     fbqTrackCustom("EnviouFormulario");
-    setTimeout(() => {
-      window.location.href = "/obrigado";
-    }, 1200);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      await submitLead({
+        data: {
+          nome: formData.nome,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          origem: origemRef.current,
+          referrer: document.referrer,
+          utm_source: params.get("utm_source") ?? undefined,
+          utm_medium: params.get("utm_medium") ?? undefined,
+          utm_campaign: params.get("utm_campaign") ?? undefined,
+        },
+      });
+    } catch {
+      // não bloqueia o lead: segue para a página de obrigado
+    }
+    window.location.href = "/obrigado";
   };
+
 
   const setField =
     (key: keyof typeof formData) =>
