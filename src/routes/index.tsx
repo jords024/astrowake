@@ -136,15 +136,31 @@ function Index() {
     };
   }, [modalOpen]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     submittedRef.current = true;
     setIsSubmitting(true);
     fbqTrackCustom("EnviouFormulario");
-    setTimeout(() => {
-      window.location.href = "/obrigado";
-    }, 1200);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      await submitLead({
+        data: {
+          nome: formData.nome,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          origem: origemRef.current,
+          referrer: document.referrer,
+          utm_source: params.get("utm_source") ?? undefined,
+          utm_medium: params.get("utm_medium") ?? undefined,
+          utm_campaign: params.get("utm_campaign") ?? undefined,
+        },
+      });
+    } catch {
+      // não bloqueia o lead: segue para a página de obrigado
+    }
+    window.location.href = "/obrigado";
   };
+
 
   const setField =
     (key: keyof typeof formData) =>
