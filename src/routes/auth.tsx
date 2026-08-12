@@ -4,7 +4,15 @@ import { Lock, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { claimAdminIfFirst } from "@/lib/leads.functions";
 
+function safeNext(value: unknown): string | undefined {
+  return typeof value === "string" && value.startsWith("/") && !value.startsWith("//") ? value : undefined;
+}
+
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const next = safeNext(s["next"]);
+    return next ? { next } : {};
+  },
   head: () => ({
     meta: [
       { title: "Acesso Administrativo — Astrowake" },
@@ -21,6 +29,11 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const goNext = () => {
+    if (next) window.location.href = next;
+    else navigate({ to: "/admin" });
+  };
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,9 +42,12 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) {
+        if (next) window.location.href = next;
+        else navigate({ to: "/admin" });
+      }
     });
-  }, [navigate]);
+  }, [navigate, next]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -42,7 +58,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: { emailRedirectTo: `${window.location.origin}${next ?? "/admin"}` },
         });
         if (error) throw error;
       } else {
@@ -55,7 +71,7 @@ function AuthPage() {
         return;
       }
       await claimAdminIfFirst().catch(() => undefined);
-      navigate({ to: "/admin" });
+      goNext();
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Não foi possível entrar.");
     } finally {
