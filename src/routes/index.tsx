@@ -23,13 +23,13 @@ import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Astrowake — Limpeza Energética para a sua Vida" },
+      { title: "Astrowake — Hackeando a Realidade" },
       {
         name: "description",
         content:
           "Aprenda a fazer a sua limpeza energética e alinhar o seu campo. Evento ao vivo, gratuito, nesta quinta-feira às 20h com Crassus Gobbi.",
       },
-      { property: "og:title", content: "Astrowake — Limpeza Energética para a sua Vida" },
+      { property: "og:title", content: "Astrowake — Hackeando a Realidade" },
       {
         property: "og:description",
         content:
