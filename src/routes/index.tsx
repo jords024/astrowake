@@ -15,6 +15,7 @@ import {
 
 
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
+import { submitLead } from "../lib/leads.functions";
 import crassusAsset from "../assets/crassus-cosmico.png.asset.json";
 import crassusMobileAsset from "../assets/crassus-mobile.png.asset.json";
 
@@ -49,9 +50,11 @@ function Index() {
   const [formData, setFormData] = useState({ nome: "", email: "", whatsapp: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittedRef = useRef(false);
+  const origemRef = useRef<string>("hero");
 
   const openModal = (origem: string) => {
     submittedRef.current = false;
+    origemRef.current = origem;
     setModalOpen(true);
     // Lead abriu o formulário (chegou até esse ponto)
     fbqTrack("InitiateCheckout", { content_name: "Formulario Astrowake", origem });
