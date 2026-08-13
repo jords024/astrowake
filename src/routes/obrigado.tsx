@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
-import { CheckCircle2, Calendar, Clock, MessagesSquare } from "lucide-react";
+import { CheckCircle2, Calendar, Clock, MessagesSquare, CalendarPlus, Download } from "lucide-react";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
+import { googleCalendarUrl, outlookCalendarUrl } from "../lib/event";
 
 const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/Bidw8pFNLtJ6COqH97EOQ7";
 
@@ -81,6 +82,45 @@ function Obrigado() {
             <Clock className="h-4 w-4 text-gold" />
             Às 20h00 (Horário de Brasília)
           </span>
+        </div>
+
+        <div className="mt-10 rounded-2xl border border-gold/25 bg-white/[0.03] p-5 backdrop-blur-sm">
+          <p className="text-sm font-semibold text-foreground">
+            Adicione o evento à sua agenda e receba o lembrete
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Enviamos o convite também para o seu e-mail. Lembretes: 1 dia antes e 15 minutos antes.
+          </p>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <a
+              href={googleCalendarUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => fbqTrackCustom("AdicionouAgenda", { tipo: "google" })}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-5 py-3 text-sm font-semibold text-gold-soft transition-colors hover:bg-gold/20"
+            >
+              <CalendarPlus className="h-4 w-4" />
+              Google Agenda
+            </a>
+            <a
+              href={outlookCalendarUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => fbqTrackCustom("AdicionouAgenda", { tipo: "outlook" })}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-5 py-3 text-sm font-semibold text-gold-soft transition-colors hover:bg-gold/20"
+            >
+              <CalendarPlus className="h-4 w-4" />
+              Outlook
+            </a>
+            <a
+              href="/api/public/convite.ics"
+              onClick={() => fbqTrackCustom("AdicionouAgenda", { tipo: "ics" })}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-border bg-white/[0.04] px-5 py-3 text-sm font-semibold text-foreground/90 transition-colors hover:bg-white/[0.08]"
+            >
+              <Download className="h-4 w-4" />
+              Apple / .ics
+            </a>
+          </div>
         </div>
 
         <Link
