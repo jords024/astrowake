@@ -161,48 +161,6 @@ export default function HorizonHero() {
         refs.camera.lookAt(driftX * 0.35, 10, -600);
       }
 
-      // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
-      const camZ = refs.camera ? refs.camera.position.z : 0;
-      refs.stars.forEach((starField: any, i: number) => {
-        starField.position.z = camZ - i * 40;
-      });
-      if (refs.nebula) refs.nebula.position.z = camZ - 2200;
-
-      // Sol: sempre no horizonte à frente da câmera
-      if (refs.sun) {
-        refs.sun.position.z = camZ - 1000;
-        refs.sun.position.x = driftX * 0.35;
-        refs.sun.position.y = (refs.isMobile ? 105 : 110) + driftY * 0.25;
-        refs.sunHalos?.forEach((h: any) => {
-          if (h.material.uniforms) h.material.uniforms.time.value = time;
-        });
-      }
-
-
-      // Estrelas cadentes: eventos raros e elegantes
-      refs.shootingStars?.forEach((s: any) => {
-        s.t += dt;
-        if (s.t < s.delay) {
-          s.mesh.visible = false;
-          return;
-        }
-        const p = (s.t - s.delay) / s.duration;
-        if (p >= 1) {
-          s.t = 0;
-          s.delay = 4 + Math.random() * 10;
-          s.startX = -400 + Math.random() * 300;
-          s.startY = 150 + Math.random() * 220;
-          s.mesh.visible = false;
-          return;
-        }
-        s.mesh.visible = true;
-        s.mesh.position.set(
-          s.startX + p * s.travel,
-          s.startY - p * s.travel * 0.35,
-          camZ - 700 - s.depth,
-        );
-        s.mesh.material.opacity = Math.sin(p * Math.PI) * 0.9;
-      });
 
       // montanhas: apenas paralaxe coerente com a deriva da câmera (sem movimento próprio)
       refs.mountains.forEach((mountain: any, i: number) => {
