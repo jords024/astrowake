@@ -57,12 +57,13 @@ export default function HorizonHero() {
     const refs = threeRefs.current;
 
     const createStarField = () => {
-      const starCount = refs.isMobile ? 1400 : 3500;
+      const starCount = refs.isMobile ? 1600 : 3800;
       for (let i = 0; i < 3; i++) {
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(starCount * 3);
         const colors = new Float32Array(starCount * 3);
         const sizes = new Float32Array(starCount);
+        const phases = new Float32Array(starCount);
 
         for (let j = 0; j < starCount; j++) {
           const radius = 200 + Math.random() * 800;
@@ -82,39 +83,49 @@ export default function HorizonHero() {
           colors[j * 3] = color.r;
           colors[j * 3 + 1] = color.g;
           colors[j * 3 + 2] = color.b;
-          sizes[j] = Math.random() * 2 + 0.5;
+          // poucas estrelas grandes, muitas pequenas — céu mais realista
+          sizes[j] = Math.pow(Math.random(), 2.4) * 3.4 + 0.45;
+          phases[j] = Math.random() * Math.PI * 2;
         }
 
         geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
         geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+        geometry.setAttribute("phase", new THREE.BufferAttribute(phases, 1));
 
         const material = new THREE.ShaderMaterial({
           uniforms: { time: { value: 0 }, depth: { value: i } },
           vertexShader: `
             attribute float size;
+            attribute float phase;
             attribute vec3 color;
             varying vec3 vColor;
+            varying float vTwinkle;
             uniform float time;
             uniform float depth;
             void main() {
               vColor = color;
+              vTwinkle = 0.55 + 0.45 * sin(time * 1.1 + phase);
               vec3 pos = position;
-              float angle = time * 0.05 * (1.0 - depth * 0.3);
+              float angle = time * 0.012 * (1.0 - depth * 0.25);
               mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
               pos.xy = rot * pos.xy;
               vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-              gl_PointSize = size * (300.0 / -mvPosition.z);
+              gl_PointSize = size * (300.0 / -mvPosition.z) * (0.85 + vTwinkle * 0.3);
               gl_Position = projectionMatrix * mvPosition;
             }
           `,
           fragmentShader: `
             varying vec3 vColor;
+            varying float vTwinkle;
             void main() {
-              float dist = length(gl_PointCoord - vec2(0.5));
+              vec2 uv = gl_PointCoord - vec2(0.5);
+              float dist = length(uv);
               if (dist > 0.5) discard;
-              float opacity = 1.0 - smoothstep(0.0, 0.5, dist);
-              gl_FragColor = vec4(vColor, opacity);
+              // núcleo nítido + halo macio (sem "bolinhas" chapadas)
+              float core = pow(1.0 - smoothstep(0.0, 0.18, dist), 2.0);
+              float halo = pow(1.0 - smoothstep(0.0, 0.5, dist), 3.0) * 0.5;
+              gl_FragColor = vec4(vColor, (core + halo) * vTwinkle);
             }
           `,
           transparent: true,
@@ -127,6 +138,7 @@ export default function HorizonHero() {
         refs.stars.push(stars);
       }
     };
+
 
     const createNebula = () => {
       const geometry = new THREE.PlaneGeometry(8000, 4000, 100, 100);
