@@ -144,11 +144,6 @@ export default function HorizonHero() {
       const dt = Math.min(Math.max(now - (refs.lastTime ?? now), 0), 0.1);
       refs.lastTime = now;
 
-      refs.stars.forEach((starField: any) => {
-        if (starField.material.uniforms) starField.material.uniforms.time.value = time;
-      });
-      if (refs.nebula?.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.12;
-
       // deriva única e lenta — todos os elementos respiram no mesmo ritmo
       const driftX = Math.sin(time * 0.06) * (refs.isMobile ? 1.2 : 2.4);
       const driftY = Math.sin(time * 0.045) * (refs.isMobile ? 0.6 : 1.2);
