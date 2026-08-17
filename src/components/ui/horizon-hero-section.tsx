@@ -249,7 +249,6 @@ export default function HorizonHero() {
       group.add(outer);
 
       refs.sunHalos = [inner, outer];
-      if (typeof window !== "undefined") (window as any).__sun = group;
       group.position.set(0, refs.isMobile ? 90 : 110, -1000);
       refs.scene.add(group);
       refs.sun = group;
