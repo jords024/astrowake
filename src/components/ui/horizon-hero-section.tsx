@@ -397,7 +397,7 @@ export default function HorizonHero() {
           side: THREE.DoubleSide,
         });
 
-        const mountain = new THREE.Mesh(shape ? geometry : geometry, material);
+        const mountain = new THREE.Mesh(geometry, material);
         mountain.position.z = layer.distance;
         mountain.position.y = layer.distance;
         mountain.userData = { baseZ: layer.distance, index };
