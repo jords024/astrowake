@@ -249,7 +249,7 @@ export default function HorizonHero() {
       group.add(outer);
 
       refs.sunHalos = [inner, outer];
-      group.position.set(0, refs.isMobile ? 90 : 110, -1000);
+      group.position.set(0, refs.isMobile ? 105 : 110, -1000);
       refs.scene.add(group);
       refs.sun = group;
     };
@@ -452,7 +452,7 @@ export default function HorizonHero() {
       if (refs.sun) {
         refs.sun.position.z = camZ - 1000;
         refs.sun.position.x = driftX * 0.35;
-        refs.sun.position.y = (refs.isMobile ? 90 : 110) + driftY * 0.25;
+        refs.sun.position.y = (refs.isMobile ? 105 : 110) + driftY * 0.25;
         refs.sunHalos?.forEach((h: any) => {
           if (h.material.uniforms) h.material.uniforms.time.value = time;
         });
