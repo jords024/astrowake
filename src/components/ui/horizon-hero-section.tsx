@@ -363,12 +363,14 @@ export default function HorizonHero() {
       tl.from(menuRef.current, { x: -100, opacity: 0, duration: 1, ease: "power3.out" });
     }
     if (titleRef.current) {
-      tl.from(
+      tl.fromTo(
         titleRef.current.querySelectorAll(".title-char"),
-        { y: 160, opacity: 0, duration: 1.2, stagger: 0.05, ease: "power4.out" },
+        { y: 160, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.05, ease: "power4.out", clearProps: "transform,opacity" },
         "-=0.5",
       );
     }
+
     if (subtitleRef.current) {
       tl.from(
         subtitleRef.current.querySelectorAll(".subtitle-line"),
@@ -382,8 +384,14 @@ export default function HorizonHero() {
 
     return () => {
       tl.kill();
+      // evita que letras fiquem invisíveis/deslocadas ao interromper a animação
+      const chars = titleRef.current?.querySelectorAll(".title-char");
+      if (chars?.length) gsap.set(chars, { clearProps: "all" });
+      const lines = subtitleRef.current?.querySelectorAll(".subtitle-line");
+      if (lines?.length) gsap.set(lines, { clearProps: "all" });
     };
   }, [isReady, currentSection]);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -490,12 +498,14 @@ export default function HorizonHero() {
           style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.35) 60%, transparent 80%)" }}
         />
         <h1
+          key={`title-${currentSection}`}
           ref={titleRef}
           className="relative font-display text-5xl font-black tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
           style={{ visibility: "hidden" }}
         >
           {splitTitle(titles[currentSection] || "NASCIMENTO")}
         </h1>
+
 
         <div ref={subtitleRef} className="relative mt-6 space-y-1" style={{ visibility: "hidden" }}>
           <p className="subtitle-line text-base font-medium tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
