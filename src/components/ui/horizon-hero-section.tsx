@@ -198,7 +198,7 @@ export default function HorizonHero() {
       const group = new THREE.Group();
 
       const core = new THREE.Mesh(
-        new THREE.SphereGeometry(150, 48, 48),
+        new THREE.SphereGeometry(95, 48, 48),
         new THREE.MeshBasicMaterial({ color: 0xffffff, fog: false }),
       );
       group.add(core);
@@ -241,16 +241,16 @@ export default function HorizonHero() {
           }),
         );
 
-      const inner = makeHalo(340, 3.2, 1.35, 0xffffff);
+      const inner = makeHalo(500, 2.6, 1.2, 0xffffff);
       inner.position.z = -1;
-      const outer = makeHalo(2200, 3.6, 0.5, 0xbcd6ff);
+      const outer = makeHalo(1800, 3.4, 0.42, 0xbcd6ff);
       outer.position.z = -2;
       group.add(inner);
       group.add(outer);
 
       refs.sunHalos = [inner, outer];
       if (typeof window !== "undefined") (window as any).__sun = group;
-      group.position.set(0, refs.isMobile ? 210 : 250, -1000);
+      group.position.set(0, refs.isMobile ? 90 : 110, -1000);
       refs.scene.add(group);
       refs.sun = group;
     };
@@ -453,7 +453,7 @@ export default function HorizonHero() {
       if (refs.sun) {
         refs.sun.position.z = camZ - 1000;
         refs.sun.position.x = driftX * 0.35;
-        refs.sun.position.y = (refs.isMobile ? 210 : 250) + driftY * 0.25;
+        refs.sun.position.y = (refs.isMobile ? 90 : 110) + driftY * 0.25;
         refs.sunHalos?.forEach((h: any) => {
           if (h.material.uniforms) h.material.uniforms.time.value = time;
         });
