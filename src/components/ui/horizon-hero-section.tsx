@@ -614,7 +614,7 @@ export default function HorizonHero() {
 
         <ChevronDown className="h-5 w-5 animate-bounce text-gold drop-shadow-[0_2px_14px_rgba(214,164,68,0.6)]" />
 
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 md:flex">
           {Array.from({ length: totalSections + 1 }).map((_, i) => (
             <span
               key={i}
@@ -624,6 +624,7 @@ export default function HorizonHero() {
             />
           ))}
         </div>
+
       </div>
 
       {/* Alturas de scroll */}
