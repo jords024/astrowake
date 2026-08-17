@@ -1,5 +1,5 @@
-import { ChevronDown } from "lucide-react";
 // @ts-nocheck
+import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
@@ -487,7 +487,7 @@ export default function HorizonHero() {
 
       {/* Conteúdo principal */}
       <div
-        className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
+        className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 pb-36 text-center sm:pb-28"
         style={{
           opacity: sceneOpacity,
           transform: `translateY(${-outro * 60}px)`,
