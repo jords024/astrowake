@@ -3,9 +3,6 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 const titles: Record<number, string> = {
   0: "NASCIMENTO",
@@ -46,9 +43,6 @@ export default function HorizonHero() {
     scene: null,
     camera: null,
     renderer: null,
-    composer: null,
-    stars: [],
-    nebula: null,
     mountains: [],
     animationId: null,
   });
@@ -56,258 +50,13 @@ export default function HorizonHero() {
   useEffect(() => {
     const refs = threeRefs.current;
 
-    const createStarField = () => {
-      const starCount = refs.isMobile ? 1600 : 3800;
-      for (let i = 0; i < 3; i++) {
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(starCount * 3);
-        const colors = new Float32Array(starCount * 3);
-        const sizes = new Float32Array(starCount);
-        const phases = new Float32Array(starCount);
-
-        for (let j = 0; j < starCount; j++) {
-          const radius = 200 + Math.random() * 800;
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(Math.random() * 2 - 1);
-
-          positions[j * 3] = radius * Math.sin(phi) * Math.cos(theta);
-          positions[j * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-          positions[j * 3 + 2] = radius * Math.cos(phi);
-
-          const color = new THREE.Color();
-          const choice = Math.random();
-          if (choice < 0.62) color.setHSL(0.6, 0.15, 0.92);
-          else if (choice < 0.88) color.setHSL(0.58, 0.35, 0.85);
-          else color.setHSL(0.09, 0.25, 0.9);
-
-
-          colors[j * 3] = color.r;
-          colors[j * 3 + 1] = color.g;
-          colors[j * 3 + 2] = color.b;
-          // poucas estrelas grandes, muitas pequenas — céu mais realista
-          sizes[j] = Math.pow(Math.random(), 2.4) * 3.4 + 0.45;
-          phases[j] = Math.random() * Math.PI * 2;
-        }
-
-        geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-        geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
-        geometry.setAttribute("phase", new THREE.BufferAttribute(phases, 1));
-
-        const material = new THREE.ShaderMaterial({
-          uniforms: { time: { value: 0 }, depth: { value: i } },
-          vertexShader: `
-            attribute float size;
-            attribute float phase;
-            attribute vec3 color;
-            varying vec3 vColor;
-            varying float vTwinkle;
-            uniform float time;
-            uniform float depth;
-            void main() {
-              vColor = color;
-              vTwinkle = 0.55 + 0.45 * sin(time * 1.1 + phase);
-              vec3 pos = position;
-              float angle = time * 0.012 * (1.0 - depth * 0.25);
-              mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-              pos.xy = rot * pos.xy;
-              vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-              gl_PointSize = size * (300.0 / -mvPosition.z) * (0.85 + vTwinkle * 0.3);
-              gl_Position = projectionMatrix * mvPosition;
-            }
-          `,
-          fragmentShader: `
-            varying vec3 vColor;
-            varying float vTwinkle;
-            void main() {
-              vec2 uv = gl_PointCoord - vec2(0.5);
-              float dist = length(uv);
-              if (dist > 0.5) discard;
-              // núcleo nítido + halo macio (sem "bolinhas" chapadas)
-              float core = pow(1.0 - smoothstep(0.0, 0.18, dist), 2.0);
-              float halo = pow(1.0 - smoothstep(0.0, 0.5, dist), 3.0) * 0.5;
-              gl_FragColor = vec4(vColor, (core + halo) * vTwinkle);
-            }
-          `,
-          transparent: true,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        });
-
-        const stars = new THREE.Points(geometry, material);
-        refs.scene.add(stars);
-        refs.stars.push(stars);
-      }
-    };
-
-
-    const createNebula = () => {
-      const geometry = new THREE.PlaneGeometry(8000, 4000, 100, 100);
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 },
-          color1: { value: new THREE.Color(0x050a18) },
-          color2: { value: new THREE.Color(0x2b4a8f) },
-          opacity: { value: refs.isMobile ? 0.16 : 0.22 },
-
-        },
-        vertexShader: `
-          varying vec2 vUv;
-          varying float vElevation;
-          uniform float time;
-          void main() {
-            vUv = uv;
-            vec3 pos = position;
-            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * 20.0;
-            pos.z += elevation;
-            vElevation = elevation;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 color1;
-          uniform vec3 color2;
-          uniform float opacity;
-          uniform float time;
-          varying vec2 vUv;
-          varying float vElevation;
-          void main() {
-            // gradiente amplo e lento (sem faixas/feixes verticais)
-            float mixFactor = sin(vUv.x * 2.0 + time) * cos(vUv.y * 1.6 - time * 0.8);
-            vec3 color = mix(color1, color2, mixFactor * 0.35 + 0.5);
-            float d = length((vUv - 0.5) * vec2(1.0, 1.6));
-            float alpha = opacity * smoothstep(0.55, 0.0, d);
-            gl_FragColor = vec4(color, alpha);
-          }
-
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      });
-
-      const nebula = new THREE.Mesh(geometry, material);
-      nebula.position.z = -1050;
-      refs.scene.add(nebula);
-      refs.nebula = nebula;
-    };
-
-    // Sol branco nascendo atrás da crista (referência Horizon)
-    const createSun = () => {
-      const group = new THREE.Group();
-
-      const core = new THREE.Mesh(
-        new THREE.SphereGeometry(95, 48, 48),
-        new THREE.MeshBasicMaterial({ color: 0xffffff, fog: false }),
-      );
-      group.add(core);
-
-      const makeHalo = (size: number, power: number, strength: number, color: number) =>
-        new THREE.Mesh(
-          new THREE.PlaneGeometry(size, size),
-          new THREE.ShaderMaterial({
-            uniforms: {
-              time: { value: 0 },
-              color: { value: new THREE.Color(color) },
-              power: { value: power },
-              strength: { value: strength },
-            },
-            vertexShader: `
-              varying vec2 vUv;
-              void main() {
-                vUv = uv;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-              }
-            `,
-            fragmentShader: `
-              uniform float time;
-              uniform vec3 color;
-              uniform float power;
-              uniform float strength;
-              varying vec2 vUv;
-              void main() {
-                float d = length(vUv - 0.5) * 2.0;
-                float a = pow(max(0.0, 1.0 - d), power) * strength;
-                a *= 0.94 + 0.06 * sin(time * 0.5);
-                if (a <= 0.002) discard;
-                gl_FragColor = vec4(color, a);
-              }
-            `,
-            transparent: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-            fog: false,
-          }),
-        );
-
-      const inner = makeHalo(500, 2.6, 1.2, 0xffffff);
-      inner.position.z = -1;
-      const outer = makeHalo(1800, 3.4, 0.42, 0xbcd6ff);
-      outer.position.z = -2;
-      group.add(inner);
-      group.add(outer);
-
-      refs.sunHalos = [inner, outer];
-      group.position.set(0, refs.isMobile ? 105 : 110, -1000);
-      if (refs.isMobile) group.scale.setScalar(1.45);
-      refs.scene.add(group);
-      refs.sun = group;
-    };
-
-
-    const createShootingStars = () => {
-      refs.shootingStars = [];
-      const count = refs.isMobile ? 1 : 2;
-      for (let i = 0; i < count; i++) {
-        const mesh = new THREE.Mesh(
-          new THREE.PlaneGeometry(90, 1.4),
-          new THREE.ShaderMaterial({
-            uniforms: {},
-            vertexShader: `
-              varying vec2 vUv;
-              void main() {
-                vUv = uv;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-              }
-            `,
-            fragmentShader: `
-              varying vec2 vUv;
-              void main() {
-                float head = pow(vUv.x, 6.0);
-                float tail = pow(vUv.x, 1.6) * 0.35;
-                float band = smoothstep(0.5, 0.0, abs(vUv.y - 0.5));
-                gl_FragColor = vec4(0.92, 0.96, 1.0, (head + tail) * band);
-              }
-            `,
-            transparent: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-          }),
-        );
-        mesh.material.opacity = 1;
-        mesh.rotation.z = -0.34;
-        mesh.visible = false;
-        refs.scene.add(mesh);
-        refs.shootingStars.push({
-          mesh,
-          t: 0,
-          delay: 3 + i * 5 + Math.random() * 6,
-          duration: 1.4,
-          travel: 700,
-          depth: i * 160,
-          startX: -400 + Math.random() * 300,
-          startY: 150 + Math.random() * 220,
-        });
-      }
-    };
 
     const createMountains = () => {
       const layers = [
-        { distance: -50, height: 60, top: 0x0a0d16, base: 0x03040a, opacity: 1 },
-        { distance: -100, height: 80, top: 0x11172a, base: 0x05070f, opacity: 0.95 },
-        { distance: -150, height: 100, top: 0x1b2440, base: 0x080c18, opacity: 0.85 },
-        { distance: -200, height: 120, top: 0x2b3a63, base: 0x0d1222, opacity: 0.7 },
+        { distance: -50, height: 60, top: 0x080808, base: 0x000000, opacity: 1 },
+        { distance: -100, height: 80, top: 0x0c0c0c, base: 0x020202, opacity: 0.95 },
+        { distance: -150, height: 100, top: 0x101010, base: 0x040404, opacity: 0.85 },
+        { distance: -200, height: 120, top: 0x141414, base: 0x060606, opacity: 0.7 },
 
       ];
 
@@ -382,34 +131,6 @@ export default function HorizonHero() {
     };
 
 
-    const createAtmosphere = () => {
-      const geometry = new THREE.SphereGeometry(600, 32, 32);
-      const material = new THREE.ShaderMaterial({
-        uniforms: { time: { value: 0 } },
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          uniform float time;
-          void main() {
-            float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-            vec3 atmosphere = vec3(0.35, 0.52, 0.95) * intensity;
-            float pulse = sin(time * 2.0) * 0.1 + 0.9;
-            atmosphere *= pulse;
-            gl_FragColor = vec4(atmosphere, intensity * 0.05);
-          }
-        `,
-        side: THREE.BackSide,
-        blending: THREE.AdditiveBlending,
-        transparent: true,
-      });
-      refs.scene.add(new THREE.Mesh(geometry, material));
-    };
 
     const animate = () => {
       refs.animationId = requestAnimationFrame(animate);
@@ -419,11 +140,6 @@ export default function HorizonHero() {
       // delta-time real: suavização idêntica em 60/120Hz e em telas lentas
       const dt = Math.min(Math.max(now - (refs.lastTime ?? now), 0), 0.1);
       refs.lastTime = now;
-
-      refs.stars.forEach((starField: any) => {
-        if (starField.material.uniforms) starField.material.uniforms.time.value = time;
-      });
-      if (refs.nebula?.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.12;
 
       // deriva única e lenta — todos os elementos respiram no mesmo ritmo
       const driftX = Math.sin(time * 0.06) * (refs.isMobile ? 1.2 : 2.4);
@@ -442,48 +158,6 @@ export default function HorizonHero() {
         refs.camera.lookAt(driftX * 0.35, 10, -600);
       }
 
-      // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
-      const camZ = refs.camera ? refs.camera.position.z : 0;
-      refs.stars.forEach((starField: any, i: number) => {
-        starField.position.z = camZ - i * 40;
-      });
-      if (refs.nebula) refs.nebula.position.z = camZ - 2200;
-
-      // Sol: sempre no horizonte à frente da câmera
-      if (refs.sun) {
-        refs.sun.position.z = camZ - 1000;
-        refs.sun.position.x = driftX * 0.35;
-        refs.sun.position.y = (refs.isMobile ? 105 : 110) + driftY * 0.25;
-        refs.sunHalos?.forEach((h: any) => {
-          if (h.material.uniforms) h.material.uniforms.time.value = time;
-        });
-      }
-
-
-      // Estrelas cadentes: eventos raros e elegantes
-      refs.shootingStars?.forEach((s: any) => {
-        s.t += dt;
-        if (s.t < s.delay) {
-          s.mesh.visible = false;
-          return;
-        }
-        const p = (s.t - s.delay) / s.duration;
-        if (p >= 1) {
-          s.t = 0;
-          s.delay = 4 + Math.random() * 10;
-          s.startX = -400 + Math.random() * 300;
-          s.startY = 150 + Math.random() * 220;
-          s.mesh.visible = false;
-          return;
-        }
-        s.mesh.visible = true;
-        s.mesh.position.set(
-          s.startX + p * s.travel,
-          s.startY - p * s.travel * 0.35,
-          camZ - 700 - s.depth,
-        );
-        s.mesh.material.opacity = Math.sin(p * Math.PI) * 0.9;
-      });
 
       // montanhas: apenas paralaxe coerente com a deriva da câmera (sem movimento próprio)
       refs.mountains.forEach((mountain: any, i: number) => {
@@ -494,7 +168,7 @@ export default function HorizonHero() {
       });
 
 
-      refs.composer?.render();
+      refs.renderer?.render(refs.scene, refs.camera);
     };
 
 
@@ -512,7 +186,7 @@ export default function HorizonHero() {
       refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x070c18, 0.00016);
+      refs.scene.fog = new THREE.FogExp2(0x000000, 0.0002);
 
       const aspect = window.innerWidth / window.innerHeight;
       refs.camera = new THREE.PerspectiveCamera(fovFor(aspect), aspect, 0.1, 2000);
@@ -522,32 +196,16 @@ export default function HorizonHero() {
       refs.renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
         antialias: !refs.isMobile,
-        alpha: true,
+        alpha: false,
         powerPreference: "high-performance",
       });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, refs.isMobile ? 1.5 : 2));
+      refs.renderer.setClearColor(0x000000, 1);
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.9;
+      refs.renderer.toneMappingExposure = 0.75;
 
-      refs.composer = new EffectComposer(refs.renderer);
-      refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
-      refs.composer.addPass(
-        new UnrealBloomPass(
-          new THREE.Vector2(window.innerWidth, window.innerHeight),
-          refs.isMobile ? 0.55 : 0.8,
-          refs.isMobile ? 0.7 : 0.85,
-          refs.isMobile ? 0.85 : 0.8,
-
-        ),
-      );
-
-      createStarField();
-      createNebula();
-      createSun();
-      createShootingStars();
       createMountains();
-      createAtmosphere();
 
 
       refs.locations = refs.mountains.map((m: any) => m.position.z);
@@ -559,14 +217,13 @@ export default function HorizonHero() {
     initThree();
 
     const handleResize = () => {
-      if (refs.camera && refs.renderer && refs.composer) {
+      if (refs.camera && refs.renderer) {
         const a = window.innerWidth / window.innerHeight;
         refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
         refs.camera.aspect = a;
         refs.camera.fov = fovFor(a);
         refs.camera.updateProjectionMatrix();
         refs.renderer.setSize(window.innerWidth, window.innerHeight);
-        refs.composer.setSize(window.innerWidth, window.innerHeight);
       }
     };
 
@@ -728,21 +385,11 @@ export default function HorizonHero() {
   const sceneOpacity = 1 - outro;
 
   return (
-    <div className="relative w-full bg-background">
+    <div className="relative w-full bg-black">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 z-0 h-full w-full"
         style={{ opacity: sceneOpacity, transition: "opacity 0.2s linear" }}
-      />
-
-      {/* Vinheta para leitura */}
-      <div
-        className="pointer-events-none fixed inset-0 z-[1]"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 48%, rgba(6,8,16,0.10) 0%, rgba(6,8,16,0.06) 40%, rgba(6,8,16,0.40) 78%, rgba(6,8,16,0.85) 100%)",
-
-        }}
       />
 
       {/* Fusão inferior com a próxima seção */}
@@ -750,7 +397,7 @@ export default function HorizonHero() {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-[2] h-[45vh]"
         style={{
           background:
-            "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--background) 55%, transparent) 45%, var(--background) 100%)",
+            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 45%, #000000 100%)",
         }}
       />
 
@@ -779,7 +426,7 @@ export default function HorizonHero() {
       >
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(6,8,16,0.30) 0%, rgba(6,8,16,0.16) 60%, transparent 80%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 60%, transparent 80%)" }}
         />
         <h1
           key={`title-${currentSection}`}
