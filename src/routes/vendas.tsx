@@ -63,7 +63,7 @@ function Vendas() {
       {/* ===================================================================== */}
       {/* 2. BLOCO 1: HEADLINE                                                  */}
       {/* ===================================================================== */}
-      <section className="relative z-30 -mt-[30vh] bg-gradient-to-b from-transparent via-background to-background pb-24 pt-[40vh] md:pb-32">
+      <section className="relative z-30 -mt-[20vh] bg-gradient-to-b from-transparent via-background to-background pb-24 pt-[34vh] md:pb-32">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}

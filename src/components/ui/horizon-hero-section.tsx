@@ -36,6 +36,7 @@ export default function HorizonHero() {
   const smoothCameraPos = useRef({ x: 0, y: 30, z: 100 });
 
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [outro, setOutro] = useState(0);
   const [currentSection, setCurrentSection] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const totalSections = 2;
@@ -391,6 +392,9 @@ export default function HorizonHero() {
       const progress = Math.min(window.scrollY / maxScroll, 1);
 
       setScrollProgress(progress);
+      // saída da cena baseada na altura real da hero (3 telas)
+      const vh = window.innerHeight;
+      setOutro(Math.max(0, Math.min(1, (window.scrollY - vh * 1.9) / (vh * 0.7))));
       const newSection = Math.min(Math.floor(progress * (totalSections + 1)), totalSections);
       setCurrentSection(newSection);
 
@@ -430,8 +434,6 @@ export default function HorizonHero() {
     ));
 
   const subtitle = subtitles[currentSection] ?? subtitles[0]!;
-  // Fade suave de toda a cena no fim do scroll para fundir com a seção seguinte
-  const outro = Math.max(0, Math.min(1, (scrollProgress - 0.8) / 0.2));
   const sceneOpacity = 1 - outro;
 
   return (
