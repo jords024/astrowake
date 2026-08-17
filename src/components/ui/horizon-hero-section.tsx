@@ -388,21 +388,11 @@ export default function HorizonHero() {
   const sceneOpacity = 1 - outro;
 
   return (
-    <div className="relative w-full bg-background">
+    <div className="relative w-full bg-black">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 z-0 h-full w-full"
         style={{ opacity: sceneOpacity, transition: "opacity 0.2s linear" }}
-      />
-
-      {/* Vinheta para leitura */}
-      <div
-        className="pointer-events-none fixed inset-0 z-[1]"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 48%, rgba(6,8,16,0.10) 0%, rgba(6,8,16,0.06) 40%, rgba(6,8,16,0.40) 78%, rgba(6,8,16,0.85) 100%)",
-
-        }}
       />
 
       {/* Fusão inferior com a próxima seção */}
@@ -410,7 +400,7 @@ export default function HorizonHero() {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-[2] h-[45vh]"
         style={{
           background:
-            "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--background) 55%, transparent) 45%, var(--background) 100%)",
+            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 45%, #000000 100%)",
         }}
       />
 
