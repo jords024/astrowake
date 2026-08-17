@@ -382,30 +382,64 @@ export default function HorizonHero() {
       { visibility: "visible" },
     );
 
+    const isMobile =
+      typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+
     const tl = gsap.timeline();
 
     if (menuRef.current) {
       tl.from(menuRef.current, { x: -100, opacity: 0, duration: 1, ease: "power3.out" });
     }
     if (titleRef.current) {
-      tl.fromTo(
-        titleRef.current.querySelectorAll(".title-char"),
-        { y: 160, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, stagger: 0.05, ease: "power4.out", clearProps: "transform,opacity" },
-        "-=0.5",
-      );
+      if (isMobile) {
+        // mobile: um único movimento limpo, sem letras espalhadas
+        tl.fromTo(
+          titleRef.current,
+          { y: 28, opacity: 0, filter: "blur(6px)" },
+          {
+            y: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.7,
+            ease: "power2.out",
+            clearProps: "filter,transform",
+          },
+          "-=0.6",
+        );
+      } else {
+        tl.fromTo(
+          titleRef.current.querySelectorAll(".title-char"),
+          { y: 120, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.035,
+            ease: "power3.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.5",
+        );
+      }
     }
 
     if (subtitleRef.current) {
       tl.from(
         subtitleRef.current.querySelectorAll(".subtitle-line"),
-        { y: 40, opacity: 0, duration: 0.9, stagger: 0.15, ease: "power3.out" },
-        "-=0.8",
+        {
+          y: isMobile ? 14 : 40,
+          opacity: 0,
+          duration: isMobile ? 0.5 : 0.9,
+          stagger: isMobile ? 0.08 : 0.15,
+          ease: "power2.out",
+        },
+        isMobile ? "-=0.45" : "-=0.8",
       );
     }
     if (scrollProgressRef.current) {
       tl.from(scrollProgressRef.current, { opacity: 0, y: 40, duration: 1 }, "-=0.5");
     }
+
 
     return () => {
       tl.kill();
