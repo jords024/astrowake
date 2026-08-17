@@ -295,28 +295,35 @@ export default function HorizonHero() {
     };
 
 
+    // FOV horizontal constante: em retrato o retrato não "corta" a cena
+    const fovFor = (aspect: number) => {
+      const baseH = 75; // fov vertical de referência em paisagem (16:9)
+      if (aspect >= 1) return baseH;
+      const hFov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(baseH) / 2) * (16 / 9));
+      return THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(hFov / 2) / aspect));
+    };
+
     const initThree = () => {
       if (!canvasRef.current) return;
+
+      refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       refs.scene = new THREE.Scene();
       refs.scene.fog = new THREE.FogExp2(0x141210, 0.00016);
 
-      refs.camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        2000,
-      );
+      const aspect = window.innerWidth / window.innerHeight;
+      refs.camera = new THREE.PerspectiveCamera(fovFor(aspect), aspect, 0.1, 2000);
       refs.camera.position.z = 100;
       refs.camera.position.y = 20;
 
       refs.renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
-        antialias: true,
+        antialias: !refs.isMobile,
         alpha: true,
+        powerPreference: "high-performance",
       });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, refs.isMobile ? 1.5 : 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       refs.renderer.toneMappingExposure = 0.68;
 
@@ -325,9 +332,9 @@ export default function HorizonHero() {
       refs.composer.addPass(
         new UnrealBloomPass(
           new THREE.Vector2(window.innerWidth, window.innerHeight),
-          0.45,
-          0.6,
-          0.95,
+          refs.isMobile ? 0.3 : 0.45,
+          refs.isMobile ? 0.5 : 0.6,
+          refs.isMobile ? 1.0 : 0.95,
         ),
       );
 
@@ -346,12 +353,16 @@ export default function HorizonHero() {
 
     const handleResize = () => {
       if (refs.camera && refs.renderer && refs.composer) {
-        refs.camera.aspect = window.innerWidth / window.innerHeight;
+        const a = window.innerWidth / window.innerHeight;
+        refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
+        refs.camera.aspect = a;
+        refs.camera.fov = fovFor(a);
         refs.camera.updateProjectionMatrix();
         refs.renderer.setSize(window.innerWidth, window.innerHeight);
         refs.composer.setSize(window.innerWidth, window.innerHeight);
       }
     };
+
     window.addEventListener("resize", handleResize);
 
     return () => {
