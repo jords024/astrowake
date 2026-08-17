@@ -43,9 +43,6 @@ export default function HorizonHero() {
     scene: null,
     camera: null,
     renderer: null,
-    composer: null,
-    stars: [],
-    nebula: null,
     mountains: [],
     animationId: null,
   });
