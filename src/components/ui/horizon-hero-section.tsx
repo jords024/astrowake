@@ -342,8 +342,11 @@ export default function HorizonHero() {
 
       createStarField();
       createNebula();
+      createEclipse();
+      createShootingStars();
       createMountains();
       createAtmosphere();
+
 
       refs.locations = refs.mountains.map((m: any) => m.position.z);
 
