@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowDown, Lock, Sparkles, ShieldCheck } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowDown, Lock, Sparkles } from "lucide-react";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import eclipseAsset from "../assets/astrowake-eclipse-bg.png.asset.json";
 
@@ -46,10 +47,13 @@ const stages = [
   },
 ];
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 function Vendas() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentStage, setCurrentStage] = useState(0);
   const pixelFired = useRef(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (pixelFired.current) return;
@@ -58,18 +62,24 @@ function Vendas() {
   }, []);
 
   useEffect(() => {
+    let frame = 0;
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const introHeight = window.innerHeight * 1.5;
-      const progress = Math.min(scrollY / introHeight, 1);
-      setScrollProgress(progress);
-      const stageIndex = Math.min(Math.floor(progress * 3), 2);
-      setCurrentStage(stageIndex);
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const introHeight = window.innerHeight * 2;
+        const progress = Math.min(window.scrollY / introHeight, 1);
+        setScrollProgress(progress);
+        setCurrentStage(Math.min(Math.floor(progress * 3), 2));
+      });
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   const handleCheckout = () => {
@@ -78,66 +88,97 @@ function Vendas() {
     window.location.href = "https://pay.hotmart.com/SEU_LINK_DE_CHECKOUT";
   };
 
+  const stage = stages[currentStage]!;
+  const fadeOut = Math.max(0, (scrollProgress - 0.82) / 0.18); // últimos 18% do scroll
+
   return (
     <div className="relative w-full bg-background text-foreground font-body selection:bg-gold selection:text-background">
-      {/* ========================================================================= */}
-      {/* 1. SEÇÃO FIXA DE TRANSIÇÃO DO PORTAL (SCROLL INICIAL)                     */}
-      {/* ========================================================================= */}
-      <section className="relative w-full h-[220vh]">
-        <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center">
-          {/* IMAGEM DE FUNDO DO ECLIPSE COM PROFUNDIDADE */}
-          <div className="absolute inset-0 w-full h-full pointer-events-none">
-            <img
-              src={eclipseAsset.url}
-              alt="Portal Astrowake — eclipse dourado com rodas astronômicas e montanhas de obsidiana"
-              className="h-full w-full object-cover transition-transform duration-75 ease-linear will-change-transform"
+      {/* ===================================================================== */}
+      {/* 1. PORTAL CINEMATOGRÁFICO                                             */}
+      {/* ===================================================================== */}
+      <section className="relative w-full h-[280vh]">
+        <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
+          {/* FUNDO: ZOOM + PARALLAX + DESFOQUE E ESCURECIMENTO GRADUAL */}
+          <div className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden">
+            <div
+              className="h-full w-full bg-cover bg-center will-change-transform"
               style={{
-                transform: `scale(${1.05 + scrollProgress * 0.1}) translateY(${scrollProgress * 20}px)`,
+                backgroundImage: `url('${eclipseAsset.url}')`,
+                transform: `scale(${1 + scrollProgress * 0.2}) translateY(${scrollProgress * -40}px)`,
+                filter: `brightness(${1 - scrollProgress * 0.55}) contrast(112%) blur(${scrollProgress * 8}px)`,
               }}
-              fetchPriority="high"
             />
-            {/* Degradê de fusão com a página escura */}
-            <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-background" />
+            {/* Fusão em degradê com o preto da página */}
+            <div
+              className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background"
+              style={{ opacity: 0.35 + scrollProgress * 0.65 }}
+            />
+            <div
+              className="absolute inset-0 bg-background"
+              style={{ opacity: Math.max(0, (scrollProgress - 0.65) / 0.35) * 0.8 }}
+            />
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 40%, transparent 0%, transparent 25%, rgba(10,10,10,0.6) 70%, rgba(10,10,10,0.95) 100%)",
+                  "radial-gradient(circle at 50% 42%, transparent 0%, transparent 26%, rgba(10,10,10,0.55) 72%, rgba(10,10,10,0.95) 100%)",
               }}
             />
           </div>
 
-          {/* BADGE FLUTUANTE SUPERIOR */}
-          <div className="absolute top-6 left-6 z-30 flex items-center gap-2 rounded-full border border-gold/30 bg-background/70 px-4 py-2 backdrop-blur-md sm:top-8 sm:left-8">
+          {/* BADGE FLUTUANTE */}
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="absolute top-6 left-6 z-30 flex items-center gap-2 rounded-full border border-gold/30 bg-background/70 px-4 py-2 backdrop-blur-md sm:top-8 sm:left-8"
+          >
             <Sparkles className="h-4 w-4 text-gold" />
             <span className="text-xs font-bold uppercase tracking-widest text-foreground/90">
               Portal Astrowake
             </span>
+          </motion.div>
+
+          {/* PALAVRAS COM TRANSIÇÃO FLUIDA */}
+          <div
+            className="relative z-20 max-w-4xl select-none px-6 text-center"
+            style={{ opacity: 1 - fadeOut }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentStage}
+                initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 40, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -40, scale: 1.04 }}
+                transition={{ duration: 0.7, ease: EASE }}
+                className="space-y-5"
+              >
+                <h2 className="font-display text-5xl font-black tracking-tighter text-gold-gradient drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl">
+                  {stage.word}
+                </h2>
+                <div className="space-y-1">
+                  <p className="text-lg font-medium tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-2xl">
+                    {stage.line1}
+                  </p>
+                  <p className="text-base font-normal tracking-tight text-gold-soft drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-xl">
+                    {stage.line2}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* PALAVRAS HUMANAS DO SCROLL (O NASCIMENTO -> O LABIRINTO -> O RUMO) */}
-          <div className="relative z-20 max-w-4xl select-none px-6 text-center">
-            <h2 className="font-display text-5xl font-black tracking-tight text-gold-gradient drop-shadow-[0_10px_35px_rgba(200,150,60,0.35)] sm:text-7xl md:text-8xl lg:text-9xl">
-              {stages[currentStage]?.word}
-            </h2>
-            <div className="mt-5 space-y-1 sm:mt-6">
-              <p className="text-lg font-medium text-foreground drop-shadow-md sm:text-2xl">
-                {stages[currentStage]?.line1}
-              </p>
-              <p className="text-base font-normal text-gold-soft drop-shadow-md sm:text-xl">
-                {stages[currentStage]?.line2}
-              </p>
-            </div>
-          </div>
-
-          {/* INDICADOR DE SCROLL INFERIOR */}
-          <div className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2">
+          {/* INDICADOR DE SCROLL */}
+          <div
+            className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2 transition-opacity duration-300"
+            style={{ opacity: 1 - fadeOut }}
+          >
             <span className="text-xs font-bold uppercase tracking-widest text-foreground/80 drop-shadow">
-              Role para entrar na página
+              Role para atravessar o portal
             </span>
-            <div className="h-1 w-36 overflow-hidden rounded-full border border-border bg-secondary/80">
+            <div className="h-1 w-40 overflow-hidden rounded-full border border-border bg-secondary/80">
               <div
-                className="h-full bg-gradient-to-r from-gold to-gold-deep transition-all duration-150"
+                className="h-full bg-gradient-to-r from-gold to-gold-deep"
                 style={{ width: `${scrollProgress * 100}%` }}
               />
             </div>
@@ -146,23 +187,31 @@ function Vendas() {
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 2. BLOCO 1 COMPLETO: HEADLINE HUMANA E CHAMADA DE ENTRADA                 */}
-      {/* ========================================================================= */}
-      <section className="relative z-20 border-y border-border bg-gradient-to-b from-background via-secondary/30 to-background py-24 md:py-32">
-        <div className="mx-auto max-w-4xl px-6 text-center">
+      {/* ===================================================================== */}
+      {/* 2. BLOCO 1: HEADLINE — SOBE POR CIMA DO ECLIPSE EM DEGRADÊ            */}
+      {/* ===================================================================== */}
+      <section className="relative z-30 -mt-[30vh] bg-gradient-to-b from-transparent via-background/95 to-background pt-[30vh] pb-24 md:pb-32">
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className="mx-auto max-w-4xl px-6 text-center"
+        >
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 backdrop-blur-sm">
             <span className="text-xs font-bold uppercase tracking-wider text-gold-soft">
               Formação Astrowake com Crassus Gobbi
             </span>
           </div>
 
-          <h1 className="mt-8 font-display text-4xl font-black leading-[1.12] tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 className="mt-8 font-display text-4xl font-black leading-[1.12] tracking-tighter text-white drop-shadow-[0_8px_30px_rgba(0,0,0,0.6)] sm:text-5xl md:text-6xl">
             No minuto em que você nasceu e puxou o ar pela primeira vez,{" "}
-            <span className="text-gold-gradient">ficou registrado quem você é de verdade.</span>
+            <span className="text-gold-gradient drop-shadow-[0_10px_40px_rgba(214,164,68,0.35)]">
+              ficou registrado quem você é de verdade.
+            </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-3xl text-lg font-normal leading-relaxed text-muted-foreground sm:text-xl">
+          <p className="mx-auto mt-6 max-w-3xl text-lg font-normal leading-relaxed tracking-tight text-muted-foreground sm:text-xl">
             O problema é que você passou os últimos vinte anos tentando ser quem a sua família, o
             seu trabalho e os seus relacionamentos queriam que você fosse. Você se anulou tanto para
             dar conta de tudo que hoje mal se reconhece quando se olha no espelho.
@@ -171,7 +220,7 @@ function Vendas() {
           <div className="mx-auto mt-10 max-w-md">
             <button
               onClick={handleCheckout}
-              className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-gold via-gold-soft to-gold px-8 py-5 text-lg font-black uppercase tracking-wider text-background shadow-[0_18px_50px_-12px_color-mix(in_oklab,var(--gold)_35%,transparent)] transition-all hover:brightness-110 active:scale-[0.99]"
+              className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-gold via-gold-soft to-gold px-8 py-5 text-lg font-black uppercase tracking-wider text-background shadow-[0_18px_50px_-12px_color-mix(in_oklab,var(--gold)_45%,transparent)] transition-all hover:brightness-110 active:scale-[0.99]"
             >
               <span>Quero acessar meu registro de vida</span>
               <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-1" />
@@ -181,7 +230,7 @@ function Vendas() {
               <span>Inscrição Segura • 7 Dias de Garantia Incondicional</span>
             </p>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
