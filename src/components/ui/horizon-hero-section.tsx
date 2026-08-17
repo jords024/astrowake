@@ -418,7 +418,7 @@ export default function HorizonHero() {
 
   const splitTitle = (text: string) =>
     text.split("").map((char, i) => (
-      <span key={`${char}-${i}`} className="title-char inline-block">
+      <span key={`${char}-${i}`} className="title-char inline-block text-gold-gradient">
         {char === " " ? "\u00a0" : char}
       </span>
     ));
@@ -456,7 +456,7 @@ export default function HorizonHero() {
       <div className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
         <h1
           ref={titleRef}
-          className="font-display text-5xl font-black tracking-tighter text-gold-gradient drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
+          className="font-display text-5xl font-black tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
           style={{ visibility: "hidden" }}
         >
           {splitTitle(titles[currentSection] || "NASCIMENTO")}
