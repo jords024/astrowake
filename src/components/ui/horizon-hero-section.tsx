@@ -465,8 +465,8 @@ export default function HorizonHero() {
       {/* Menu lateral */}
       <div
         ref={menuRef}
-        className="fixed left-4 top-1/2 z-20 hidden -translate-y-1/2 md:block"
-        style={{ visibility: "hidden" }}
+        className="pointer-events-none fixed left-4 top-1/2 z-20 hidden -translate-y-1/2 md:block"
+        style={{ visibility: "hidden", opacity: sceneOpacity }}
       >
         <p
           className="text-xs font-bold uppercase tracking-[0.5em] text-gold/80"
