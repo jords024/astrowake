@@ -118,14 +118,14 @@ function Vendas() {
           {/* PALAVRAS HUMANAS DO SCROLL (O NASCIMENTO -> O LABIRINTO -> O RUMO) */}
           <div className="relative z-20 max-w-4xl select-none px-6 text-center">
             <h2 className="font-display text-5xl font-black tracking-tight text-gold-gradient drop-shadow-[0_10px_35px_rgba(200,150,60,0.35)] sm:text-7xl md:text-8xl lg:text-9xl">
-              {stages[currentStage].word}
+              {stages[currentStage]?.word}
             </h2>
             <div className="mt-5 space-y-1 sm:mt-6">
               <p className="text-lg font-medium text-foreground drop-shadow-md sm:text-2xl">
-                {stages[currentStage].line1}
+                {stages[currentStage]?.line1}
               </p>
               <p className="text-base font-normal text-gold-soft drop-shadow-md sm:text-xl">
-                {stages[currentStage].line2}
+                {stages[currentStage]?.line2}
               </p>
             </div>
           </div>
