@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowDown, Lock, Sparkles } from "lucide-react";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import eclipseAsset from "../assets/astrowake-eclipse-bg.png.asset.json";
+import portalAsset from "../assets/astrowake-portal.mp4.asset.json";
 
 export const Route = createFileRoute("/vendas")({
   head: () => ({
