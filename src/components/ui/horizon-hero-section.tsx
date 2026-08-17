@@ -395,45 +395,62 @@ export default function HorizonHero() {
 
 
   useEffect(() => {
-    const handleScroll = () => {
+    let raf = 0;
+    const easeInOut = (t: number) => t * t * (3 - 2 * t);
+
+    const apply = () => {
+      raf = 0;
       const vh = window.innerHeight;
-      // progresso relativo apenas à hero (não ao documento inteiro)
       const heroSpan = vh * totalSections;
       if (heroSpan <= 0) return;
-      const progress = Math.min(window.scrollY / heroSpan, 1);
+      const progress = Math.min(Math.max(window.scrollY / heroSpan, 0), 1);
 
       setScrollProgress(progress);
       setOutro(Math.max(0, Math.min(1, (window.scrollY - vh * 1.9) / (vh * 0.7))));
-      const newSection = Math.min(Math.floor(progress * (totalSections + 1)), totalSections);
-      setCurrentSection(newSection);
+
+      // fase visível (0,1,2) — trava na fase mais próxima, sem oscilar
+      const stagePos = progress * totalSections; // 0..2
+      setCurrentSection(Math.min(Math.round(stagePos), totalSections));
 
       const refs = threeRefs.current;
-      const sectionProgress = (progress * totalSections) % 1;
+
+      // câmera segue o MESMO eixo das fases: 3 chaves, 2 trechos
+      const seg = Math.min(Math.floor(stagePos), totalSections - 1);
+      const f = easeInOut(Math.min(Math.max(stagePos - seg, 0), 1));
 
       const cameraPositions = [
         { x: 0, y: 30, z: 300 },
         { x: 0, y: 40, z: -50 },
         { x: 0, y: 50, z: -700 },
       ];
-      const currentPos = cameraPositions[newSection] || cameraPositions[0];
-      const nextPos = cameraPositions[newSection + 1] || currentPos;
+      const a = cameraPositions[seg]!;
+      const b = cameraPositions[seg + 1] ?? a;
 
-      refs.targetCameraX = currentPos.x + (nextPos.x - currentPos.x) * sectionProgress;
-      refs.targetCameraY = currentPos.y + (nextPos.y - currentPos.y) * sectionProgress;
-      refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
+      refs.targetCameraX = a.x + (b.x - a.x) * f;
+      refs.targetCameraY = a.y + (b.y - a.y) * f;
+      refs.targetCameraZ = a.z + (b.z - a.z) * f;
 
+      const eased = easeInOut(progress);
       refs.mountains.forEach((mountain: any, i: number) => {
         if (refs.locations) {
-          // montanhas continuam visíveis, apenas se afastam suavemente
-          mountain.position.z = refs.locations[i] - progress * 260 * (1 + i * 0.35);
+          mountain.position.z = refs.locations[i] - eased * 260 * (1 + i * 0.35);
         }
       });
     };
 
+    const handleScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(apply);
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    apply();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
+
 
   const splitTitle = (text: string) =>
     text.split("").map((char, i) => (
