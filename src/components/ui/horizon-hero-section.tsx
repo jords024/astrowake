@@ -498,12 +498,14 @@ export default function HorizonHero() {
           style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.35) 60%, transparent 80%)" }}
         />
         <h1
+          key={`title-${currentSection}`}
           ref={titleRef}
           className="relative font-display text-5xl font-black tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
           style={{ visibility: "hidden" }}
         >
           {splitTitle(titles[currentSection] || "NASCIMENTO")}
         </h1>
+
 
         <div ref={subtitleRef} className="relative mt-6 space-y-1" style={{ visibility: "hidden" }}>
           <p className="subtitle-line text-base font-medium tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
