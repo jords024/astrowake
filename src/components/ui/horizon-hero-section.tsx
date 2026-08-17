@@ -179,24 +179,180 @@ export default function HorizonHero() {
       refs.nebula = nebula;
     };
 
+    // Portal Astrowake: eclipse dourado com rodas astronômicas
+    const createEclipse = () => {
+      const group = new THREE.Group();
+      refs.eclipseRings = [];
+
+      // disco escuro (a "sombra" do eclipse)
+      const disc = new THREE.Mesh(
+        new THREE.CircleGeometry(120, 96),
+        new THREE.MeshBasicMaterial({ color: 0x08070a }),
+      );
+      group.add(disc);
+
+      // coroa luminosa
+      const glow = new THREE.Mesh(
+        new THREE.PlaneGeometry(900, 900),
+        new THREE.ShaderMaterial({
+          uniforms: { time: { value: 0 }, color: { value: new THREE.Color(0xd6a444) } },
+          vertexShader: `
+            varying vec2 vUv;
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform float time;
+            uniform vec3 color;
+            varying vec2 vUv;
+            void main() {
+              float d = length(vUv - 0.5) * 2.0;
+              float corona = smoothstep(0.30, 0.255, d) * 1.4;      // anel fino junto ao disco
+              float halo = pow(max(0.0, 1.0 - d), 3.0) * 0.55;      // brilho difuso
+              float pulse = 0.92 + 0.08 * sin(time * 0.6);
+              float a = (corona + halo) * pulse;
+              if (a <= 0.001) discard;
+              gl_FragColor = vec4(color, a * 0.85);
+            }
+          `,
+          transparent: true,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        }),
+      );
+      glow.position.z = -1;
+      group.add(glow);
+      refs.eclipseGlow = glow;
+
+      // rodas astronômicas concêntricas
+      const ringSpecs = refs.isMobile
+        ? [
+            [150, 152],
+            [200, 201],
+            [268, 270],
+          ]
+        : [
+            [150, 152],
+            [178, 178.8],
+            [205, 206.5],
+            [250, 251],
+            [300, 302],
+          ];
+      ringSpecs.forEach(([inner, outer], i) => {
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(inner, outer, 180),
+          new THREE.MeshBasicMaterial({
+            color: i % 2 === 0 ? 0xd6a444 : 0xf0cf8a,
+            transparent: true,
+            opacity: 0.32 - i * 0.035,
+            blending: THREE.AdditiveBlending,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+          }),
+        );
+        ring.position.z = -0.5;
+        group.add(ring);
+        refs.eclipseRings.push(ring);
+      });
+
+      // marcações (graus) numa das rodas
+      const tickCount = refs.isMobile ? 36 : 72;
+      const tickGeo = new THREE.PlaneGeometry(1.2, 14);
+      const tickMat = new THREE.MeshBasicMaterial({
+        color: 0xd6a444,
+        transparent: true,
+        opacity: 0.28,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const ticks = new THREE.Group();
+      for (let i = 0; i < tickCount; i++) {
+        const t = new THREE.Mesh(tickGeo, tickMat);
+        const a = (i / tickCount) * Math.PI * 2;
+        t.position.set(Math.cos(a) * 228, Math.sin(a) * 228, -0.4);
+        t.rotation.z = a - Math.PI / 2;
+        ticks.add(t);
+      }
+      group.add(ticks);
+      refs.eclipseRings.push(ticks);
+
+      group.position.set(0, 150, -1400);
+      refs.scene.add(group);
+      refs.eclipse = group;
+    };
+
+    const createShootingStars = () => {
+      refs.shootingStars = [];
+      const count = refs.isMobile ? 1 : 2;
+      for (let i = 0; i < count; i++) {
+        const mesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(90, 1.4),
+          new THREE.ShaderMaterial({
+            uniforms: {},
+            vertexShader: `
+              varying vec2 vUv;
+              void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `,
+            fragmentShader: `
+              varying vec2 vUv;
+              void main() {
+                float head = pow(vUv.x, 6.0);
+                float tail = pow(vUv.x, 1.6) * 0.35;
+                float band = smoothstep(0.5, 0.0, abs(vUv.y - 0.5));
+                gl_FragColor = vec4(1.0, 0.92, 0.78, (head + tail) * band);
+              }
+            `,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
+        );
+        mesh.material.opacity = 1;
+        mesh.rotation.z = -0.34;
+        mesh.visible = false;
+        refs.scene.add(mesh);
+        refs.shootingStars.push({
+          mesh,
+          t: 0,
+          delay: 3 + i * 5 + Math.random() * 6,
+          duration: 1.4,
+          travel: 700,
+          depth: i * 160,
+          startX: -400 + Math.random() * 300,
+          startY: 150 + Math.random() * 220,
+        });
+      }
+    };
+
     const createMountains = () => {
       const layers = [
-        { distance: -50, height: 60, color: 0x14120f, opacity: 1 },
-        { distance: -100, height: 80, color: 0x201c17, opacity: 0.9 },
-        { distance: -150, height: 100, color: 0x342d24, opacity: 0.75 },
-        { distance: -200, height: 120, color: 0x4a3f30, opacity: 0.6 },
+        { distance: -50, height: 60, top: 0x2a2318, base: 0x0b0a09, opacity: 1 },
+        { distance: -100, height: 80, top: 0x3a3122, base: 0x110f0c, opacity: 0.94 },
+        { distance: -150, height: 100, top: 0x554630, base: 0x191512, opacity: 0.8 },
+        { distance: -200, height: 120, top: 0x6f5b3b, base: 0x201a15, opacity: 0.62 },
       ];
 
       layers.forEach((layer, index) => {
         const points: THREE.Vector2[] = [];
-        const segments = 50;
+        const segments = 90;
+        let minY = Infinity;
+        let maxY = -Infinity;
+        const seed = index * 13.7;
         for (let i = 0; i <= segments; i++) {
           const x = (i / segments - 0.5) * 1000;
+          // ruído determinístico: silhueta estável e mais natural
           const y =
-            Math.sin(i * 0.1) * layer.height +
-            Math.sin(i * 0.05) * layer.height * 0.5 +
-            Math.random() * layer.height * 0.2 -
+            Math.sin(i * 0.13 + seed) * layer.height +
+            Math.sin(i * 0.061 + seed * 1.7) * layer.height * 0.55 +
+            Math.sin(i * 0.31 + seed * 0.6) * layer.height * 0.18 -
             100;
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
           points.push(new THREE.Vector2(x, y));
         }
         points.push(new THREE.Vector2(5000, -300));
@@ -204,14 +360,44 @@ export default function HorizonHero() {
 
         const shape = new THREE.Shape(points);
         const geometry = new THREE.ShapeGeometry(shape);
-        const material = new THREE.MeshBasicMaterial({
-          color: layer.color,
+        const material = new THREE.ShaderMaterial({
+          uniforms: {
+            time: { value: 0 },
+            topColor: { value: new THREE.Color(layer.top) },
+            baseColor: { value: new THREE.Color(layer.base) },
+            ridge: { value: maxY },
+            floor: { value: -300 },
+            opacity: { value: layer.opacity },
+            rim: { value: 0.55 - index * 0.1 },
+          },
+          vertexShader: `
+            varying float vY;
+            void main() {
+              vY = position.y;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform vec3 topColor;
+            uniform vec3 baseColor;
+            uniform float ridge;
+            uniform float floor;
+            uniform float opacity;
+            uniform float rim;
+            varying float vY;
+            void main() {
+              float t = clamp((vY - floor) / max(ridge - floor, 0.001), 0.0, 1.0);
+              vec3 col = mix(baseColor, topColor, pow(t, 1.6));
+              // luz dourada rasante vinda do portal, só perto da crista
+              col += vec3(0.84, 0.62, 0.24) * pow(t, 9.0) * rim;
+              gl_FragColor = vec4(col, opacity);
+            }
+          `,
           transparent: true,
-          opacity: layer.opacity,
           side: THREE.DoubleSide,
         });
 
-        const mountain = new THREE.Mesh(geometry, material);
+        const mountain = new THREE.Mesh(shape ? geometry : geometry, material);
         mountain.position.z = layer.distance;
         mountain.position.y = layer.distance;
         mountain.userData = { baseZ: layer.distance, index };
@@ -219,6 +405,7 @@ export default function HorizonHero() {
         refs.mountains.push(mountain);
       });
     };
+
 
     const createAtmosphere = () => {
       const geometry = new THREE.SphereGeometry(600, 32, 32);
