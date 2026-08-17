@@ -133,7 +133,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: 0.45 },
+          opacity: { value: 0.22 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -269,9 +269,9 @@ export default function HorizonHero() {
       // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
       const camZ = refs.camera ? refs.camera.position.z : 0;
       refs.stars.forEach((starField: any, i: number) => {
-        starField.position.z = camZ * (0.85 - i * 0.1);
+        starField.position.z = camZ - i * 40;
       });
-      if (refs.nebula) refs.nebula.position.z = camZ - 1400;
+      if (refs.nebula) refs.nebula.position.z = camZ - 2200;
 
       refs.mountains.forEach((mountain: any, i: number) => {
         const parallaxFactor = 1 + i * 0.5;
@@ -430,10 +430,17 @@ export default function HorizonHero() {
     ));
 
   const subtitle = subtitles[currentSection] ?? subtitles[0]!;
+  // Fade suave de toda a cena no fim do scroll para fundir com a seção seguinte
+  const outro = Math.max(0, Math.min(1, (scrollProgress - 0.8) / 0.2));
+  const sceneOpacity = 1 - outro;
 
   return (
     <div className="relative w-full bg-background">
-      <canvas ref={canvasRef} className="fixed inset-0 z-0 h-full w-full" />
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 z-0 h-full w-full"
+        style={{ opacity: sceneOpacity, transition: "opacity 0.2s linear" }}
+      />
 
       {/* Vinheta para leitura */}
       <div
@@ -441,6 +448,15 @@ export default function HorizonHero() {
         style={{
           background:
             "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.28) 0%, rgba(10,10,10,0.12) 40%, rgba(10,10,10,0.45) 78%, rgba(10,10,10,0.85) 100%)",
+        }}
+      />
+
+      {/* Fusão inferior com a próxima seção */}
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-[2] h-[45vh]"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--background) 55%, transparent) 45%, var(--background) 100%)",
         }}
       />
 
@@ -459,7 +475,14 @@ export default function HorizonHero() {
       </div>
 
       {/* Conteúdo principal */}
-      <div className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
+      <div
+        className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
+        style={{
+          opacity: sceneOpacity,
+          transform: `translateY(${-outro * 60}px)`,
+          transition: "opacity 0.2s linear",
+        }}
+      >
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
           style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.35) 60%, transparent 80%)" }}
@@ -486,7 +509,7 @@ export default function HorizonHero() {
       <div
         ref={scrollProgressRef}
         className="pointer-events-none fixed bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
-        style={{ visibility: "hidden" }}
+        style={{ visibility: "hidden", opacity: sceneOpacity }}
       >
         <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-foreground/80">
           Role para entrar
