@@ -133,7 +133,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: 0.35 },
+          opacity: { value: 0.45 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -177,10 +177,10 @@ export default function HorizonHero() {
 
     const createMountains = () => {
       const layers = [
-        { distance: -50, height: 60, color: 0x0a0a0a, opacity: 1 },
-        { distance: -100, height: 80, color: 0x121212, opacity: 0.85 },
-        { distance: -150, height: 100, color: 0x1c1a17, opacity: 0.65 },
-        { distance: -200, height: 120, color: 0x2b2723, opacity: 0.45 },
+        { distance: -50, height: 60, color: 0x14120f, opacity: 1 },
+        { distance: -100, height: 80, color: 0x201c17, opacity: 0.9 },
+        { distance: -150, height: 100, color: 0x342d24, opacity: 0.75 },
+        { distance: -200, height: 120, color: 0x4a3f30, opacity: 0.6 },
       ];
 
       layers.forEach((layer, index) => {
@@ -266,6 +266,13 @@ export default function HorizonHero() {
         refs.camera.lookAt(0, 10, -600);
       }
 
+      // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
+      const camZ = refs.camera ? refs.camera.position.z : 0;
+      refs.stars.forEach((starField: any, i: number) => {
+        starField.position.z = camZ * (0.85 - i * 0.1);
+      });
+      if (refs.nebula) refs.nebula.position.z = camZ - 1400;
+
       refs.mountains.forEach((mountain: any, i: number) => {
         const parallaxFactor = 1 + i * 0.5;
         mountain.position.x = Math.sin(time * 0.1) * 2 * parallaxFactor;
@@ -279,7 +286,7 @@ export default function HorizonHero() {
       if (!canvasRef.current) return;
 
       refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x0a0a0a, 0.00025);
+      refs.scene.fog = new THREE.FogExp2(0x141210, 0.00016);
 
       refs.camera = new THREE.PerspectiveCamera(
         75,
@@ -298,7 +305,7 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.3;
+      refs.renderer.toneMappingExposure = 0.68;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
@@ -403,11 +410,10 @@ export default function HorizonHero() {
       refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
 
       refs.mountains.forEach((mountain: any, i: number) => {
-        const speed = 1 + i * 0.9;
-        const targetZ = mountain.userData.baseZ + window.scrollY * speed * 0.5;
-        if (refs.nebula) refs.nebula.position.z = targetZ + progress * speed * 0.01 - 100;
-        if (progress > 0.7) mountain.position.z = 600000;
-        else if (refs.locations) mountain.position.z = refs.locations[i];
+        if (refs.locations) {
+          // montanhas continuam visíveis, apenas se afastam suavemente
+          mountain.position.z = refs.locations[i] - progress * 260 * (1 + i * 0.35);
+        }
       });
     };
 
@@ -434,7 +440,7 @@ export default function HorizonHero() {
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.45) 38%, rgba(10,10,10,0.7) 75%, rgba(10,10,10,0.96) 100%)",
+            "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.28) 0%, rgba(10,10,10,0.12) 40%, rgba(10,10,10,0.45) 78%, rgba(10,10,10,0.85) 100%)",
         }}
       />
 
@@ -456,7 +462,7 @@ export default function HorizonHero() {
       <div className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.8) 60%, transparent 78%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.35) 60%, transparent 80%)" }}
         />
         <h1
           ref={titleRef}
