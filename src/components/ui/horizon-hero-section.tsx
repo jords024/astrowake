@@ -249,23 +249,32 @@ export default function HorizonHero() {
 
     const animate = () => {
       refs.animationId = requestAnimationFrame(animate);
-      const time = Date.now() * 0.001;
+      const now = Date.now() * 0.001;
+      const time = now;
+
+      // delta-time real: suavização idêntica em 60/120Hz e em telas lentas
+      const dt = Math.min(Math.max(now - (refs.lastTime ?? now), 0), 0.1);
+      refs.lastTime = now;
 
       refs.stars.forEach((starField: any) => {
         if (starField.material.uniforms) starField.material.uniforms.time.value = time;
       });
-      if (refs.nebula?.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.5;
+      if (refs.nebula?.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.12;
+
+      // deriva única e lenta — todos os elementos respiram no mesmo ritmo
+      const driftX = Math.sin(time * 0.06) * (refs.isMobile ? 1.2 : 2.4);
+      const driftY = Math.sin(time * 0.045) * (refs.isMobile ? 0.6 : 1.2);
 
       if (refs.camera && refs.targetCameraX !== undefined) {
-        const s = 0.05;
-        smoothCameraPos.current.x += (refs.targetCameraX - smoothCameraPos.current.x) * s;
-        smoothCameraPos.current.y += (refs.targetCameraY - smoothCameraPos.current.y) * s;
-        smoothCameraPos.current.z += (refs.targetCameraZ - smoothCameraPos.current.z) * s;
+        const k = 1 - Math.pow(0.001, dt); // ~equivalente a lerp estável por segundo
+        smoothCameraPos.current.x += (refs.targetCameraX - smoothCameraPos.current.x) * k;
+        smoothCameraPos.current.y += (refs.targetCameraY - smoothCameraPos.current.y) * k;
+        smoothCameraPos.current.z += (refs.targetCameraZ - smoothCameraPos.current.z) * k;
 
-        refs.camera.position.x = smoothCameraPos.current.x + Math.sin(time * 0.1) * 2;
-        refs.camera.position.y = smoothCameraPos.current.y + Math.cos(time * 0.15) * 1;
+        refs.camera.position.x = smoothCameraPos.current.x + driftX;
+        refs.camera.position.y = smoothCameraPos.current.y + driftY;
         refs.camera.position.z = smoothCameraPos.current.z;
-        refs.camera.lookAt(0, 10, -600);
+        refs.camera.lookAt(driftX * 0.35, 10, -600);
       }
 
       // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
@@ -275,14 +284,16 @@ export default function HorizonHero() {
       });
       if (refs.nebula) refs.nebula.position.z = camZ - 2200;
 
+      // montanhas: apenas paralaxe coerente com a deriva da câmera (sem movimento próprio)
       refs.mountains.forEach((mountain: any, i: number) => {
-        const parallaxFactor = 1 + i * 0.5;
-        mountain.position.x = Math.sin(time * 0.1) * 2 * parallaxFactor;
-        mountain.position.y = 50 + Math.cos(time * 0.15) * 1 * parallaxFactor;
+        const parallax = 1 - i * 0.18;
+        mountain.position.x = -driftX * parallax * 0.6;
+        mountain.position.y = 50 - driftY * parallax * 0.3;
       });
 
       refs.composer?.render();
     };
+
 
     const initThree = () => {
       if (!canvasRef.current) return;
