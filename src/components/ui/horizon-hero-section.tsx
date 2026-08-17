@@ -57,7 +57,7 @@ export default function HorizonHero() {
     const refs = threeRefs.current;
 
     const createStarField = () => {
-      const starCount = 3500;
+      const starCount = refs.isMobile ? 1400 : 3500;
       for (let i = 0; i < 3; i++) {
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(starCount * 3);
@@ -135,7 +135,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: 0.22 },
+          opacity: { value: refs.isMobile ? 0.14 : 0.22 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -158,12 +158,14 @@ export default function HorizonHero() {
           varying vec2 vUv;
           varying float vElevation;
           void main() {
-            float mixFactor = sin(vUv.x * 10.0 + time) * cos(vUv.y * 10.0 + time);
-            vec3 color = mix(color1, color2, mixFactor * 0.5 + 0.5);
-            float alpha = opacity * (1.0 - length(vUv - 0.5) * 2.0);
-            alpha *= 1.0 + vElevation * 0.01;
+            // gradiente amplo e lento (sem faixas/feixes verticais)
+            float mixFactor = sin(vUv.x * 2.0 + time) * cos(vUv.y * 1.6 - time * 0.8);
+            vec3 color = mix(color1, color2, mixFactor * 0.35 + 0.5);
+            float d = length((vUv - 0.5) * vec2(1.0, 1.6));
+            float alpha = opacity * smoothstep(0.55, 0.0, d);
             gl_FragColor = vec4(color, alpha);
           }
+
         `,
         transparent: true,
         blending: THREE.AdditiveBlending,
@@ -249,23 +251,32 @@ export default function HorizonHero() {
 
     const animate = () => {
       refs.animationId = requestAnimationFrame(animate);
-      const time = Date.now() * 0.001;
+      const now = Date.now() * 0.001;
+      const time = now;
+
+      // delta-time real: suavização idêntica em 60/120Hz e em telas lentas
+      const dt = Math.min(Math.max(now - (refs.lastTime ?? now), 0), 0.1);
+      refs.lastTime = now;
 
       refs.stars.forEach((starField: any) => {
         if (starField.material.uniforms) starField.material.uniforms.time.value = time;
       });
-      if (refs.nebula?.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.5;
+      if (refs.nebula?.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.12;
+
+      // deriva única e lenta — todos os elementos respiram no mesmo ritmo
+      const driftX = Math.sin(time * 0.06) * (refs.isMobile ? 1.2 : 2.4);
+      const driftY = Math.sin(time * 0.045) * (refs.isMobile ? 0.6 : 1.2);
 
       if (refs.camera && refs.targetCameraX !== undefined) {
-        const s = 0.05;
-        smoothCameraPos.current.x += (refs.targetCameraX - smoothCameraPos.current.x) * s;
-        smoothCameraPos.current.y += (refs.targetCameraY - smoothCameraPos.current.y) * s;
-        smoothCameraPos.current.z += (refs.targetCameraZ - smoothCameraPos.current.z) * s;
+        const k = 1 - Math.pow(0.001, dt); // ~equivalente a lerp estável por segundo
+        smoothCameraPos.current.x += (refs.targetCameraX - smoothCameraPos.current.x) * k;
+        smoothCameraPos.current.y += (refs.targetCameraY - smoothCameraPos.current.y) * k;
+        smoothCameraPos.current.z += (refs.targetCameraZ - smoothCameraPos.current.z) * k;
 
-        refs.camera.position.x = smoothCameraPos.current.x + Math.sin(time * 0.1) * 2;
-        refs.camera.position.y = smoothCameraPos.current.y + Math.cos(time * 0.15) * 1;
+        refs.camera.position.x = smoothCameraPos.current.x + driftX;
+        refs.camera.position.y = smoothCameraPos.current.y + driftY;
         refs.camera.position.z = smoothCameraPos.current.z;
-        refs.camera.lookAt(0, 10, -600);
+        refs.camera.lookAt(driftX * 0.35, 10, -600);
       }
 
       // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
@@ -275,37 +286,46 @@ export default function HorizonHero() {
       });
       if (refs.nebula) refs.nebula.position.z = camZ - 2200;
 
+      // montanhas: apenas paralaxe coerente com a deriva da câmera (sem movimento próprio)
       refs.mountains.forEach((mountain: any, i: number) => {
-        const parallaxFactor = 1 + i * 0.5;
-        mountain.position.x = Math.sin(time * 0.1) * 2 * parallaxFactor;
-        mountain.position.y = 50 + Math.cos(time * 0.15) * 1 * parallaxFactor;
+        const parallax = 1 - i * 0.18;
+        mountain.position.x = -driftX * parallax * 0.6;
+        mountain.position.y = 50 - driftY * parallax * 0.3;
       });
 
       refs.composer?.render();
     };
 
+
+    // FOV horizontal constante: em retrato o retrato não "corta" a cena
+    const fovFor = (aspect: number) => {
+      const baseH = 75; // fov vertical de referência em paisagem (16:9)
+      if (aspect >= 1) return baseH;
+      const hFov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(baseH) / 2) * (16 / 9));
+      return THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(hFov / 2) / aspect));
+    };
+
     const initThree = () => {
       if (!canvasRef.current) return;
+
+      refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       refs.scene = new THREE.Scene();
       refs.scene.fog = new THREE.FogExp2(0x141210, 0.00016);
 
-      refs.camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        2000,
-      );
+      const aspect = window.innerWidth / window.innerHeight;
+      refs.camera = new THREE.PerspectiveCamera(fovFor(aspect), aspect, 0.1, 2000);
       refs.camera.position.z = 100;
       refs.camera.position.y = 20;
 
       refs.renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
-        antialias: true,
+        antialias: !refs.isMobile,
         alpha: true,
+        powerPreference: "high-performance",
       });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, refs.isMobile ? 1.5 : 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       refs.renderer.toneMappingExposure = 0.68;
 
@@ -314,9 +334,9 @@ export default function HorizonHero() {
       refs.composer.addPass(
         new UnrealBloomPass(
           new THREE.Vector2(window.innerWidth, window.innerHeight),
-          0.45,
-          0.6,
-          0.95,
+          refs.isMobile ? 0.3 : 0.45,
+          refs.isMobile ? 0.5 : 0.6,
+          refs.isMobile ? 1.0 : 0.95,
         ),
       );
 
@@ -335,12 +355,16 @@ export default function HorizonHero() {
 
     const handleResize = () => {
       if (refs.camera && refs.renderer && refs.composer) {
-        refs.camera.aspect = window.innerWidth / window.innerHeight;
+        const a = window.innerWidth / window.innerHeight;
+        refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
+        refs.camera.aspect = a;
+        refs.camera.fov = fovFor(a);
         refs.camera.updateProjectionMatrix();
         refs.renderer.setSize(window.innerWidth, window.innerHeight);
         refs.composer.setSize(window.innerWidth, window.innerHeight);
       }
     };
+
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -358,82 +382,135 @@ export default function HorizonHero() {
       { visibility: "visible" },
     );
 
+    const isMobile =
+      typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+
     const tl = gsap.timeline();
 
     if (menuRef.current) {
       tl.from(menuRef.current, { x: -100, opacity: 0, duration: 1, ease: "power3.out" });
     }
     if (titleRef.current) {
-      tl.fromTo(
-        titleRef.current.querySelectorAll(".title-char"),
-        { y: 160, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, stagger: 0.05, ease: "power4.out", clearProps: "transform,opacity" },
-        "-=0.5",
-      );
+      if (isMobile) {
+        // mobile: um único movimento limpo, sem letras espalhadas
+        tl.fromTo(
+          titleRef.current,
+          { y: 28, opacity: 0, filter: "blur(6px)" },
+          {
+            y: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.7,
+            ease: "power2.out",
+            clearProps: "filter,transform",
+          },
+          "-=0.6",
+        );
+      } else {
+        tl.fromTo(
+          titleRef.current.querySelectorAll(".title-char"),
+          { y: 120, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.035,
+            ease: "power3.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.5",
+        );
+      }
     }
 
     if (subtitleRef.current) {
       tl.from(
         subtitleRef.current.querySelectorAll(".subtitle-line"),
-        { y: 40, opacity: 0, duration: 0.9, stagger: 0.15, ease: "power3.out" },
-        "-=0.8",
+        {
+          y: isMobile ? 14 : 40,
+          opacity: 0,
+          duration: isMobile ? 0.5 : 0.9,
+          stagger: isMobile ? 0.08 : 0.15,
+          ease: "power2.out",
+        },
+        isMobile ? "-=0.45" : "-=0.8",
       );
     }
     if (scrollProgressRef.current) {
       tl.from(scrollProgressRef.current, { opacity: 0, y: 40, duration: 1 }, "-=0.5");
     }
 
+
     return () => {
       tl.kill();
       // evita que letras fiquem invisíveis/deslocadas ao interromper a animação
+      if (titleRef.current) gsap.set(titleRef.current, { clearProps: "all" });
       const chars = titleRef.current?.querySelectorAll(".title-char");
       if (chars?.length) gsap.set(chars, { clearProps: "all" });
       const lines = subtitleRef.current?.querySelectorAll(".subtitle-line");
       if (lines?.length) gsap.set(lines, { clearProps: "all" });
+
     };
   }, [isReady, currentSection]);
 
 
   useEffect(() => {
-    const handleScroll = () => {
+    let raf = 0;
+    const easeInOut = (t: number) => t * t * (3 - 2 * t);
+
+    const apply = () => {
+      raf = 0;
       const vh = window.innerHeight;
-      // progresso relativo apenas à hero (não ao documento inteiro)
       const heroSpan = vh * totalSections;
       if (heroSpan <= 0) return;
-      const progress = Math.min(window.scrollY / heroSpan, 1);
+      const progress = Math.min(Math.max(window.scrollY / heroSpan, 0), 1);
 
       setScrollProgress(progress);
       setOutro(Math.max(0, Math.min(1, (window.scrollY - vh * 1.9) / (vh * 0.7))));
-      const newSection = Math.min(Math.floor(progress * (totalSections + 1)), totalSections);
-      setCurrentSection(newSection);
+
+      // fase visível (0,1,2) — trava na fase mais próxima, sem oscilar
+      const stagePos = progress * totalSections; // 0..2
+      setCurrentSection(Math.min(Math.round(stagePos), totalSections));
 
       const refs = threeRefs.current;
-      const sectionProgress = (progress * totalSections) % 1;
+
+      // câmera segue o MESMO eixo das fases: 3 chaves, 2 trechos
+      const seg = Math.min(Math.floor(stagePos), totalSections - 1);
+      const f = easeInOut(Math.min(Math.max(stagePos - seg, 0), 1));
 
       const cameraPositions = [
         { x: 0, y: 30, z: 300 },
         { x: 0, y: 40, z: -50 },
         { x: 0, y: 50, z: -700 },
       ];
-      const currentPos = cameraPositions[newSection] || cameraPositions[0];
-      const nextPos = cameraPositions[newSection + 1] || currentPos;
+      const a = cameraPositions[seg]!;
+      const b = cameraPositions[seg + 1] ?? a;
 
-      refs.targetCameraX = currentPos.x + (nextPos.x - currentPos.x) * sectionProgress;
-      refs.targetCameraY = currentPos.y + (nextPos.y - currentPos.y) * sectionProgress;
-      refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
+      refs.targetCameraX = a.x + (b.x - a.x) * f;
+      refs.targetCameraY = a.y + (b.y - a.y) * f;
+      refs.targetCameraZ = a.z + (b.z - a.z) * f;
 
+      const eased = easeInOut(progress);
       refs.mountains.forEach((mountain: any, i: number) => {
         if (refs.locations) {
-          // montanhas continuam visíveis, apenas se afastam suavemente
-          mountain.position.z = refs.locations[i] - progress * 260 * (1 + i * 0.35);
+          mountain.position.z = refs.locations[i] - eased * 260 * (1 + i * 0.35);
         }
       });
     };
 
+    const handleScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(apply);
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    apply();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
+
 
   const splitTitle = (text: string) =>
     text.split("").map((char, i) => (
