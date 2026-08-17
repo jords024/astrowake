@@ -384,8 +384,14 @@ export default function HorizonHero() {
 
     return () => {
       tl.kill();
+      // evita que letras fiquem invisíveis/deslocadas ao interromper a animação
+      const chars = titleRef.current?.querySelectorAll(".title-char");
+      if (chars?.length) gsap.set(chars, { clearProps: "all" });
+      const lines = subtitleRef.current?.querySelectorAll(".subtitle-line");
+      if (lines?.length) gsap.set(lines, { clearProps: "all" });
     };
   }, [isReady, currentSection]);
+
 
   useEffect(() => {
     const handleScroll = () => {
