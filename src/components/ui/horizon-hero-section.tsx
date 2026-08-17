@@ -147,7 +147,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: refs.isMobile ? 0.14 : 0.22 },
+          opacity: { value: refs.isMobile ? 0.09 : 0.13 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -226,7 +226,7 @@ export default function HorizonHero() {
               float pulse = 0.92 + 0.08 * sin(time * 0.6);
               float a = (corona + halo) * pulse;
               if (a <= 0.001) discard;
-              gl_FragColor = vec4(color, a * 0.85);
+              gl_FragColor = vec4(color, a * 1.5);
             }
           `,
           transparent: true,
@@ -258,7 +258,7 @@ export default function HorizonHero() {
           new THREE.MeshBasicMaterial({
             color: i % 2 === 0 ? 0xd6a444 : 0xf0cf8a,
             transparent: true,
-            opacity: 0.32 - i * 0.035,
+            opacity: 0.62 - i * 0.06,
             blending: THREE.AdditiveBlending,
             side: THREE.DoubleSide,
             depthWrite: false,
@@ -275,7 +275,7 @@ export default function HorizonHero() {
       const tickMat = new THREE.MeshBasicMaterial({
         color: 0xd6a444,
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.5,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
@@ -290,7 +290,7 @@ export default function HorizonHero() {
       group.add(ticks);
       refs.eclipseRings.push(ticks);
 
-      group.position.set(0, 150, -1400);
+      group.position.set(0, 120, -1000);
       refs.scene.add(group);
       refs.eclipse = group;
     };
@@ -488,9 +488,9 @@ export default function HorizonHero() {
 
       // Portal (eclipse): sempre à frente, girando lentamente
       if (refs.eclipse) {
-        refs.eclipse.position.z = camZ - 1400;
+        refs.eclipse.position.z = camZ - 1000;
         refs.eclipse.position.x = driftX * 0.4;
-        refs.eclipse.position.y = 150 + driftY * 0.3;
+        refs.eclipse.position.y = 120 + driftY * 0.3;
         refs.eclipseRings.forEach((ring: any, i: number) => {
           ring.rotation.z += dt * (i % 2 === 0 ? 0.035 : -0.022) * (1 + i * 0.15);
         });
