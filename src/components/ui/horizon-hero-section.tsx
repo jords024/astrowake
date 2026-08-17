@@ -133,7 +133,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: 0.55 },
+          opacity: { value: 0.45 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -298,7 +298,7 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.85;
+      refs.renderer.toneMappingExposure = 0.6;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
@@ -402,12 +402,14 @@ export default function HorizonHero() {
       refs.targetCameraY = currentPos.y + (nextPos.y - currentPos.y) * sectionProgress;
       refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
 
+      // A nebulosa acompanha a câmera para o fundo nunca ficar vazio/preto
+      if (refs.nebula) refs.nebula.position.z = refs.targetCameraZ - 1400;
+
       refs.mountains.forEach((mountain: any, i: number) => {
-        const speed = 1 + i * 0.9;
-        const targetZ = mountain.userData.baseZ + window.scrollY * speed * 0.5;
-        if (refs.nebula) refs.nebula.position.z = targetZ + progress * speed * 0.01 - 100;
-        if (progress > 0.7) mountain.position.z = 600000;
-        else if (refs.locations) mountain.position.z = refs.locations[i];
+        if (refs.locations) {
+          // montanhas continuam visíveis, apenas se afastam suavemente
+          mountain.position.z = refs.locations[i] - progress * 260 * (1 + i * 0.35);
+        }
       });
     };
 
