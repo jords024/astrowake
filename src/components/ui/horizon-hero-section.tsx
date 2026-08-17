@@ -134,34 +134,6 @@ export default function HorizonHero() {
     };
 
 
-    const createAtmosphere = () => {
-      const geometry = new THREE.SphereGeometry(600, 32, 32);
-      const material = new THREE.ShaderMaterial({
-        uniforms: { time: { value: 0 } },
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          uniform float time;
-          void main() {
-            float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-            vec3 atmosphere = vec3(0.35, 0.52, 0.95) * intensity;
-            float pulse = sin(time * 2.0) * 0.1 + 0.9;
-            atmosphere *= pulse;
-            gl_FragColor = vec4(atmosphere, intensity * 0.05);
-          }
-        `,
-        side: THREE.BackSide,
-        blending: THREE.AdditiveBlending,
-        transparent: true,
-      });
-      refs.scene.add(new THREE.Mesh(geometry, material));
-    };
 
     const animate = () => {
       refs.animationId = requestAnimationFrame(animate);
