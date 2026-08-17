@@ -220,14 +220,13 @@ export default function HorizonHero() {
     initThree();
 
     const handleResize = () => {
-      if (refs.camera && refs.renderer && refs.composer) {
+      if (refs.camera && refs.renderer) {
         const a = window.innerWidth / window.innerHeight;
         refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
         refs.camera.aspect = a;
         refs.camera.fov = fovFor(a);
         refs.camera.updateProjectionMatrix();
         refs.renderer.setSize(window.innerWidth, window.innerHeight);
-        refs.composer.setSize(window.innerWidth, window.innerHeight);
       }
     };
 
