@@ -171,7 +171,7 @@ export default function HorizonHero() {
       });
 
 
-      refs.composer?.render();
+      refs.renderer?.render(refs.scene, refs.camera);
     };
 
 
