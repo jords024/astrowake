@@ -167,6 +167,10 @@ export default function HorizonHero() {
         style={{ opacity: sceneOpacity, transition: "opacity 0.2s linear" }}
       />
 
+      {/* Galáxia em profundidade reagindo ao scroll */}
+      <GalaxyScroll opacity={sceneOpacity} />
+
+
       {/* Fusão inferior com a próxima seção */}
       <div
         className="pointer-events-none fixed inset-x-0 bottom-0 z-[2] h-[45vh]"
