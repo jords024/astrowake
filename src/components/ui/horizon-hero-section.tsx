@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
 import { gsap } from "gsap";
 
 const titles: Record<number, string> = {
@@ -26,12 +25,10 @@ const subtitles: Record<number, { line1: string; line2: string }> = {
 };
 
 export default function HorizonHero() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLDivElement | null>(null);
   const scrollProgressRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const smoothCameraPos = useRef({ x: 0, y: 30, z: 100 });
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [outro, setOutro] = useState(0);
@@ -39,201 +36,8 @@ export default function HorizonHero() {
   const [isReady, setIsReady] = useState(false);
   const totalSections = 2;
 
-  const threeRefs = useRef<any>({
-    scene: null,
-    camera: null,
-    renderer: null,
-    mountains: [],
-    animationId: null,
-  });
-
   useEffect(() => {
-    const refs = threeRefs.current;
-
-
-    const createMountains = () => {
-      const layers = [
-        { distance: -50, height: 60, top: 0x080808, base: 0x000000, opacity: 1 },
-        { distance: -100, height: 80, top: 0x0c0c0c, base: 0x020202, opacity: 0.95 },
-        { distance: -150, height: 100, top: 0x101010, base: 0x040404, opacity: 0.85 },
-        { distance: -200, height: 120, top: 0x141414, base: 0x060606, opacity: 0.7 },
-
-      ];
-
-      layers.forEach((layer, index) => {
-        const points: THREE.Vector2[] = [];
-        const segments = 90;
-        let minY = Infinity;
-        let maxY = -Infinity;
-        const seed = index * 13.7;
-        for (let i = 0; i <= segments; i++) {
-          const x = (i / segments - 0.5) * 1000;
-          // ruído determinístico: silhueta estável e mais natural
-          const y =
-            Math.sin(i * 0.13 + seed) * layer.height +
-            Math.sin(i * 0.061 + seed * 1.7) * layer.height * 0.55 +
-            Math.sin(i * 0.31 + seed * 0.6) * layer.height * 0.18 -
-            100;
-          minY = Math.min(minY, y);
-          maxY = Math.max(maxY, y);
-          points.push(new THREE.Vector2(x, y));
-        }
-        points.push(new THREE.Vector2(5000, -300));
-        points.push(new THREE.Vector2(-5000, -300));
-
-        const shape = new THREE.Shape(points);
-        const geometry = new THREE.ShapeGeometry(shape);
-        const material = new THREE.ShaderMaterial({
-          uniforms: {
-            time: { value: 0 },
-            topColor: { value: new THREE.Color(layer.top) },
-            baseColor: { value: new THREE.Color(layer.base) },
-            ridge: { value: maxY },
-            floor: { value: -300 },
-            opacity: { value: layer.opacity },
-            rim: { value: 0.55 - index * 0.1 },
-          },
-          vertexShader: `
-            varying float vY;
-            void main() {
-              vY = position.y;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-          `,
-          fragmentShader: `
-            uniform vec3 topColor;
-            uniform vec3 baseColor;
-            uniform float ridge;
-            uniform float floor;
-            uniform float opacity;
-            uniform float rim;
-            varying float vY;
-            void main() {
-              float t = clamp((vY - floor) / max(ridge - floor, 0.001), 0.0, 1.0);
-              vec3 col = mix(baseColor, topColor, pow(t, 1.6));
-              // luz fria rasante vinda do sol, só perto da crista
-              col += vec3(0.60, 0.72, 1.0) * pow(t, 9.0) * rim;
-
-              gl_FragColor = vec4(col, opacity);
-            }
-          `,
-          transparent: true,
-          side: THREE.DoubleSide,
-        });
-
-        const mountain = new THREE.Mesh(geometry, material);
-        mountain.position.z = layer.distance;
-        mountain.position.y = layer.distance;
-        mountain.userData = { baseZ: layer.distance, index };
-        refs.scene.add(mountain);
-        refs.mountains.push(mountain);
-      });
-    };
-
-
-
-    const animate = () => {
-      refs.animationId = requestAnimationFrame(animate);
-      const now = Date.now() * 0.001;
-      const time = now;
-
-      // delta-time real: suavização idêntica em 60/120Hz e em telas lentas
-      const dt = Math.min(Math.max(now - (refs.lastTime ?? now), 0), 0.1);
-      refs.lastTime = now;
-
-      // deriva única e lenta — todos os elementos respiram no mesmo ritmo
-      const driftX = Math.sin(time * 0.06) * (refs.isMobile ? 1.2 : 2.4);
-      const driftY = Math.sin(time * 0.045) * (refs.isMobile ? 0.6 : 1.2);
-
-      if (refs.camera && refs.targetCameraX !== undefined) {
-        const k = 1 - Math.pow(0.001, dt); // ~equivalente a lerp estável por segundo
-        smoothCameraPos.current.x += (refs.targetCameraX - smoothCameraPos.current.x) * k;
-        smoothCameraPos.current.y += (refs.targetCameraY - smoothCameraPos.current.y) * k;
-        smoothCameraPos.current.z += (refs.targetCameraZ - smoothCameraPos.current.z) * k;
-
-        refs.camera.position.x = smoothCameraPos.current.x + driftX;
-        refs.camera.position.y = smoothCameraPos.current.y + driftY;
-        refs.camera.position.z = smoothCameraPos.current.z;
-        refs.camera.rotation.z = Math.sin(time * 0.04) * 0.006; // respiro cinematográfico
-        refs.camera.lookAt(driftX * 0.35, 10, -600);
-      }
-
-
-      // montanhas: apenas paralaxe coerente com a deriva da câmera (sem movimento próprio)
-      refs.mountains.forEach((mountain: any, i: number) => {
-        const parallax = 1 - i * 0.18;
-        mountain.position.x = -driftX * parallax * 0.6;
-        mountain.position.y = 50 - driftY * parallax * 0.3;
-        if (mountain.material.uniforms) mountain.material.uniforms.time.value = time;
-      });
-
-
-      refs.renderer?.render(refs.scene, refs.camera);
-    };
-
-
-    // FOV horizontal constante: em retrato o retrato não "corta" a cena
-    const fovFor = (aspect: number) => {
-      const baseH = 75; // fov vertical de referência em paisagem (16:9)
-      if (aspect >= 1) return baseH;
-      const hFov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(baseH) / 2) * (16 / 9));
-      return THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(hFov / 2) / aspect));
-    };
-
-    const initThree = () => {
-      if (!canvasRef.current) return;
-
-      refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
-
-      refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x000000, 0.0002);
-
-      const aspect = window.innerWidth / window.innerHeight;
-      refs.camera = new THREE.PerspectiveCamera(fovFor(aspect), aspect, 0.1, 2000);
-      refs.camera.position.z = 100;
-      refs.camera.position.y = 20;
-
-      refs.renderer = new THREE.WebGLRenderer({
-        canvas: canvasRef.current,
-        antialias: !refs.isMobile,
-        alpha: false,
-        powerPreference: "high-performance",
-      });
-      refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, refs.isMobile ? 1.5 : 2));
-      refs.renderer.setClearColor(0x000000, 1);
-      refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.75;
-
-      createMountains();
-
-
-      refs.locations = refs.mountains.map((m: any) => m.position.z);
-
-      animate();
-      setIsReady(true);
-    };
-
-    initThree();
-
-    const handleResize = () => {
-      if (refs.camera && refs.renderer) {
-        const a = window.innerWidth / window.innerHeight;
-        refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
-        refs.camera.aspect = a;
-        refs.camera.fov = fovFor(a);
-        refs.camera.updateProjectionMatrix();
-        refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      if (refs.animationId) cancelAnimationFrame(refs.animationId);
-      window.removeEventListener("resize", handleResize);
-      refs.renderer?.dispose();
-    };
+    setIsReady(true);
   }, []);
 
   useEffect(() => {
@@ -254,7 +58,6 @@ export default function HorizonHero() {
     }
     if (titleRef.current) {
       if (isMobile) {
-        // mobile: um único movimento limpo, sem letras espalhadas
         tl.fromTo(
           titleRef.current,
           { y: 28, opacity: 0, filter: "blur(6px)" },
@@ -302,19 +105,15 @@ export default function HorizonHero() {
       tl.from(scrollProgressRef.current, { opacity: 0, y: 40, duration: 1 }, "-=0.5");
     }
 
-
     return () => {
       tl.kill();
-      // evita que letras fiquem invisíveis/deslocadas ao interromper a animação
       if (titleRef.current) gsap.set(titleRef.current, { clearProps: "all" });
       const chars = titleRef.current?.querySelectorAll(".title-char");
       if (chars?.length) gsap.set(chars, { clearProps: "all" });
       const lines = subtitleRef.current?.querySelectorAll(".subtitle-line");
       if (lines?.length) gsap.set(lines, { clearProps: "all" });
-
     };
   }, [isReady, currentSection]);
-
 
   useEffect(() => {
     let raf = 0;
@@ -325,39 +124,13 @@ export default function HorizonHero() {
       const vh = window.innerHeight;
       const heroSpan = vh * totalSections;
       if (heroSpan <= 0) return;
-      const progress = Math.min(Math.max(window.scrollY / heroSpan, 0), 1);
 
+      const progress = Math.min(Math.max(window.scrollY / heroSpan, 0), 1);
       setScrollProgress(progress);
       setOutro(Math.max(0, Math.min(1, (window.scrollY - vh * 1.9) / (vh * 0.7))));
 
-      // fase visível (0,1,2) — trava na fase mais próxima, sem oscilar
-      const stagePos = progress * totalSections; // 0..2
+      const stagePos = progress * totalSections;
       setCurrentSection(Math.min(Math.round(stagePos), totalSections));
-
-      const refs = threeRefs.current;
-
-      // câmera segue o MESMO eixo das fases: 3 chaves, 2 trechos
-      const seg = Math.min(Math.floor(stagePos), totalSections - 1);
-      const f = easeInOut(Math.min(Math.max(stagePos - seg, 0), 1));
-
-      const cameraPositions = [
-        { x: 0, y: 30, z: 300 },
-        { x: 0, y: 40, z: -50 },
-        { x: 0, y: 50, z: -700 },
-      ];
-      const a = cameraPositions[seg]!;
-      const b = cameraPositions[seg + 1] ?? a;
-
-      refs.targetCameraX = a.x + (b.x - a.x) * f;
-      refs.targetCameraY = a.y + (b.y - a.y) * f;
-      refs.targetCameraZ = a.z + (b.z - a.z) * f;
-
-      const eased = easeInOut(progress);
-      refs.mountains.forEach((mountain: any, i: number) => {
-        if (refs.locations) {
-          mountain.position.z = refs.locations[i] - eased * 260 * (1 + i * 0.35);
-        }
-      });
     };
 
     const handleScroll = () => {
@@ -373,10 +146,12 @@ export default function HorizonHero() {
     };
   }, []);
 
-
   const splitTitle = (text: string) =>
     text.split("").map((char, i) => (
-      <span key={`${char}-${i}`} className="title-char inline-block text-gold-gradient [text-shadow:0_4px_40px_rgba(0,0,0,0.95)]">
+      <span
+        key={`${char}-${i}`}
+        className="title-char inline-block text-gold-gradient drop-shadow-[0_4px_40px_rgba(0,0,0,0.95)]"
+      >
         {char === " " ? "\u00a0" : char}
       </span>
     ));
@@ -386,9 +161,9 @@ export default function HorizonHero() {
 
   return (
     <div className="relative w-full bg-black">
-      <canvas
-        ref={canvasRef}
-        className="fixed inset-0 z-0 h-full w-full"
+      {/* Fundo preto sólido */}
+      <div
+        className="fixed inset-0 z-0 bg-black"
         style={{ opacity: sceneOpacity, transition: "opacity 0.2s linear" }}
       />
 
@@ -424,10 +199,6 @@ export default function HorizonHero() {
           transition: "opacity 0.2s linear",
         }}
       >
-        <div
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 60%, transparent 80%)" }}
-        />
         <h1
           key={`title-${currentSection}`}
           ref={titleRef}
@@ -477,7 +248,6 @@ export default function HorizonHero() {
             />
           ))}
         </div>
-
       </div>
 
       {/* Alturas de scroll */}
