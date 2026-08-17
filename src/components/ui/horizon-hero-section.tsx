@@ -363,12 +363,14 @@ export default function HorizonHero() {
       tl.from(menuRef.current, { x: -100, opacity: 0, duration: 1, ease: "power3.out" });
     }
     if (titleRef.current) {
-      tl.from(
+      tl.fromTo(
         titleRef.current.querySelectorAll(".title-char"),
-        { y: 160, opacity: 0, duration: 1.2, stagger: 0.05, ease: "power4.out" },
+        { y: 160, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.05, ease: "power4.out", clearProps: "transform,opacity" },
         "-=0.5",
       );
     }
+
     if (subtitleRef.current) {
       tl.from(
         subtitleRef.current.querySelectorAll(".subtitle-line"),
