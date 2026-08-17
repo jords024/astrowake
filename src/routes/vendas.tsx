@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Lock } from "lucide-react";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import eclipseAsset from "../assets/astrowake-eclipse-bg.png.asset.json";
+import BlocoCustoInvisivel from "../components/vendas/bloco-custo-invisivel";
 
 const HorizonHero = lazy(() => import("../components/ui/horizon-hero-section"));
 
@@ -92,7 +93,7 @@ function Vendas() {
 
           <div className="mx-auto mt-10 max-w-md">
             <button
-              onClick={handleCheckout}
+              onClick={() => handleCheckout("hero_vendas")}
               className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-gold via-gold-soft to-gold px-8 py-5 text-lg font-black uppercase tracking-wider text-background shadow-[0_18px_50px_-12px_color-mix(in_oklab,var(--gold)_45%,transparent)] transition-all hover:brightness-110 active:scale-[0.99]"
             >
               <span>Quero acessar meu registro de vida</span>
@@ -105,6 +106,11 @@ function Vendas() {
           </div>
         </motion.div>
       </section>
+
+      {/* ===================================================================== */}
+      {/* 3. BLOCO 2: O CUSTO INVISÍVEL                                         */}
+      {/* ===================================================================== */}
+      <BlocoCustoInvisivel onCheckout={() => handleCheckout("bloco2_custo_invisivel")} />
     </main>
   );
 }
