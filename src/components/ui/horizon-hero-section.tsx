@@ -189,7 +189,7 @@ export default function HorizonHero() {
       refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x070c18, 0.00016);
+      refs.scene.fog = new THREE.FogExp2(0x000000, 0.0002);
 
       const aspect = window.innerWidth / window.innerHeight;
       refs.camera = new THREE.PerspectiveCamera(fovFor(aspect), aspect, 0.1, 2000);
@@ -199,32 +199,16 @@ export default function HorizonHero() {
       refs.renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
         antialias: !refs.isMobile,
-        alpha: true,
+        alpha: false,
         powerPreference: "high-performance",
       });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, refs.isMobile ? 1.5 : 2));
+      refs.renderer.setClearColor(0x000000, 1);
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.9;
+      refs.renderer.toneMappingExposure = 0.75;
 
-      refs.composer = new EffectComposer(refs.renderer);
-      refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
-      refs.composer.addPass(
-        new UnrealBloomPass(
-          new THREE.Vector2(window.innerWidth, window.innerHeight),
-          refs.isMobile ? 0.55 : 0.8,
-          refs.isMobile ? 0.7 : 0.85,
-          refs.isMobile ? 0.85 : 0.8,
-
-        ),
-      );
-
-      createStarField();
-      createNebula();
-      createSun();
-      createShootingStars();
       createMountains();
-      createAtmosphere();
 
 
       refs.locations = refs.mountains.map((m: any) => m.position.z);
