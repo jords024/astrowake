@@ -133,7 +133,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: 0.35 },
+          opacity: { value: 0.55 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -177,10 +177,10 @@ export default function HorizonHero() {
 
     const createMountains = () => {
       const layers = [
-        { distance: -50, height: 60, color: 0x0a0a0a, opacity: 1 },
-        { distance: -100, height: 80, color: 0x121212, opacity: 0.85 },
-        { distance: -150, height: 100, color: 0x1c1a17, opacity: 0.65 },
-        { distance: -200, height: 120, color: 0x2b2723, opacity: 0.45 },
+        { distance: -50, height: 60, color: 0x14120f, opacity: 1 },
+        { distance: -100, height: 80, color: 0x201c17, opacity: 0.9 },
+        { distance: -150, height: 100, color: 0x342d24, opacity: 0.75 },
+        { distance: -200, height: 120, color: 0x4a3f30, opacity: 0.6 },
       ];
 
       layers.forEach((layer, index) => {
@@ -298,7 +298,7 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.3;
+      refs.renderer.toneMappingExposure = 0.85;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
@@ -434,7 +434,7 @@ export default function HorizonHero() {
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.45) 38%, rgba(10,10,10,0.7) 75%, rgba(10,10,10,0.96) 100%)",
+            "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.28) 0%, rgba(10,10,10,0.12) 40%, rgba(10,10,10,0.45) 78%, rgba(10,10,10,0.85) 100%)",
         }}
       />
 
@@ -456,7 +456,7 @@ export default function HorizonHero() {
       <div className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.8) 60%, transparent 78%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.35) 60%, transparent 80%)" }}
         />
         <h1
           ref={titleRef}
