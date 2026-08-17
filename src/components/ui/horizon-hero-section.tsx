@@ -76,9 +76,10 @@ export default function HorizonHero() {
 
           const color = new THREE.Color();
           const choice = Math.random();
-          if (choice < 0.6) color.setHSL(0.12, 0.9, 0.75);
-          else if (choice < 0.85) color.setHSL(0.15, 0.8, 0.85);
-          else color.setHSL(0.08, 0.4, 0.9);
+          if (choice < 0.62) color.setHSL(0.6, 0.15, 0.92);
+          else if (choice < 0.88) color.setHSL(0.58, 0.35, 0.85);
+          else color.setHSL(0.09, 0.25, 0.9);
+
 
           colors[j * 3] = color.r;
           colors[j * 3 + 1] = color.g;
@@ -145,9 +146,10 @@ export default function HorizonHero() {
       const material = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
-          color1: { value: new THREE.Color(0x0a0a0a) },
-          color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: refs.isMobile ? 0.09 : 0.13 },
+          color1: { value: new THREE.Color(0x050a18) },
+          color2: { value: new THREE.Color(0x2b4a8f) },
+          opacity: { value: refs.isMobile ? 0.16 : 0.22 },
+
         },
         vertexShader: `
           varying vec2 vUv;
@@ -191,112 +193,68 @@ export default function HorizonHero() {
       refs.nebula = nebula;
     };
 
-    // Portal Astrowake: eclipse dourado com rodas astronômicas
-    const createEclipse = () => {
+    // Sol branco nascendo atrás da crista (referência Horizon)
+    const createSun = () => {
       const group = new THREE.Group();
-      refs.eclipseRings = [];
 
-      // disco escuro (a "sombra" do eclipse)
-      const disc = new THREE.Mesh(
-        new THREE.CircleGeometry(120, 96),
-        new THREE.MeshBasicMaterial({ color: 0x08070a }),
+      const core = new THREE.Mesh(
+        new THREE.SphereGeometry(95, 48, 48),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, fog: false }),
       );
-      group.add(disc);
+      group.add(core);
 
-      // coroa luminosa
-      const glow = new THREE.Mesh(
-        new THREE.PlaneGeometry(900, 900),
-        new THREE.ShaderMaterial({
-          uniforms: { time: { value: 0 }, color: { value: new THREE.Color(0xd6a444) } },
-          vertexShader: `
-            varying vec2 vUv;
-            void main() {
-              vUv = uv;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-          `,
-          fragmentShader: `
-            uniform float time;
-            uniform vec3 color;
-            varying vec2 vUv;
-            void main() {
-              float d = length(vUv - 0.5) * 2.0;
-              float corona = smoothstep(0.30, 0.255, d) * 1.4;      // anel fino junto ao disco
-              float halo = pow(max(0.0, 1.0 - d), 3.0) * 0.55;      // brilho difuso
-              float pulse = 0.92 + 0.08 * sin(time * 0.6);
-              float a = (corona + halo) * pulse;
-              if (a <= 0.001) discard;
-              gl_FragColor = vec4(color, a * 1.5);
-            }
-          `,
-          transparent: true,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-      );
-      glow.position.z = -1;
-      group.add(glow);
-      refs.eclipseGlow = glow;
-
-      // rodas astronômicas concêntricas (espessura suficiente para ler a 1000u de distância)
-      const ringSpecs = refs.isMobile
-        ? [
-            [150, 156],
-            [200, 203],
-            [268, 274],
-          ]
-        : [
-            [150, 157],
-            [178, 181],
-            [205, 211],
-            [250, 253],
-            [300, 307],
-          ];
-      ringSpecs.forEach(([inner, outer], i) => {
-        const ring = new THREE.Mesh(
-          new THREE.RingGeometry(inner, outer, 180),
-          new THREE.MeshBasicMaterial({
-            color: i % 2 === 0 ? 0xd6a444 : 0xf0cf8a,
+      const makeHalo = (size: number, power: number, strength: number, color: number) =>
+        new THREE.Mesh(
+          new THREE.PlaneGeometry(size, size),
+          new THREE.ShaderMaterial({
+            uniforms: {
+              time: { value: 0 },
+              color: { value: new THREE.Color(color) },
+              power: { value: power },
+              strength: { value: strength },
+            },
+            vertexShader: `
+              varying vec2 vUv;
+              void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `,
+            fragmentShader: `
+              uniform float time;
+              uniform vec3 color;
+              uniform float power;
+              uniform float strength;
+              varying vec2 vUv;
+              void main() {
+                float d = length(vUv - 0.5) * 2.0;
+                float a = pow(max(0.0, 1.0 - d), power) * strength;
+                a *= 0.94 + 0.06 * sin(time * 0.5);
+                if (a <= 0.002) discard;
+                gl_FragColor = vec4(color, a);
+              }
+            `,
             transparent: true,
-            opacity: 0.85 - i * 0.08,
             blending: THREE.AdditiveBlending,
-            side: THREE.DoubleSide,
             depthWrite: false,
             fog: false,
           }),
         );
-        ring.position.z = -0.5;
-        group.add(ring);
-        refs.eclipseRings.push(ring);
-      });
 
-      // marcações (graus) numa das rodas
-      const tickCount = refs.isMobile ? 36 : 72;
-      const tickGeo = new THREE.PlaneGeometry(4, 26);
-      const tickMat = new THREE.MeshBasicMaterial({
-        color: 0xd6a444,
-        transparent: true,
-        opacity: 0.7,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        fog: false,
-      });
-      const ticks = new THREE.Group();
-      for (let i = 0; i < tickCount; i++) {
-        const t = new THREE.Mesh(tickGeo, tickMat);
-        const a = (i / tickCount) * Math.PI * 2;
-        t.position.set(Math.cos(a) * 228, Math.sin(a) * 228, -0.4);
-        t.rotation.z = a - Math.PI / 2;
-        ticks.add(t);
-      }
-      group.add(ticks);
-      refs.eclipseRings.push(ticks);
+      const inner = makeHalo(500, 2.6, 1.2, 0xffffff);
+      inner.position.z = -1;
+      const outer = makeHalo(1800, 3.4, 0.42, 0xbcd6ff);
+      outer.position.z = -2;
+      group.add(inner);
+      group.add(outer);
 
-
-      group.position.set(0, refs.isMobile ? 120 : 175, -1000);
+      refs.sunHalos = [inner, outer];
+      group.position.set(0, refs.isMobile ? 105 : 110, -1000);
+      if (refs.isMobile) group.scale.setScalar(1.45);
       refs.scene.add(group);
-      refs.eclipse = group;
+      refs.sun = group;
     };
+
 
     const createShootingStars = () => {
       refs.shootingStars = [];
@@ -319,7 +277,7 @@ export default function HorizonHero() {
                 float head = pow(vUv.x, 6.0);
                 float tail = pow(vUv.x, 1.6) * 0.35;
                 float band = smoothstep(0.5, 0.0, abs(vUv.y - 0.5));
-                gl_FragColor = vec4(1.0, 0.92, 0.78, (head + tail) * band);
+                gl_FragColor = vec4(0.92, 0.96, 1.0, (head + tail) * band);
               }
             `,
             transparent: true,
@@ -346,10 +304,11 @@ export default function HorizonHero() {
 
     const createMountains = () => {
       const layers = [
-        { distance: -50, height: 60, top: 0x2a2318, base: 0x0b0a09, opacity: 1 },
-        { distance: -100, height: 80, top: 0x3a3122, base: 0x110f0c, opacity: 0.94 },
-        { distance: -150, height: 100, top: 0x554630, base: 0x191512, opacity: 0.8 },
-        { distance: -200, height: 120, top: 0x6f5b3b, base: 0x201a15, opacity: 0.62 },
+        { distance: -50, height: 60, top: 0x0a0d16, base: 0x03040a, opacity: 1 },
+        { distance: -100, height: 80, top: 0x11172a, base: 0x05070f, opacity: 0.95 },
+        { distance: -150, height: 100, top: 0x1b2440, base: 0x080c18, opacity: 0.85 },
+        { distance: -200, height: 120, top: 0x2b3a63, base: 0x0d1222, opacity: 0.7 },
+
       ];
 
       layers.forEach((layer, index) => {
@@ -403,8 +362,9 @@ export default function HorizonHero() {
             void main() {
               float t = clamp((vY - floor) / max(ridge - floor, 0.001), 0.0, 1.0);
               vec3 col = mix(baseColor, topColor, pow(t, 1.6));
-              // luz dourada rasante vinda do portal, só perto da crista
-              col += vec3(0.84, 0.62, 0.24) * pow(t, 9.0) * rim;
+              // luz fria rasante vinda do sol, só perto da crista
+              col += vec3(0.60, 0.72, 1.0) * pow(t, 9.0) * rim;
+
               gl_FragColor = vec4(col, opacity);
             }
           `,
@@ -438,7 +398,7 @@ export default function HorizonHero() {
           uniform float time;
           void main() {
             float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-            vec3 atmosphere = vec3(0.84, 0.62, 0.24) * intensity;
+            vec3 atmosphere = vec3(0.35, 0.52, 0.95) * intensity;
             float pulse = sin(time * 2.0) * 0.1 + 0.9;
             atmosphere *= pulse;
             gl_FragColor = vec4(atmosphere, intensity * 0.05);
@@ -489,18 +449,16 @@ export default function HorizonHero() {
       });
       if (refs.nebula) refs.nebula.position.z = camZ - 2200;
 
-      // Portal (eclipse): sempre à frente, girando lentamente
-      if (refs.eclipse) {
-        refs.eclipse.position.z = camZ - 1000;
-        refs.eclipse.position.x = driftX * 0.4;
-        refs.eclipse.position.y = (refs.isMobile ? 120 : 175) + driftY * 0.3;
-        refs.eclipseRings.forEach((ring: any, i: number) => {
-          ring.rotation.z += dt * (i % 2 === 0 ? 0.035 : -0.022) * (1 + i * 0.15);
+      // Sol: sempre no horizonte à frente da câmera
+      if (refs.sun) {
+        refs.sun.position.z = camZ - 1000;
+        refs.sun.position.x = driftX * 0.35;
+        refs.sun.position.y = (refs.isMobile ? 105 : 110) + driftY * 0.25;
+        refs.sunHalos?.forEach((h: any) => {
+          if (h.material.uniforms) h.material.uniforms.time.value = time;
         });
-        if (refs.eclipseGlow?.material.uniforms) {
-          refs.eclipseGlow.material.uniforms.time.value = time;
-        }
       }
+
 
       // Estrelas cadentes: eventos raros e elegantes
       refs.shootingStars?.forEach((s: any) => {
@@ -554,7 +512,7 @@ export default function HorizonHero() {
       refs.isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x141210, 0.00016);
+      refs.scene.fog = new THREE.FogExp2(0x070c18, 0.00016);
 
       const aspect = window.innerWidth / window.innerHeight;
       refs.camera = new THREE.PerspectiveCamera(fovFor(aspect), aspect, 0.1, 2000);
@@ -570,22 +528,23 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, refs.isMobile ? 1.5 : 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.68;
+      refs.renderer.toneMappingExposure = 0.9;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
       refs.composer.addPass(
         new UnrealBloomPass(
           new THREE.Vector2(window.innerWidth, window.innerHeight),
-          refs.isMobile ? 0.3 : 0.45,
-          refs.isMobile ? 0.5 : 0.6,
-          refs.isMobile ? 1.0 : 0.95,
+          refs.isMobile ? 0.55 : 0.8,
+          refs.isMobile ? 0.7 : 0.85,
+          refs.isMobile ? 0.85 : 0.8,
+
         ),
       );
 
       createStarField();
       createNebula();
-      createEclipse();
+      createSun();
       createShootingStars();
       createMountains();
       createAtmosphere();
@@ -781,7 +740,8 @@ export default function HorizonHero() {
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.28) 0%, rgba(10,10,10,0.12) 40%, rgba(10,10,10,0.45) 78%, rgba(10,10,10,0.85) 100%)",
+            "radial-gradient(ellipse at 50% 48%, rgba(6,8,16,0.10) 0%, rgba(6,8,16,0.06) 40%, rgba(6,8,16,0.40) 78%, rgba(6,8,16,0.85) 100%)",
+
         }}
       />
 
@@ -819,7 +779,7 @@ export default function HorizonHero() {
       >
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.35) 60%, transparent 80%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(6,8,16,0.30) 0%, rgba(6,8,16,0.16) 60%, transparent 80%)" }}
         />
         <h1
           key={`title-${currentSection}`}
