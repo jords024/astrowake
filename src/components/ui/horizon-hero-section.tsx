@@ -429,7 +429,7 @@ export default function HorizonHero() {
       >
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(6,8,16,0.30) 0%, rgba(6,8,16,0.16) 60%, transparent 80%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 60%, transparent 80%)" }}
         />
         <h1
           key={`title-${currentSection}`}
