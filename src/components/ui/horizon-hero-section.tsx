@@ -238,19 +238,19 @@ export default function HorizonHero() {
       group.add(glow);
       refs.eclipseGlow = glow;
 
-      // rodas astronômicas concêntricas
+      // rodas astronômicas concêntricas (espessura suficiente para ler a 1000u de distância)
       const ringSpecs = refs.isMobile
         ? [
-            [150, 152],
-            [200, 201],
-            [268, 270],
+            [150, 156],
+            [200, 203],
+            [268, 274],
           ]
         : [
-            [150, 152],
-            [178, 178.8],
-            [205, 206.5],
-            [250, 251],
-            [300, 302],
+            [150, 157],
+            [178, 181],
+            [205, 211],
+            [250, 253],
+            [300, 307],
           ];
       ringSpecs.forEach(([inner, outer], i) => {
         const ring = new THREE.Mesh(
@@ -258,10 +258,11 @@ export default function HorizonHero() {
           new THREE.MeshBasicMaterial({
             color: i % 2 === 0 ? 0xd6a444 : 0xf0cf8a,
             transparent: true,
-            opacity: 0.62 - i * 0.06,
+            opacity: 0.85 - i * 0.08,
             blending: THREE.AdditiveBlending,
             side: THREE.DoubleSide,
             depthWrite: false,
+            fog: false,
           }),
         );
         ring.position.z = -0.5;
@@ -271,13 +272,14 @@ export default function HorizonHero() {
 
       // marcações (graus) numa das rodas
       const tickCount = refs.isMobile ? 36 : 72;
-      const tickGeo = new THREE.PlaneGeometry(1.2, 14);
+      const tickGeo = new THREE.PlaneGeometry(4, 26);
       const tickMat = new THREE.MeshBasicMaterial({
         color: 0xd6a444,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.7,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
+        fog: false,
       });
       const ticks = new THREE.Group();
       for (let i = 0; i < tickCount; i++) {
@@ -289,6 +291,7 @@ export default function HorizonHero() {
       }
       group.add(ticks);
       refs.eclipseRings.push(ticks);
+
 
       group.position.set(0, 120, -1000);
       refs.scene.add(group);
