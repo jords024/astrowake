@@ -135,7 +135,7 @@ export default function HorizonHero() {
           time: { value: 0 },
           color1: { value: new THREE.Color(0x0a0a0a) },
           color2: { value: new THREE.Color(0xd6a444) },
-          opacity: { value: 0.22 },
+          opacity: { value: refs.isMobile ? 0.14 : 0.22 },
         },
         vertexShader: `
           varying vec2 vUv;
