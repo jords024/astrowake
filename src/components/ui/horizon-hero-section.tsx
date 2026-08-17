@@ -395,13 +395,13 @@ export default function HorizonHero() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll <= 0) return;
-      const progress = Math.min(window.scrollY / maxScroll, 1);
+      const vh = window.innerHeight;
+      // progresso relativo apenas à hero (não ao documento inteiro)
+      const heroSpan = vh * totalSections;
+      if (heroSpan <= 0) return;
+      const progress = Math.min(window.scrollY / heroSpan, 1);
 
       setScrollProgress(progress);
-      // saída da cena baseada na altura real da hero (3 telas)
-      const vh = window.innerHeight;
       setOutro(Math.max(0, Math.min(1, (window.scrollY - vh * 1.9) / (vh * 0.7))));
       const newSection = Math.min(Math.floor(progress * (totalSections + 1)), totalSections);
       setCurrentSection(newSection);
