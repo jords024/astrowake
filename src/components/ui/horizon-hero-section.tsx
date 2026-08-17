@@ -56,10 +56,10 @@ export default function HorizonHero() {
 
     const createMountains = () => {
       const layers = [
-        { distance: -50, height: 60, top: 0x0a0d16, base: 0x03040a, opacity: 1 },
-        { distance: -100, height: 80, top: 0x11172a, base: 0x05070f, opacity: 0.95 },
-        { distance: -150, height: 100, top: 0x1b2440, base: 0x080c18, opacity: 0.85 },
-        { distance: -200, height: 120, top: 0x2b3a63, base: 0x0d1222, opacity: 0.7 },
+        { distance: -50, height: 60, top: 0x080808, base: 0x000000, opacity: 1 },
+        { distance: -100, height: 80, top: 0x0c0c0c, base: 0x020202, opacity: 0.95 },
+        { distance: -150, height: 100, top: 0x101010, base: 0x040404, opacity: 0.85 },
+        { distance: -200, height: 120, top: 0x141414, base: 0x060606, opacity: 0.7 },
 
       ];
 
