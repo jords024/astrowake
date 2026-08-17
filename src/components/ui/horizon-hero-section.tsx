@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 // @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -500,18 +501,21 @@ export default function HorizonHero() {
         <h1
           key={`title-${currentSection}`}
           ref={titleRef}
-          className="relative font-display text-5xl font-black tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
+          className="relative max-w-[92vw] font-display text-[2.75rem] font-black leading-none tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
           style={{ visibility: "hidden" }}
         >
           {splitTitle(titles[currentSection] || "NASCIMENTO")}
         </h1>
 
-
-        <div ref={subtitleRef} className="relative mt-6 space-y-1" style={{ visibility: "hidden" }}>
-          <p className="subtitle-line text-base font-medium tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
+        <div
+          ref={subtitleRef}
+          className="relative mt-5 max-w-[34rem] space-y-2 sm:mt-6"
+          style={{ visibility: "hidden" }}
+        >
+          <p className="subtitle-line text-[0.95rem] font-medium leading-snug tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
             {subtitle.line1}
           </p>
-          <p className="subtitle-line text-sm font-normal tracking-tight text-gold-soft drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-lg">
+          <p className="subtitle-line text-[0.85rem] font-normal leading-snug tracking-tight text-gold-soft drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-lg">
             {subtitle.line2}
           </p>
         </div>
@@ -520,27 +524,35 @@ export default function HorizonHero() {
       {/* Indicador de scroll */}
       <div
         ref={scrollProgressRef}
-        className="pointer-events-none fixed bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
+        className="pointer-events-none fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3"
         style={{ visibility: "hidden", opacity: sceneOpacity }}
       >
-        <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-foreground/80">
-          Role para entrar
+        <span className="max-w-[80vw] text-center text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.22em] text-foreground/85 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] sm:text-xs sm:tracking-[0.3em]">
+          {currentSection === 0
+            ? "Desça para acessar as instruções da sua alma"
+            : currentSection < totalSections
+              ? "Continue descendo"
+              : "Você chegou — siga para o próximo passo"}
         </span>
-        <div className="h-1 w-40 overflow-hidden rounded-full border border-border bg-secondary/70">
-          <div
-            className="h-full bg-gradient-to-r from-gold to-gold-deep"
-            style={{ width: `${scrollProgress * 100}%` }}
-          />
+
+        <ChevronDown className="h-5 w-5 animate-bounce text-gold drop-shadow-[0_2px_14px_rgba(214,164,68,0.6)]" />
+
+        <div className="flex items-center gap-2">
+          {Array.from({ length: totalSections + 1 }).map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === currentSection ? "w-7 bg-gold" : "w-1.5 bg-foreground/25"
+              }`}
+            />
+          ))}
         </div>
-        <span className="text-[10px] font-bold tracking-widest text-gold/80">
-          {String(currentSection + 1).padStart(2, "0")} / 03
-        </span>
       </div>
 
       {/* Alturas de scroll */}
       <div className="relative z-[5]">
         {Array.from({ length: totalSections + 1 }).map((_, i) => (
-          <section key={i} className="h-screen w-full" />
+          <section key={i} className="h-[100svh] w-full" />
         ))}
       </div>
     </div>
