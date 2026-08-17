@@ -158,12 +158,14 @@ export default function HorizonHero() {
           varying vec2 vUv;
           varying float vElevation;
           void main() {
-            float mixFactor = sin(vUv.x * 10.0 + time) * cos(vUv.y * 10.0 + time);
-            vec3 color = mix(color1, color2, mixFactor * 0.5 + 0.5);
-            float alpha = opacity * (1.0 - length(vUv - 0.5) * 2.0);
-            alpha *= 1.0 + vElevation * 0.01;
+            // gradiente amplo e lento (sem faixas/feixes verticais)
+            float mixFactor = sin(vUv.x * 2.0 + time) * cos(vUv.y * 1.6 - time * 0.8);
+            vec3 color = mix(color1, color2, mixFactor * 0.35 + 0.5);
+            float d = length((vUv - 0.5) * vec2(1.0, 1.6));
+            float alpha = opacity * smoothstep(0.55, 0.0, d);
             gl_FragColor = vec4(color, alpha);
           }
+
         `,
         transparent: true,
         blending: THREE.AdditiveBlending,
