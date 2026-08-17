@@ -250,6 +250,7 @@ export default function HorizonHero() {
 
       refs.sunHalos = [inner, outer];
       group.position.set(0, refs.isMobile ? 105 : 110, -1000);
+      if (refs.isMobile) group.scale.setScalar(1.45);
       refs.scene.add(group);
       refs.sun = group;
     };
