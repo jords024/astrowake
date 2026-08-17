@@ -293,7 +293,7 @@ export default function HorizonHero() {
       refs.eclipseRings.push(ticks);
 
 
-      group.position.set(0, 120, -1000);
+      group.position.set(0, 175, -1000);
       refs.scene.add(group);
       refs.eclipse = group;
     };
@@ -493,7 +493,7 @@ export default function HorizonHero() {
       if (refs.eclipse) {
         refs.eclipse.position.z = camZ - 1000;
         refs.eclipse.position.x = driftX * 0.4;
-        refs.eclipse.position.y = 120 + driftY * 0.3;
+        refs.eclipse.position.y = 175 + driftY * 0.3;
         refs.eclipseRings.forEach((ring: any, i: number) => {
           ring.rotation.z += dt * (i % 2 === 0 ? 0.035 : -0.022) * (1 + i * 0.15);
         });
