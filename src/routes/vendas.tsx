@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowDown, Lock, Sparkles } from "lucide-react";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import eclipseAsset from "../assets/astrowake-eclipse-bg.png.asset.json";
+import portalAsset from "../assets/astrowake-portal.mp4.asset.json";
 
 export const Route = createFileRoute("/vendas")({
   head: () => ({
@@ -98,16 +99,21 @@ function Vendas() {
       {/* ===================================================================== */}
       <section className="relative w-full h-[280vh]">
         <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
-          {/* FUNDO: ZOOM + PARALLAX + DESFOQUE E ESCURECIMENTO GRADUAL */}
+          {/* FUNDO: VÍDEO + ZOOM + PARALLAX + DESFOQUE E ESCURECIMENTO GRADUAL */}
           <div className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden">
-            <div
-              className="h-full w-full bg-cover bg-center will-change-transform"
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover will-change-transform"
               style={{
-                backgroundImage: `url('${eclipseAsset.url}')`,
                 transform: `scale(${1 + scrollProgress * 0.2}) translateY(${scrollProgress * -40}px)`,
                 filter: `brightness(${1 - scrollProgress * 0.55}) contrast(112%) blur(${scrollProgress * 8}px)`,
               }}
-            />
+            >
+              <source src={portalAsset.url} type="video/mp4" />
+            </video>
             {/* Fusão em degradê com o preto da página */}
             <div
               className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background"
