@@ -2,6 +2,8 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import GalaxyScroll from "./galaxy-scroll";
+
 
 const titles: Record<number, string> = {
   0: "NASCIMENTO",
@@ -166,6 +168,10 @@ export default function HorizonHero() {
         className="fixed inset-0 z-0 bg-black"
         style={{ opacity: sceneOpacity, transition: "opacity 0.2s linear" }}
       />
+
+      {/* Galáxia em profundidade reagindo ao scroll */}
+      <GalaxyScroll opacity={sceneOpacity} />
+
 
       {/* Fusão inferior com a próxima seção */}
       <div
