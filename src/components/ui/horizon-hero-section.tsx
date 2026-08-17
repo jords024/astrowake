@@ -57,7 +57,7 @@ export default function HorizonHero() {
     const refs = threeRefs.current;
 
     const createStarField = () => {
-      const starCount = 3500;
+      const starCount = refs.isMobile ? 1400 : 3500;
       for (let i = 0; i < 3; i++) {
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(starCount * 3);
