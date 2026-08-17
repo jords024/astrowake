@@ -266,6 +266,13 @@ export default function HorizonHero() {
         refs.camera.lookAt(0, 10, -600);
       }
 
+      // Estrelas e nebulosa acompanham a câmera: o céu nunca fica vazio
+      const camZ = refs.camera ? refs.camera.position.z : 0;
+      refs.stars.forEach((starField: any, i: number) => {
+        starField.position.z = camZ * (0.85 - i * 0.1);
+      });
+      if (refs.nebula) refs.nebula.position.z = camZ - 1400;
+
       refs.mountains.forEach((mountain: any, i: number) => {
         const parallaxFactor = 1 + i * 0.5;
         mountain.position.x = Math.sin(time * 0.1) * 2 * parallaxFactor;
@@ -279,7 +286,7 @@ export default function HorizonHero() {
       if (!canvasRef.current) return;
 
       refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x0a0a0a, 0.00025);
+      refs.scene.fog = new THREE.FogExp2(0x141210, 0.00016);
 
       refs.camera = new THREE.PerspectiveCamera(
         75,
@@ -298,7 +305,7 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.6;
+      refs.renderer.toneMappingExposure = 0.68;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
@@ -401,9 +408,6 @@ export default function HorizonHero() {
       refs.targetCameraX = currentPos.x + (nextPos.x - currentPos.x) * sectionProgress;
       refs.targetCameraY = currentPos.y + (nextPos.y - currentPos.y) * sectionProgress;
       refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
-
-      // A nebulosa acompanha a câmera para o fundo nunca ficar vazio/preto
-      if (refs.nebula) refs.nebula.position.z = refs.targetCameraZ - 1400;
 
       refs.mountains.forEach((mountain: any, i: number) => {
         if (refs.locations) {
