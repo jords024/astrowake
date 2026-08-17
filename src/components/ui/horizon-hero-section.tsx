@@ -232,10 +232,10 @@ export default function HorizonHero() {
           uniform float time;
           void main() {
             float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-            vec3 atmosphere = vec3(0.96, 0.65, 0.1) * intensity;
+            vec3 atmosphere = vec3(0.84, 0.62, 0.24) * intensity;
             float pulse = sin(time * 2.0) * 0.1 + 0.9;
             atmosphere *= pulse;
-            gl_FragColor = vec4(atmosphere, intensity * 0.12);
+            gl_FragColor = vec4(atmosphere, intensity * 0.05);
           }
         `,
         side: THREE.BackSide,
@@ -298,7 +298,7 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.42;
+      refs.renderer.toneMappingExposure = 0.3;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
@@ -456,7 +456,7 @@ export default function HorizonHero() {
       <div className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.6) 55%, transparent 78%)" }}
+          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.8) 60%, transparent 78%)" }}
         />
         <h1
           ref={titleRef}
