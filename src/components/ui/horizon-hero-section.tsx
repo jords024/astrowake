@@ -2,6 +2,8 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import GalaxyScroll from "./galaxy-scroll";
+
 
 const titles: Record<number, string> = {
   0: "NASCIMENTO",
