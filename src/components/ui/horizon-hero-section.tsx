@@ -276,6 +276,7 @@ export default function HorizonHero() {
         refs.camera.position.x = smoothCameraPos.current.x + driftX;
         refs.camera.position.y = smoothCameraPos.current.y + driftY;
         refs.camera.position.z = smoothCameraPos.current.z;
+        refs.camera.rotation.z = Math.sin(time * 0.04) * 0.006; // respiro cinematográfico
         refs.camera.lookAt(driftX * 0.35, 10, -600);
       }
 
@@ -286,12 +287,52 @@ export default function HorizonHero() {
       });
       if (refs.nebula) refs.nebula.position.z = camZ - 2200;
 
+      // Portal (eclipse): sempre à frente, girando lentamente
+      if (refs.eclipse) {
+        refs.eclipse.position.z = camZ - 1400;
+        refs.eclipse.position.x = driftX * 0.4;
+        refs.eclipse.position.y = 150 + driftY * 0.3;
+        refs.eclipseRings.forEach((ring: any, i: number) => {
+          ring.rotation.z += dt * (i % 2 === 0 ? 0.035 : -0.022) * (1 + i * 0.15);
+        });
+        if (refs.eclipseGlow?.material.uniforms) {
+          refs.eclipseGlow.material.uniforms.time.value = time;
+        }
+      }
+
+      // Estrelas cadentes: eventos raros e elegantes
+      refs.shootingStars?.forEach((s: any) => {
+        s.t += dt;
+        if (s.t < s.delay) {
+          s.mesh.visible = false;
+          return;
+        }
+        const p = (s.t - s.delay) / s.duration;
+        if (p >= 1) {
+          s.t = 0;
+          s.delay = 4 + Math.random() * 10;
+          s.startX = -400 + Math.random() * 300;
+          s.startY = 150 + Math.random() * 220;
+          s.mesh.visible = false;
+          return;
+        }
+        s.mesh.visible = true;
+        s.mesh.position.set(
+          s.startX + p * s.travel,
+          s.startY - p * s.travel * 0.35,
+          camZ - 700 - s.depth,
+        );
+        s.mesh.material.opacity = Math.sin(p * Math.PI) * 0.9;
+      });
+
       // montanhas: apenas paralaxe coerente com a deriva da câmera (sem movimento próprio)
       refs.mountains.forEach((mountain: any, i: number) => {
         const parallax = 1 - i * 0.18;
         mountain.position.x = -driftX * parallax * 0.6;
         mountain.position.y = 50 - driftY * parallax * 0.3;
+        if (mountain.material.uniforms) mountain.material.uniforms.time.value = time;
       });
+
 
       refs.composer?.render();
     };
