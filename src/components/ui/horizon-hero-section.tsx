@@ -235,7 +235,7 @@ export default function HorizonHero() {
             vec3 atmosphere = vec3(0.96, 0.65, 0.1) * intensity;
             float pulse = sin(time * 2.0) * 0.1 + 0.9;
             atmosphere *= pulse;
-            gl_FragColor = vec4(atmosphere, intensity * 0.25);
+            gl_FragColor = vec4(atmosphere, intensity * 0.12);
           }
         `,
         side: THREE.BackSide,
@@ -298,16 +298,16 @@ export default function HorizonHero() {
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.6;
+      refs.renderer.toneMappingExposure = 0.42;
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
       refs.composer.addPass(
         new UnrealBloomPass(
           new THREE.Vector2(window.innerWidth, window.innerHeight),
-          0.85,
-          0.4,
-          0.85,
+          0.45,
+          0.6,
+          0.95,
         ),
       );
 
@@ -434,7 +434,7 @@ export default function HorizonHero() {
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(circle at 50% 45%, transparent 0%, transparent 35%, rgba(10,10,10,0.55) 78%, rgba(10,10,10,0.95) 100%)",
+            "radial-gradient(ellipse at 50% 48%, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.45) 38%, rgba(10,10,10,0.7) 75%, rgba(10,10,10,0.96) 100%)",
         }}
       />
 
