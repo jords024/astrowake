@@ -418,7 +418,7 @@ export default function HorizonHero() {
 
   const splitTitle = (text: string) =>
     text.split("").map((char, i) => (
-      <span key={`${char}-${i}`} className="title-char inline-block text-gold-gradient">
+      <span key={`${char}-${i}`} className="title-char inline-block text-gold-gradient [text-shadow:0_4px_40px_rgba(0,0,0,0.95)]">
         {char === " " ? "\u00a0" : char}
       </span>
     ));
@@ -454,15 +454,19 @@ export default function HorizonHero() {
 
       {/* Conteúdo principal */}
       <div className="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[46vh] w-[90vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          style={{ background: "radial-gradient(ellipse, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.6) 55%, transparent 78%)" }}
+        />
         <h1
           ref={titleRef}
-          className="font-display text-5xl font-black tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
+          className="relative font-display text-5xl font-black tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
           style={{ visibility: "hidden" }}
         >
           {splitTitle(titles[currentSection] || "NASCIMENTO")}
         </h1>
 
-        <div ref={subtitleRef} className="mt-6 space-y-1" style={{ visibility: "hidden" }}>
+        <div ref={subtitleRef} className="relative mt-6 space-y-1" style={{ visibility: "hidden" }}>
           <p className="subtitle-line text-base font-medium tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
             {subtitle.line1}
           </p>
