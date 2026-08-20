@@ -4,10 +4,10 @@ import { ArrowRight, Brain, Heart, Lock, Wallet } from "lucide-react";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const fadeUp = {
-  initial: { opacity: 0, y: 40 },
+  initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.25 },
-  transition: { duration: 0.8, ease: EASE },
+  viewport: { once: true, amount: 0.15, margin: "0px 0px -10% 0px" },
+  transition: { duration: 0.6, ease: EASE },
 };
 
 const PILARES = [
@@ -121,7 +121,7 @@ export default function BlocoCustoInvisivel({ onCheckout }: { onCheckout: () => 
 
         <motion.blockquote
           {...fadeUp}
-          className="mt-10 rounded-r-2xl border-l-4 border-gold bg-card/70 px-6 py-6 shadow-[0_20px_60px_-30px_color-mix(in_oklab,var(--gold)_50%,transparent)] sm:px-8"
+          className="mt-10 rounded-r-2xl border-l-4 border-gold bg-card/70 px-6 py-6 md:shadow-[0_20px_60px_-30px_color-mix(in_oklab,var(--gold)_50%,transparent)] sm:px-8"
         >
           <p className="font-display text-xl leading-snug text-foreground sm:text-2xl">
             Só que ninguém te avisou que se você estiver caminhando na direção errada,{" "}
@@ -157,7 +157,7 @@ export default function BlocoCustoInvisivel({ onCheckout }: { onCheckout: () => 
             <motion.article
               key={p.n}
               {...fadeUp}
-              className="relative overflow-hidden rounded-3xl border border-gold/15 bg-card/60 p-6 shadow-[0_30px_80px_-50px_color-mix(in_oklab,var(--gold)_60%,transparent)] backdrop-blur-sm sm:p-9"
+              className="relative overflow-hidden rounded-3xl border border-gold/15 bg-card/60 p-6 md:shadow-[0_30px_80px_-50px_color-mix(in_oklab,var(--gold)_60%,transparent)] md:backdrop-blur-sm sm:p-9"
             >
               <span
                 aria-hidden
@@ -250,7 +250,7 @@ export default function BlocoCustoInvisivel({ onCheckout }: { onCheckout: () => 
 
         <motion.div
           {...fadeUp}
-          className="mx-auto mt-10 max-w-2xl rounded-3xl border border-gold/25 bg-card/70 px-6 py-8 text-center backdrop-blur-sm sm:px-10"
+          className="mx-auto mt-10 max-w-2xl rounded-3xl border border-gold/25 bg-card/70 px-6 py-8 text-center md:backdrop-blur-sm sm:px-10"
         >
           <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
             Para estancar esse sangramento, você precisa de uma única coisa:

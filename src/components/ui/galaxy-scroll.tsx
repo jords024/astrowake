@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 
-type Star = { x: number; y: number; z: number; size: number; hue: number };
+type Star = { x: number; y: number; z: number; size: number; warm: boolean };
 
 /**
  * Campo de estrelas em profundidade que só se move quando o usuário rola a
- * página (para baixo = avanço, para cima = recuo). A velocidade decai
- * suavemente até parar, dando sensação de "andamento" cinematográfico.
+ * página. O loop de render é sob demanda: quando a velocidade zera, o
+ * requestAnimationFrame é interrompido (custo ~0 de CPU/GPU em repouso).
  */
 export default function GalaxyScroll({ opacity = 1 }: { opacity?: number }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -13,17 +13,20 @@ export default function GalaxyScroll({ opacity = 1 }: { opacity?: number }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    // heurística de aparelho fraco: poucos núcleos ou pouca memória
+    const cores = (navigator as unknown as { hardwareConcurrency?: number }).hardwareConcurrency ?? 4;
+    const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory ?? 4;
+    const lowEnd = isMobile && (cores <= 4 || mem <= 4);
 
     let width = 0;
     let height = 0;
-    let dpr = 1;
     const DEPTH = 1400;
-    const count = isMobile ? 260 : 520;
+    const count = reduced ? 0 : lowEnd ? 90 : isMobile ? 150 : 420;
     const stars: Star[] = [];
 
     const spawn = (z?: number): Star => ({
@@ -31,13 +34,16 @@ export default function GalaxyScroll({ opacity = 1 }: { opacity?: number }) {
       y: (Math.random() - 0.5) * 2200,
       z: z ?? Math.random() * DEPTH,
       size: 0.6 + Math.random() * 1.4,
-      hue: Math.random(),
+      warm: Math.random() > 0.82,
     });
 
     for (let i = 0; i < count; i++) stars.push(spawn());
 
+    // resolução reduzida no mobile: o canvas é escalado por CSS
+    const scale = lowEnd ? 0.6 : isMobile ? 0.75 : 1;
+
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5) * scale;
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = Math.floor(width * dpr);
@@ -48,36 +54,27 @@ export default function GalaxyScroll({ opacity = 1 }: { opacity?: number }) {
     };
     resize();
 
-    let velocity = 0; // unidades de z por frame
+    let velocity = 0;
     let lastScrollY = window.scrollY;
     let raf = 0;
-
-    const onScroll = () => {
-      const y = window.scrollY;
-      const delta = y - lastScrollY;
-      lastScrollY = y;
-      // impulso proporcional ao deslocamento do scroll
-      velocity += delta * (reduced ? 0.15 : 0.9);
-      velocity = Math.max(-70, Math.min(70, velocity));
-    };
+    let running = false;
+    let visible = true;
 
     const focal = isMobile ? 340 : 460;
 
     const render = () => {
-      raf = requestAnimationFrame(render);
-
-      // amortecimento: para quando o scroll para
-      velocity *= 0.92;
-      if (Math.abs(velocity) < 0.02) velocity = 0;
+      velocity *= 0.9;
+      if (Math.abs(velocity) < 0.05) velocity = 0;
 
       ctx.clearRect(0, 0, width, height);
-      ctx.globalCompositeOperation = "lighter";
 
       const cx = width / 2;
       const cy = height / 2;
       const speed = Math.abs(velocity);
+      const drawTrails = !isMobile && speed > 0.5;
 
-      for (const s of stars) {
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i]!;
         s.z -= velocity;
         if (s.z <= 1) {
           Object.assign(s, spawn(DEPTH));
@@ -88,48 +85,87 @@ export default function GalaxyScroll({ opacity = 1 }: { opacity?: number }) {
         const k = focal / s.z;
         const x = cx + s.x * k;
         const y = cy + s.y * k;
-        if (x < -80 || x > width + 80 || y < -80 || y > height + 80) continue;
+        if (x < -40 || x > width + 40 || y < -40 || y > height + 40) continue;
 
         const depthFade = 1 - s.z / DEPTH;
         const alpha = Math.max(0, Math.min(1, 0.12 + depthFade * 0.9));
-        const r = Math.max(0.35, s.size * k * 1.6);
+        const r = Math.max(0.4, s.size * k * 1.6);
+        const color = s.warm ? "214,164,68" : "220,232,255";
 
-        // rastro proporcional à velocidade do scroll
-        const trail = Math.min(90, speed * k * 6);
-        const warm = s.hue > 0.82;
-        const color = warm ? "214,164,68" : "220,232,255";
-
-        if (trail > 1.2) {
-          const pz = s.z + velocity;
-          const pk = focal / Math.max(pz, 1);
-          const px = cx + s.x * pk;
-          const py = cy + s.y * pk;
-          ctx.strokeStyle = `rgba(${color},${alpha * 0.55})`;
-          ctx.lineWidth = r;
-          ctx.lineCap = "round";
-          ctx.beginPath();
-          ctx.moveTo(px, py);
-          ctx.lineTo(x, y);
-          ctx.stroke();
+        if (drawTrails) {
+          const trail = speed * k * 6;
+          if (trail > 1.2) {
+            const pk = focal / Math.max(s.z + velocity, 1);
+            ctx.strokeStyle = `rgba(${color},${alpha * 0.5})`;
+            ctx.lineWidth = r;
+            ctx.beginPath();
+            ctx.moveTo(cx + s.x * pk, cy + s.y * pk);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
         }
 
         ctx.fillStyle = `rgba(${color},${alpha})`;
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.fill();
+        // fillRect é bem mais barato que arc() em GPUs móveis
+        const d = r * 2;
+        ctx.fillRect(x - r, y - r, d, d);
       }
 
-      ctx.globalCompositeOperation = "source-over";
+      if (velocity === 0) {
+        running = false;
+        raf = 0;
+        return;
+      }
+      raf = requestAnimationFrame(render);
+    };
+
+    const start = () => {
+      if (running || !visible || count === 0) return;
+      running = true;
+      raf = requestAnimationFrame(render);
+    };
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastScrollY;
+      lastScrollY = y;
+      // desativa a cena quando a hero já saiu da tela
+      const nextVisible = y < window.innerHeight * 3.4;
+      if (nextVisible !== visible) {
+        visible = nextVisible;
+        canvas.style.display = visible ? "block" : "none";
+        if (!visible) {
+          velocity = 0;
+          if (raf) cancelAnimationFrame(raf);
+          raf = 0;
+          running = false;
+          ctx.clearRect(0, 0, width, height);
+          return;
+        }
+      }
+      if (!visible) return;
+      velocity += delta * (reduced ? 0 : isMobile ? 0.6 : 0.9);
+      velocity = Math.max(-70, Math.min(70, velocity));
+      start();
+    };
+
+    let resizeTimer = 0;
+    const onResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        resize();
+        start();
+      }, 150);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", resize);
-    raf = requestAnimationFrame(render);
+    window.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+      window.clearTimeout(resizeTimer);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
@@ -138,7 +174,7 @@ export default function GalaxyScroll({ opacity = 1 }: { opacity?: number }) {
       ref={canvasRef}
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-[1] h-full w-full"
-      style={{ opacity, transition: "opacity 0.2s linear" }}
+      style={{ opacity, transition: "opacity 0.2s linear", contain: "strict" }}
     />
   );
 }
