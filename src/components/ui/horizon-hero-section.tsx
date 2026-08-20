@@ -152,7 +152,7 @@ export default function HorizonHero() {
     text.split("").map((char, i) => (
       <span
         key={`${char}-${i}`}
-        className="title-char inline-block text-gold-gradient drop-shadow-[0_4px_40px_rgba(0,0,0,0.95)]"
+        className="title-char inline-block text-gold-gradient"
       >
         {char === " " ? "\u00a0" : char}
       </span>
@@ -208,7 +208,7 @@ export default function HorizonHero() {
         <h1
           key={`title-${currentSection}`}
           ref={titleRef}
-          className="relative max-w-[92vw] font-display text-[2.75rem] font-black leading-none tracking-tighter drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
+          className="relative max-w-[92vw] font-display text-[2.75rem] font-black leading-none tracking-tighter sm:drop-shadow-[0_10px_45px_rgba(214,164,68,0.5)] sm:text-7xl md:text-8xl lg:text-9xl"
           style={{ visibility: "hidden" }}
         >
           {splitTitle(titles[currentSection] || "NASCIMENTO")}
@@ -219,10 +219,10 @@ export default function HorizonHero() {
           className="relative mt-5 max-w-[34rem] space-y-2 sm:mt-6"
           style={{ visibility: "hidden" }}
         >
-          <p className="subtitle-line text-[0.95rem] font-medium leading-snug tracking-tight text-foreground drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
+          <p className="subtitle-line text-[0.95rem] font-medium leading-snug tracking-tight text-foreground sm:drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
             {subtitle.line1}
           </p>
-          <p className="subtitle-line text-[0.85rem] font-normal leading-snug tracking-tight text-gold-soft drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-lg">
+          <p className="subtitle-line text-[0.85rem] font-normal leading-snug tracking-tight text-gold-soft sm:drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-lg">
             {subtitle.line2}
           </p>
         </div>
@@ -234,7 +234,7 @@ export default function HorizonHero() {
         className="pointer-events-none fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3"
         style={{ visibility: "hidden", opacity: sceneOpacity }}
       >
-        <span className="max-w-[80vw] text-center text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.22em] text-foreground/85 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] sm:text-xs sm:tracking-[0.3em]">
+        <span className="max-w-[80vw] text-center text-[0.7rem] font-semibold uppercase leading-relaxed tracking-[0.22em] text-foreground/85 sm:drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] sm:text-xs sm:tracking-[0.3em]">
           {currentSection === 0
             ? "Desça para acessar as instruções da sua alma"
             : currentSection < totalSections
