@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, ShieldCheck, Zap, Tag } from "lucide-react";
+import { ArrowRight, ShieldCheck, Zap, Tag } from "lucide-react";
 import heroAsset from "../../assets/bussola-hero.png.asset.json";
+import logoAsset from "../../assets/bussola-logo.png.asset.json";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
