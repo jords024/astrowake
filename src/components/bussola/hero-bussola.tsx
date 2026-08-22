@@ -10,30 +10,29 @@ type Props = {
 
 export default function HeroBussola({ onCheckout }: Props) {
   return (
-    <header className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden bg-[oklch(0.09_0.03_265)]">
-      {/* Fundo cósmico — mandala nítida à direita, nebulosa azul à esquerda */}
+    <header className="relative isolate flex min-h-[100svh] w-full items-center justify-start overflow-hidden bg-[oklch(0.09_0.03_265)]">
+      {/* Fundo cósmico — mandala nítida à direita, texto afastado à esquerda */}
       <img
         src={heroAsset.url}
         alt="Roda zodiacal dourada com planetas em um céu estrelado"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_center] md:object-[center_center]"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[78%_center] md:object-[68%_center] lg:object-[60%_center]"
         loading="eager"
         fetchPriority="high"
       />
 
       {/* Brilho azul da galáxia no lado esquerdo */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_18%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_65%_at_12%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)]" />
 
-      {/* Véu apenas atrás do texto — mandala permanece nítida */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.85)] via-[oklch(0.07_0.02_265/0.55)] to-[oklch(0.07_0.02_265/0.8)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.92)_0%,oklch(0.07_0.02_265/0.75)_32%,oklch(0.07_0.02_265/0.25)_50%,transparent_65%)]" />
+      {/* Véu forte à esquerda, transparente à direita — mandala preservada */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.9)] via-[oklch(0.07_0.02_265/0.65)] to-[oklch(0.07_0.02_265/0.85)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.95)_0%,oklch(0.07_0.02_265/0.82)_28%,oklch(0.07_0.02_265/0.35)_46%,transparent_58%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[oklch(0.07_0.02_265)] to-transparent" />
 
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16 md:py-20">
+      <div className="relative z-10 w-full pl-6 pr-6 md:pl-10 lg:pl-16 xl:pl-24 py-16 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="max-w-2xl text-center md:text-left"
+          className="max-w-2xl text-left md:max-w-xl lg:max-w-2xl"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold">
             <Sparkles className="h-3.5 w-3.5" />
@@ -49,21 +48,21 @@ export default function HeroBussola({ onCheckout }: Props) {
             <span className="text-gold">9 áreas</span> da sua vida…
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg md:mx-0 mx-auto">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Em vez de gastar energia tentando fazer acontecer a qualquer custo, descubra o que o seu
             próprio mapa está sinalizando, e aprenda a agir de acordo com o momento que está vivendo{" "}
             <strong className="font-semibold text-foreground">AGORA</strong> sem misticismo raso e
             com precisão de um relógio cósmico
           </p>
 
-          <p className="mt-5 flex items-start justify-center gap-2 text-sm text-muted-foreground md:justify-start">
+          <p className="mt-5 flex items-start gap-2 text-sm text-muted-foreground">
             <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
             <span>
               Sem precisar se tornar especialista em astrologia ou decorar centenas de símbolos
             </span>
           </p>
 
-          <div className="mt-9 max-w-md md:mx-0 mx-auto">
+          <div className="mt-9 max-w-md">
             <button
               type="button"
               onClick={onCheckout}
@@ -73,7 +72,7 @@ export default function HeroBussola({ onCheckout }: Props) {
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground md:justify-start">
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Zap className="h-3.5 w-3.5 text-gold" /> Acesso imediato
               </span>
