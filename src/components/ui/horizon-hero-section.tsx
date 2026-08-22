@@ -6,15 +6,15 @@ import GalaxyScroll from "./galaxy-scroll";
 
 
 const titles: Record<number, string> = {
-  0: "NASCIMENTO",
+  0: "ASTROWAKE",
   1: "LABIRINTO",
   2: "O RUMO",
 };
 
 const subtitles: Record<number, { line1: string; line2: string }> = {
   0: {
-    line1: "No minuto em que você nasceu e puxou o ar,",
-    line2: "ficou registrado quem você é de verdade",
+    line1: "O despertar de um conhecimento ancestral....",
+    line2: "",
   },
   1: {
     line1: "Você passou anos se anulando para agradar todo mundo,",
@@ -222,9 +222,11 @@ export default function HorizonHero() {
           <p className="subtitle-line text-[0.95rem] font-medium leading-snug tracking-tight text-foreground sm:drop-shadow-[0_4px_18px_rgba(0,0,0,0.8)] sm:text-xl">
             {subtitle.line1}
           </p>
-          <p className="subtitle-line text-[0.85rem] font-normal leading-snug tracking-tight text-gold-soft sm:drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-lg">
-            {subtitle.line2}
-          </p>
+          {subtitle.line2 ? (
+            <p className="subtitle-line text-[0.85rem] font-normal leading-snug tracking-tight text-gold-soft sm:drop-shadow-[0_4px_22px_rgba(214,164,68,0.35)] sm:text-lg">
+              {subtitle.line2}
+            </p>
+          ) : null}
         </div>
       </div>
 
