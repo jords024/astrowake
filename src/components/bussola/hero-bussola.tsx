@@ -42,11 +42,11 @@ export default function HeroBussola({ onCheckout }: Props) {
           <img
             src={logoAsset.url}
             alt="Bússola Astrológica — Guia de Previsões Diárias"
-            className="mb-3 h-auto max-h-[18vh] w-[9rem] max-w-[48%] object-contain sm:w-[10rem] md:mb-4 md:w-[11rem] lg:w-[12rem]"
+            className="mb-2 h-auto max-h-[12vh] w-[7rem] max-w-[40%] object-contain sm:w-[10rem] md:mb-4 md:w-[11rem] lg:w-[12rem]"
             loading="eager"
           />
 
-          <h1 className="mt-5 max-w-xl font-display text-[2rem] leading-[1.1] tracking-tight text-foreground sm:text-4xl md:text-[2.9rem]">
+          <h1 className="mt-3 max-w-xl font-display text-[1.75rem] leading-[1.12] tracking-tight text-foreground sm:text-4xl md:mt-5 md:text-[2.9rem] md:leading-[1.1]">
             Pare de insistir em portas fechadas.{" "}
             <span className="text-gold-gradient font-semibold">
               Aprenda a identificar quais estão abertas para você agora
@@ -55,31 +55,31 @@ export default function HeroBussola({ onCheckout }: Props) {
             <span className="text-gold">9 áreas</span> da sua vida…
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-muted-foreground sm:text-lg md:mt-6">
             Em vez de gastar energia tentando fazer acontecer a qualquer custo, descubra o que o seu
             próprio mapa está sinalizando, e aprenda a agir de acordo com o momento que está vivendo{" "}
             <strong className="font-semibold text-foreground">AGORA</strong> sem misticismo raso e
             com precisão de um relógio cósmico
           </p>
 
-          <p className="mt-5 flex items-start gap-2 text-sm text-muted-foreground">
+          <p className="mt-4 flex items-start gap-2 text-sm text-muted-foreground md:mt-5">
             <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
             <span>
               Sem precisar se tornar especialista em astrologia ou decorar centenas de símbolos
             </span>
           </p>
 
-          <div className="mt-9 max-w-md">
+          <div className="mt-7 max-w-md md:mt-9">
             <button
               type="button"
               onClick={onCheckout}
-              className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-gold-deep via-gold-soft to-gold px-8 py-5 text-sm font-black uppercase tracking-[0.16em] text-background shadow-[0_18px_50px_-12px_color-mix(in_oklab,var(--gold)_45%,transparent)] transition-all hover:brightness-110 active:scale-[0.99] sm:text-base"
+              className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-gold-deep via-gold-soft to-gold px-6 py-4 text-xs font-black uppercase tracking-[0.16em] text-background shadow-[0_18px_50px_-12px_color-mix(in_oklab,var(--gold)_45%,transparent)] transition-all hover:brightness-110 active:scale-[0.99] sm:px-8 sm:py-5 sm:text-sm md:text-base"
             >
               <span>Quero abrir minhas portas</span>
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+            <div className="mt-4 flex flex-wrap items-center justify-start gap-x-4 gap-y-2 text-[0.7rem] text-muted-foreground sm:text-xs">
               <span className="flex items-center gap-1.5">
                 <Zap className="h-3.5 w-3.5 text-gold" /> Acesso imediato
               </span>
