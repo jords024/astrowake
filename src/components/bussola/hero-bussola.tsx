@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, ShieldCheck, Zap, Tag } from "lucide-react";
 import heroAsset from "../../assets/bussola-hero.png.asset.json";
 import heroMobileAsset from "../../assets/bussola-hero-mobile.png.asset.json";
-import logoAsset from "../../assets/bussola-logo.png.asset.json";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -39,13 +38,6 @@ export default function HeroBussola({ onCheckout }: Props) {
           transition={{ duration: 0.9, ease: EASE }}
           className="max-w-2xl text-left md:max-w-xl lg:max-w-2xl"
         >
-          <img
-            src={logoAsset.url}
-            alt="Bússola Astrológica — Guia de Previsões Diárias"
-            className="mb-2 h-auto max-h-[12vh] w-[7rem] max-w-[40%] object-contain sm:w-[10rem] md:mb-4 md:w-[11rem] lg:w-[12rem]"
-            loading="eager"
-          />
-
           <h1 className="mt-3 max-w-xl font-display text-[1.75rem] leading-[1.12] tracking-tight text-foreground sm:text-4xl md:mt-5 md:text-[2.9rem] md:leading-[1.1]">
             Pare de insistir em portas fechadas.{" "}
             <span className="text-gold-gradient font-semibold">
