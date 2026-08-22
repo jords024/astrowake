@@ -1,14 +1,14 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import p1 from "../../assets/planetas/p1.webp.asset.json";
-import p2 from "../../assets/planetas/p2.webp.asset.json";
-import p3 from "../../assets/planetas/p3.webp.asset.json";
-import p4 from "../../assets/planetas/p4.webp.asset.json";
-import p5 from "../../assets/planetas/p5.webp.asset.json";
-import p6 from "../../assets/planetas/p6.webp.asset.json";
-import p7 from "../../assets/planetas/p7.webp.asset.json";
-import p8 from "../../assets/planetas/p8.webp.asset.json";
+import p1 from "../../assets/planetas/pa1.png.asset.json";
+import p2 from "../../assets/planetas/pa2.png.asset.json";
+import p3 from "../../assets/planetas/pa3.png.asset.json";
+import p4 from "../../assets/planetas/pa4.png.asset.json";
+import p5 from "../../assets/planetas/pa5.png.asset.json";
+import p6 from "../../assets/planetas/pa6.png.asset.json";
+import p7 from "../../assets/planetas/pa7.png.asset.json";
+import p8 from "../../assets/planetas/pa8.png.asset.json";
 
 type Planeta = {
   url: string;
@@ -165,7 +165,6 @@ export default function HeroAlinhamento() {
         <div
           ref={columnRef}
           className="absolute inset-0 mx-auto flex w-full max-w-md flex-col items-center justify-center gap-[1.6vh] px-6 py-[10vh] will-change-transform"
-          style={{ mixBlendMode: "screen" }}
         >
           <div
             ref={lineRef}
@@ -182,7 +181,7 @@ export default function HeroAlinhamento() {
                 if (el) itemsRef.current[i] = el;
               }}
               className="will-change-transform"
-              style={{ width: `${planeta.w * 1.5}%`, opacity: 0.22, mixBlendMode: "screen" }}
+              style={{ width: `${planeta.w * 1.5}%`, opacity: 0.22 }}
             >
               <img
                 src={planeta.url}
