@@ -48,21 +48,21 @@ export default function HeroBussola({ onCheckout }: Props) {
             <span className="text-gold">9 áreas</span> da sua vida…
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg md:mx-0 mx-auto">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Em vez de gastar energia tentando fazer acontecer a qualquer custo, descubra o que o seu
             próprio mapa está sinalizando, e aprenda a agir de acordo com o momento que está vivendo{" "}
             <strong className="font-semibold text-foreground">AGORA</strong> sem misticismo raso e
             com precisão de um relógio cósmico
           </p>
 
-          <p className="mt-5 flex items-start justify-center gap-2 text-sm text-muted-foreground md:justify-start">
+          <p className="mt-5 flex items-start gap-2 text-sm text-muted-foreground">
             <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
             <span>
               Sem precisar se tornar especialista em astrologia ou decorar centenas de símbolos
             </span>
           </p>
 
-          <div className="mt-9 max-w-md md:mx-0 mx-auto">
+          <div className="mt-9 max-w-md">
             <button
               type="button"
               onClick={onCheckout}
@@ -72,7 +72,7 @@ export default function HeroBussola({ onCheckout }: Props) {
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground md:justify-start">
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Zap className="h-3.5 w-3.5 text-gold" /> Acesso imediato
               </span>
