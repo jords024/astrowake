@@ -12,24 +12,27 @@ type Props = {
 
 export default function HeroBussola({ onCheckout }: Props) {
   return (
-    <header className="relative isolate flex min-h-[100svh] w-full items-center justify-start overflow-hidden bg-[oklch(0.09_0.03_265)]">
-      {/* Fundo cósmico — mandala nítida à direita, texto afastado à esquerda */}
-      <img
-        src={heroAsset.url}
-        alt="Roda zodiacal dourada com planetas em um céu estrelado"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[78%_center] md:object-[68%_center] lg:object-[60%_center]"
-        loading="eager"
-        fetchPriority="high"
-      />
+    <header className="relative isolate flex min-h-[100svh] w-full items-end justify-start overflow-hidden bg-[oklch(0.09_0.03_265)] md:items-center">
+      {/* Fundo cósmico — mobile: bússola no topo, texto na parte escura inferior; desktop: mandala à direita */}
+      <picture className="pointer-events-none absolute inset-0 h-full w-full">
+        <source media="(max-width: 767px)" srcSet={heroMobileAsset.url} />
+        <img
+          src={heroAsset.url}
+          alt="Roda zodiacal dourada com planetas em um céu estrelado"
+          className="h-full w-full object-cover object-top md:object-[68%_center] lg:object-[60%_center]"
+          loading="eager"
+          fetchPriority="high"
+        />
+      </picture>
 
-      {/* Brilho azul da galáxia no lado esquerdo */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_65%_at_12%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)]" />
+      {/* Brilho azul da galáxia no lado esquerdo (desktop) */}
+      <div className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(55%_65%_at_12%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)] md:block" />
 
-      {/* Véu forte à esquerda, transparente à direita — mandala preservada */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.9)] via-[oklch(0.07_0.02_265/0.65)] to-[oklch(0.07_0.02_265/0.85)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.95)_0%,oklch(0.07_0.02_265/0.82)_28%,oklch(0.07_0.02_265/0.35)_46%,transparent_58%)]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[oklch(0.07_0.02_265)] to-transparent" />
+      {/* Véu: mobile — escurece a parte inferior para legibilidade do texto; desktop — preserva mandala à direita */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.2)] via-[oklch(0.07_0.02_265/0.75)] to-[oklch(0.07_0.02_265/0.95)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.95)_0%,oklch(0.07_0.02_265/0.82)_28%,oklch(0.07_0.02_265/0.35)_46%,transparent_58%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[oklch(0.07_0.02_265)] to-transparent md:h-32" />
 
-      <div className="relative z-10 w-full pl-6 pr-6 md:pl-10 lg:pl-16 xl:pl-24 py-16 md:py-20">
+      <div className="relative z-10 w-full px-6 pb-10 pt-[55vh] md:py-16 md:pl-10 md:pr-6 md:pt-0 lg:pl-16 xl:pl-24">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
