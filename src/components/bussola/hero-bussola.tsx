@@ -40,7 +40,7 @@ export default function HeroBussola({ onCheckout }: Props) {
             Bússola Astrológica
           </span>
 
-          <h1 className="mt-6 font-display text-4xl leading-[1.08] tracking-tight text-foreground sm:text-5xl md:text-6xl">
+          <h1 className="mt-5 max-w-xl font-display text-[2rem] leading-[1.1] tracking-tight text-foreground sm:text-4xl md:text-[2.9rem]">
             Pare de insistir em portas fechadas.{" "}
             <span className="text-gold-gradient font-semibold">
               Aprenda a identificar quais estão abertas para você agora
