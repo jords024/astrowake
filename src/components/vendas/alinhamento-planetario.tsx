@@ -120,6 +120,16 @@ export default function AlinhamentoPlanetario() {
       className="relative isolate overflow-hidden bg-background py-24 md:py-32"
       aria-label="Alinhamento planetário"
     >
+      {/* Fundo preto puro: necessário para o blend "screen" dos planetas */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(120% 70% at 50% 50%, #000 55%, color-mix(in oklab, #000 70%, var(--background)) 80%, var(--background) 100%)",
+        }}
+      />
+
       {/* Sol no topo */}
       <div
         ref={sunRef}
@@ -155,7 +165,7 @@ export default function AlinhamentoPlanetario() {
           }}
         />
 
-        <div className="relative flex flex-col items-center gap-8 md:gap-12">
+        <div className="relative flex flex-col items-center gap-6 md:gap-9">
           {PLANETAS.map((planeta, i) => (
             <div
               key={planeta.alt}
@@ -163,7 +173,7 @@ export default function AlinhamentoPlanetario() {
                 if (el) itemsRef.current[i] = el;
               }}
               className="will-change-transform"
-              style={{ width: `${planeta.w * 2.6}%`, opacity: 0.25 }}
+              style={{ width: `${planeta.w * 1.85}%`, opacity: 0.25 }}
             >
               <img
                 src={planeta.url}
