@@ -141,6 +141,13 @@ export default function AlinhamentoPlanetario() {
         }}
       />
 
+      {/* Fusão suave com o bloco anterior */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 md:h-56"
+        style={{ background: "linear-gradient(to bottom, var(--background), transparent)" }}
+      />
+
       <div className="relative mx-auto max-w-3xl px-6 text-center">
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.35em] text-gold/80">
           O alinhamento
