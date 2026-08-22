@@ -165,6 +165,7 @@ export default function HeroAlinhamento() {
         <div
           ref={columnRef}
           className="absolute inset-0 mx-auto flex w-full max-w-md flex-col items-center justify-center gap-[1.6vh] px-6 py-[10vh] will-change-transform"
+          style={{ mixBlendMode: "screen" }}
         >
           <div
             ref={lineRef}
