@@ -134,7 +134,7 @@ export default function AlinhamentoPlanetario() {
       <div
         ref={sunRef}
         aria-hidden
-        className="pointer-events-none absolute -top-[42vw] left-1/2 h-[70vw] w-[150vw] -translate-x-1/2 rounded-[50%] opacity-50 md:-top-[26vw] md:h-[44vw] md:w-[110vw]"
+        className="pointer-events-none absolute -top-[18vw] left-1/2 h-[52vw] w-[130vw] -translate-x-1/2 rounded-[50%] opacity-45 md:-top-[10vw] md:h-[34vw] md:w-[86vw]"
         style={{
           background:
             "radial-gradient(closest-side, color-mix(in oklab, var(--gold-soft) 92%, white) 0%, color-mix(in oklab, var(--gold) 70%, transparent) 42%, color-mix(in oklab, var(--gold-deep) 26%, transparent) 62%, transparent 78%)",
@@ -144,7 +144,7 @@ export default function AlinhamentoPlanetario() {
       {/* Fusão suave com o bloco anterior */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-40 md:h-56"
+        className="pointer-events-none absolute inset-x-0 top-0 h-48 md:h-72"
         style={{ background: "linear-gradient(to bottom, var(--background), transparent)" }}
       />
 
