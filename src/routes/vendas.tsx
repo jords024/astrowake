@@ -105,11 +105,6 @@ function Vendas() {
       {/* 3. BLOCO 2: O CUSTO INVISÍVEL                                         */}
       {/* ===================================================================== */}
       <BlocoCustoInvisivel onCheckout={() => handleCheckout("bloco2_custo_invisivel")} />
-
-      {/* ===================================================================== */}
-      {/* 4. ALINHAMENTO PLANETÁRIO                                             */}
-      {/* ===================================================================== */}
-      <AlinhamentoPlanetario />
     </main>
   );
 }
