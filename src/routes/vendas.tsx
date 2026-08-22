@@ -53,11 +53,11 @@ function Vendas() {
   return (
     <main className="relative w-full bg-background font-body text-foreground selection:bg-gold selection:text-background">
       {/* ===================================================================== */}
-      {/* 1. PORTAL ASTROWAKE — HERO 3D                                         */}
+      {/* 1. PORTAL ASTROWAKE — ALINHAMENTO PLANETÁRIO                          */}
       {/* ===================================================================== */}
       <ClientOnly fallback={<div className="h-screen w-full bg-background" />}>
         <Suspense fallback={<div className="h-screen w-full bg-background" />}>
-          <HorizonHero />
+          <HeroAlinhamento />
         </Suspense>
       </ClientOnly>
 
