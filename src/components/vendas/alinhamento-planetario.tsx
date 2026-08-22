@@ -126,7 +126,7 @@ export default function AlinhamentoPlanetario() {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(120% 70% at 50% 50%, #000 55%, color-mix(in oklab, #000 70%, var(--background)) 80%, var(--background) 100%)",
+            "radial-gradient(130% 85% at 50% 45%, #000 40%, color-mix(in oklab, #000 65%, var(--background)) 72%, transparent 100%)",
         }}
       />
 
