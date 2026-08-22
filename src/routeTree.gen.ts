@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BussolaRouteImport } from './routes/bussola'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ObrigadoRouteImport } from './routes/obrigado'
 import { Route as VendasRouteImport } from './routes/vendas'
@@ -34,6 +35,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BussolaRoute = BussolaRouteImport.update({
+  id: '/bussola',
+  path: '/bussola',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -88,6 +94,7 @@ const ApiPublicConviteDoticsRoute = ApiPublicConviteDoticsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bussola': typeof BussolaRoute
   '/mcp': typeof McpRoute
   '/obrigado': typeof ObrigadoRoute
   '/vendas': typeof VendasRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bussola': typeof BussolaRoute
   '/mcp': typeof McpRoute
   '/obrigado': typeof ObrigadoRoute
   '/vendas': typeof VendasRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/bussola': typeof BussolaRoute
   '/mcp': typeof McpRoute
   '/obrigado': typeof ObrigadoRoute
   '/vendas': typeof VendasRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/bussola'
     | '/mcp'
     | '/obrigado'
     | '/vendas'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/bussola'
     | '/mcp'
     | '/obrigado'
     | '/vendas'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/bussola'
     | '/mcp'
     | '/obrigado'
     | '/vendas'
@@ -173,6 +185,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BussolaRoute: typeof BussolaRoute
   McpRoute: typeof McpRoute
   ObrigadoRoute: typeof ObrigadoRoute
   VendasRoute: typeof VendasRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bussola': {
+      id: '/bussola'
+      path: '/bussola'
+      fullPath: '/bussola'
+      preLoaderRoute: typeof BussolaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BussolaRoute: BussolaRoute,
   McpRoute: McpRoute,
   ObrigadoRoute: ObrigadoRoute,
   VendasRoute: VendasRoute,
