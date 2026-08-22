@@ -72,13 +72,7 @@ function Vendas() {
           transition={{ duration: 0.9, ease: EASE }}
           className="mx-auto max-w-4xl px-6 text-center"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 backdrop-blur-sm">
-            <span className="text-xs font-bold uppercase tracking-wider text-gold-soft">
-              Formação Astrowake com Crassus Gobbi
-            </span>
-          </div>
-
-          <h2 className="mt-8 font-display text-4xl font-black leading-[1.12] tracking-tighter text-foreground drop-shadow-[0_8px_30px_rgba(0,0,0,0.6)] sm:text-5xl md:text-6xl">
+          <h2 className="font-display text-4xl font-black leading-[1.12] tracking-tighter text-foreground drop-shadow-[0_8px_30px_rgba(0,0,0,0.6)] sm:text-5xl md:text-6xl">
             ASTROWAKE
           </h2>
 
