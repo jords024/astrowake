@@ -6,15 +6,15 @@ import GalaxyScroll from "./galaxy-scroll";
 
 
 const titles: Record<number, string> = {
-  0: "NASCIMENTO",
+  0: "ASTROWAKE",
   1: "LABIRINTO",
   2: "O RUMO",
 };
 
 const subtitles: Record<number, { line1: string; line2: string }> = {
   0: {
-    line1: "No minuto em que você nasceu e puxou o ar,",
-    line2: "ficou registrado quem você é de verdade",
+    line1: "O despertar de um conhecimento ancestral....",
+    line2: "",
   },
   1: {
     line1: "Você passou anos se anulando para agradar todo mundo,",
