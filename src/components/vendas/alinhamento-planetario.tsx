@@ -50,13 +50,14 @@ export default function AlinhamentoPlanetario() {
 
     const apply = (progress: number) => {
       itemsRef.current.forEach((el, i) => {
-        if (!el) return;
+        const planeta = PLANETAS[i];
+        if (!el || !planeta) return;
         // cada planeta alinha em um instante levemente diferente (cascata)
         const start = i * 0.055;
         const t = easeOut(clamp01((progress - start) / (1 - start * 0.6)));
         const inv = 1 - t;
-        const dx = PLANETAS[i].offset * amp * inv;
-        const rot = PLANETAS[i].rot * amp * inv;
+        const dx = planeta.offset * amp * inv;
+        const rot = planeta.rot * amp * inv;
         const scale = 0.72 + 0.28 * t;
         el.style.transform = `translate3d(${dx}%, ${inv * 8 * amp}px, 0) rotate(${rot}deg) scale(${scale})`;
         el.style.opacity = String(0.25 + 0.75 * t);
@@ -95,7 +96,7 @@ export default function AlinhamentoPlanetario() {
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        visible = entry.isIntersecting;
+        visible = entry?.isIntersecting ?? false;
         if (visible) update();
       },
       { rootMargin: "20% 0px" },
