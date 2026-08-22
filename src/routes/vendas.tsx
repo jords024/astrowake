@@ -7,7 +7,7 @@ import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import eclipseAsset from "../assets/astrowake-eclipse-bg.png.asset.json";
 import BlocoCustoInvisivel from "../components/vendas/bloco-custo-invisivel";
 
-const HeroAlinhamento = lazy(() => import("../components/vendas/hero-alinhamento"));
+const HeroGalaxia = lazy(() => import("../components/vendas/hero-galaxia"));
 
 export const Route = createFileRoute("/vendas")({
   head: () => ({
@@ -57,7 +57,7 @@ function Vendas() {
       {/* ===================================================================== */}
       <ClientOnly fallback={<div className="h-screen w-full bg-background" />}>
         <Suspense fallback={<div className="h-screen w-full bg-background" />}>
-          <HeroAlinhamento />
+          <HeroGalaxia />
         </Suspense>
       </ClientOnly>
 
