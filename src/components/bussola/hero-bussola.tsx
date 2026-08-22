@@ -21,19 +21,18 @@ export default function HeroBussola({ onCheckout }: Props) {
       />
 
       {/* Brilho azul da galáxia no lado esquerdo */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_18%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_65%_at_12%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)]" />
 
-      {/* Véu apenas atrás do texto — mandala permanece nítida */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.85)] via-[oklch(0.07_0.02_265/0.55)] to-[oklch(0.07_0.02_265/0.8)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.92)_0%,oklch(0.07_0.02_265/0.75)_32%,oklch(0.07_0.02_265/0.25)_50%,transparent_65%)]" />
+      {/* Véu forte à esquerda, transparente à direita — mandala preservada */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.9)] via-[oklch(0.07_0.02_265/0.65)] to-[oklch(0.07_0.02_265/0.85)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.95)_0%,oklch(0.07_0.02_265/0.82)_28%,oklch(0.07_0.02_265/0.35)_46%,transparent_58%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[oklch(0.07_0.02_265)] to-transparent" />
 
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16 md:py-20">
+      <div className="relative z-10 w-full pl-6 pr-6 md:pl-10 lg:pl-16 xl:pl-24 py-16 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="max-w-2xl text-center md:text-left"
+          className="max-w-2xl text-left md:max-w-xl lg:max-w-2xl"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold">
             <Sparkles className="h-3.5 w-3.5" />
