@@ -79,16 +79,16 @@ function Vendas() {
           </div>
 
           <h2 className="mt-8 font-display text-4xl font-black leading-[1.12] tracking-tighter text-foreground drop-shadow-[0_8px_30px_rgba(0,0,0,0.6)] sm:text-5xl md:text-6xl">
-            No minuto em que você nasceu e puxou o ar pela primeira vez,{" "}
-            <span className="text-gold-gradient drop-shadow-[0_10px_40px_rgba(214,164,68,0.35)]">
-              ficou registrado quem você é de verdade.
-            </span>
+            ASTROWAKE
           </h2>
 
+          <h3 className="mx-auto mt-4 max-w-3xl font-display text-2xl font-bold leading-tight text-gold-gradient sm:text-3xl md:text-4xl">
+            E se você pudesse aprender antes da vida precisar te ensinar pela dor?
+          </h3>
+
           <p className="mx-auto mt-6 max-w-3xl text-lg font-normal leading-relaxed tracking-tight text-muted-foreground sm:text-xl">
-            O problema é que você passou os últimos vinte anos tentando ser quem a sua família, o
-            seu trabalho e os seus relacionamentos queriam que você fosse. Você se anulou tanto para
-            dar conta de tudo que hoje mal se reconhece quando se olha no espelho.
+            Relembre o conhecimento ancestral que reis usavam para compreender pessoas, reconhecer
+            padrões e tomar decisões mais conscientes nos relacionamentos.
           </p>
 
           <div className="mx-auto mt-10 max-w-md">
