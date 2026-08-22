@@ -10,12 +10,12 @@ type Props = {
 
 export default function HeroBussola({ onCheckout }: Props) {
   return (
-    <header className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden bg-[oklch(0.09_0.03_265)]">
-      {/* Fundo cósmico — mandala nítida à direita, nebulosa azul à esquerda */}
+    <header className="relative isolate flex min-h-[100svh] w-full items-center justify-start overflow-hidden bg-[oklch(0.09_0.03_265)]">
+      {/* Fundo cósmico — mandala nítida à direita, texto afastado à esquerda */}
       <img
         src={heroAsset.url}
         alt="Roda zodiacal dourada com planetas em um céu estrelado"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_center] md:object-[center_center]"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[78%_center] md:object-[68%_center] lg:object-[60%_center]"
         loading="eager"
         fetchPriority="high"
       />
