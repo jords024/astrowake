@@ -28,7 +28,7 @@ export default function HeroBussola({ onCheckout }: Props) {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[oklch(0.07_0.02_265)] to-transparent" />
 
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20 md:py-28">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
