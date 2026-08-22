@@ -6,9 +6,8 @@ import { ArrowRight, Lock } from "lucide-react";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import eclipseAsset from "../assets/astrowake-eclipse-bg.png.asset.json";
 import BlocoCustoInvisivel from "../components/vendas/bloco-custo-invisivel";
-import AlinhamentoPlanetario from "../components/vendas/alinhamento-planetario";
 
-const HorizonHero = lazy(() => import("../components/ui/horizon-hero-section"));
+const HeroAlinhamento = lazy(() => import("../components/vendas/hero-alinhamento"));
 
 export const Route = createFileRoute("/vendas")({
   head: () => ({
