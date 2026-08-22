@@ -10,19 +10,23 @@ type Props = {
 
 export default function HeroBussola({ onCheckout }: Props) {
   return (
-    <header className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden bg-background">
-      {/* Fundo cósmico */}
+    <header className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden bg-[oklch(0.09_0.03_265)]">
+      {/* Fundo cósmico — mandala nítida à direita, nebulosa azul à esquerda */}
       <img
         src={heroAsset.url}
         alt="Roda zodiacal dourada com planetas em um céu estrelado"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[72%_18%] opacity-90 md:object-[right_center]"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_center] md:object-[center_center]"
         loading="eager"
         fetchPriority="high"
       />
 
-      {/* Véu para legibilidade */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background/95 md:bg-gradient-to-r md:from-background md:via-background/85 md:to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
+      {/* Brilho azul da galáxia no lado esquerdo */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_18%_45%,oklch(0.42_0.13_265/0.55),transparent_70%)]" />
+
+      {/* Véu apenas atrás do texto — mandala permanece nítida */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[oklch(0.07_0.02_265/0.85)] via-[oklch(0.07_0.02_265/0.55)] to-[oklch(0.07_0.02_265/0.8)] md:bg-[linear-gradient(90deg,oklch(0.07_0.02_265/0.92)_0%,oklch(0.07_0.02_265/0.75)_32%,oklch(0.07_0.02_265/0.25)_50%,transparent_65%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[oklch(0.07_0.02_265)] to-transparent" />
+
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20 md:py-28">
         <motion.div
