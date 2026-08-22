@@ -35,10 +35,12 @@ export default function HeroBussola({ onCheckout }: Props) {
           transition={{ duration: 0.9, ease: EASE }}
           className="max-w-2xl text-left md:max-w-xl lg:max-w-2xl"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold">
-            <Sparkles className="h-3.5 w-3.5" />
-            Bússola Astrológica
-          </span>
+          <img
+            src={logoAsset.url}
+            alt="Bússola Astrológica — Guia de Previsões Diárias"
+            className="h-auto w-[14rem] max-w-[70%] object-contain sm:w-[16rem] md:w-[18rem] lg:w-[20rem]"
+            loading="eager"
+          />
 
           <h1 className="mt-5 max-w-xl font-display text-[2rem] leading-[1.1] tracking-tight text-foreground sm:text-4xl md:text-[2.9rem]">
             Pare de insistir em portas fechadas.{" "}
