@@ -181,14 +181,13 @@ export default function HeroAlinhamento() {
                 if (el) itemsRef.current[i] = el;
               }}
               className="will-change-transform"
-              style={{ width: `${planeta.w * 1.5}%`, opacity: 0.22 }}
+              style={{ width: `${planeta.w * 1.5}%`, opacity: 0.22, mixBlendMode: "screen" }}
             >
               <img
                 src={planeta.url}
                 alt=""
                 decoding="async"
                 className="block w-full select-none"
-                style={{ mixBlendMode: "screen" }}
               />
             </div>
           ))}
