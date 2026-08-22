@@ -38,7 +38,7 @@ export default function HeroBussola({ onCheckout }: Props) {
           <img
             src={logoAsset.url}
             alt="Bússola Astrológica — Guia de Previsões Diárias"
-            className="h-auto w-[14rem] max-w-[70%] object-contain sm:w-[16rem] md:w-[18rem] lg:w-[20rem]"
+            className="mb-3 h-auto w-[11rem] max-w-[55%] object-contain sm:w-[12rem] md:mb-4 md:w-[13rem] lg:w-[14rem]"
             loading="eager"
           />
 
