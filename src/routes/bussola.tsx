@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import heroAsset from "../assets/bussola-hero.png.asset.json";
 import HeroBussola from "../components/bussola/hero-bussola";
@@ -31,11 +33,37 @@ const CHECKOUT_URL = "https://pay.hotmart.com/Q107238351O";
 
 function BussolaPage() {
   const pixelFired = useRef(false);
+  const heroRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (pixelFired.current) return;
     pixelFired.current = true;
     trackPageView();
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    const ctx = gsap.context(() => {
+      gsap.to(hero, {
+        scale: isMobile ? 0.96 : 0.92,
+        filter: "brightness(0.55)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.5,
+        },
+      });
+    });
+
+    return () => ctx.revert();
   }, []);
 
   const handleCheckout = () => {
@@ -46,7 +74,9 @@ function BussolaPage() {
 
   return (
     <main className="relative w-full bg-background font-body text-foreground selection:bg-gold selection:text-background">
-      <HeroBussola onCheckout={handleCheckout} />
+      <div ref={heroRef} className="sticky top-0 z-0 origin-center will-change-transform">
+        <HeroBussola onCheckout={handleCheckout} />
+      </div>
       <BlocoTudoFlui />
     </main>
   );
