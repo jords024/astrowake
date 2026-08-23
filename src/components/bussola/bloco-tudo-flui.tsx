@@ -66,19 +66,22 @@ export default function BlocoTudoFlui() {
 
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6">
         <div ref={imageRef} className="relative will-change-transform">
-          <img
-            src={fluiAsset.url}
-            alt="Tem semana que tudo flui: você resolve tudo antes das 10h, responde todo mundo, destrava aquele negócio parado há meses e ainda sobra disposição para sair à noite"
-            className="h-auto w-full rounded-2xl"
-            loading="lazy"
-            decoding="async"
-            style={{
-              maskImage:
-                "radial-gradient(115% 110% at 50% 50%, #000 55%, transparent 96%)",
-              WebkitMaskImage:
-                "radial-gradient(115% 110% at 50% 50%, #000 55%, transparent 96%)",
-            }}
-          />
+          <picture>
+            <source media="(max-width: 767px)" srcSet={fluiMobileAsset.url} />
+            <img
+              src={fluiAsset.url}
+              alt="Tem semana que tudo flui: você resolve tudo antes das 10h, responde todo mundo, destrava aquele negócio parado há meses e ainda sobra disposição para sair à noite"
+              className="h-auto w-full rounded-2xl"
+              loading="lazy"
+              decoding="async"
+              style={{
+                maskImage:
+                  "radial-gradient(115% 110% at 50% 50%, #000 55%, transparent 96%)",
+                WebkitMaskImage:
+                  "radial-gradient(115% 110% at 50% 50%, #000 55%, transparent 96%)",
+              }}
+            />
+          </picture>
         </div>
       </div>
 
