@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import fluiAsset from "../../assets/bussola-tudo-flui.png.asset.json";
+import fluiMobileAsset from "../../assets/bussola-tudo-flui-mobile.png.asset.json";
 
 export default function BlocoTudoFlui() {
   const sectionRef = useRef<HTMLElement | null>(null);
