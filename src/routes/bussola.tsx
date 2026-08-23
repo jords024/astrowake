@@ -31,11 +31,37 @@ const CHECKOUT_URL = "https://pay.hotmart.com/Q107238351O";
 
 function BussolaPage() {
   const pixelFired = useRef(false);
+  const heroRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (pixelFired.current) return;
     pixelFired.current = true;
     trackPageView();
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    const ctx = gsap.context(() => {
+      gsap.to(hero, {
+        scale: isMobile ? 0.96 : 0.92,
+        filter: "brightness(0.55)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.5,
+        },
+      });
+    });
+
+    return () => ctx.revert();
   }, []);
 
   const handleCheckout = () => {
