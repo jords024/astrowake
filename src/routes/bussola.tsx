@@ -72,7 +72,9 @@ function BussolaPage() {
 
   return (
     <main className="relative w-full bg-background font-body text-foreground selection:bg-gold selection:text-background">
-      <HeroBussola onCheckout={handleCheckout} />
+      <div ref={heroRef} className="sticky top-0 z-0 origin-center will-change-transform">
+        <HeroBussola onCheckout={handleCheckout} />
+      </div>
       <BlocoTudoFlui />
     </main>
   );
