@@ -63,7 +63,7 @@ export default function BlocoSemanaSeguinte() {
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-3xl px-4 sm:px-6">
+      <div className="relative mx-auto w-full max-w-3xl px-4 sm:px-6 md:max-w-4xl lg:max-w-5xl">
         <div ref={imageRef} className="relative will-change-transform">
           <img
             src={semanaAsset.url}
