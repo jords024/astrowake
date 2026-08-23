@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import heroAsset from "../assets/bussola-hero.png.asset.json";
 import HeroBussola from "../components/bussola/hero-bussola";
