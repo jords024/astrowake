@@ -49,6 +49,7 @@ function BussolaPage() {
     <main className="relative w-full bg-background font-body text-foreground selection:bg-gold selection:text-background">
       <HeroBussola onCheckout={handleCheckout} />
       <BlocoTudoFlui />
+      <BlocoSemanaSeguinte />
     </main>
   );
 }
