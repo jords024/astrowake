@@ -4,6 +4,7 @@ import { fbqTrack, fbqTrackCustom, trackPageView } from "../lib/fbq";
 import heroAsset from "../assets/bussola-hero.png.asset.json";
 import HeroBussola from "../components/bussola/hero-bussola";
 import BlocoTudoFlui from "../components/bussola/bloco-tudo-flui";
+import BlocoSemanaSeguinte from "../components/bussola/bloco-semana-seguinte";
 
 const DESCRICAO =
   "Aprenda a identificar quais portas estão abertas para você agora — no dinheiro, no amor, na carreira e em outras 9 áreas da vida. Acesso imediato, 7 dias de garantia.";
@@ -48,6 +49,7 @@ function BussolaPage() {
     <main className="relative w-full bg-background font-body text-foreground selection:bg-gold selection:text-background">
       <HeroBussola onCheckout={handleCheckout} />
       <BlocoTudoFlui />
+      <BlocoSemanaSeguinte />
     </main>
   );
 }
