@@ -58,6 +58,7 @@ function BussolaPage() {
       <BlocoRelogioCosmico />
       <Bloco12Casas />
       <BlocoHistoriaCrassus />
+      <BlocoErroNuncaFoiVoce />
 
     </main>
   );
