@@ -6,6 +6,8 @@ import HeroBussola from "../components/bussola/hero-bussola";
 import BlocoTudoFlui from "../components/bussola/bloco-tudo-flui";
 import BlocoSemanaSeguinte from "../components/bussola/bloco-semana-seguinte";
 import BlocoRelogioCosmico from "../components/bussola/bloco-relogio-cosmico";
+import Bloco12Casas from "../components/bussola/bloco-12-casas";
+
 
 const DESCRICAO =
   "Aprenda a identificar quais portas estão abertas para você agora — no dinheiro, no amor, na carreira e em outras 9 áreas da vida. Acesso imediato, 7 dias de garantia.";
@@ -52,6 +54,8 @@ function BussolaPage() {
       <BlocoTudoFlui />
       <BlocoSemanaSeguinte />
       <BlocoRelogioCosmico />
+      <Bloco12Casas />
+
     </main>
   );
 }
