@@ -161,9 +161,10 @@ export default function Bloco12Casas() {
           />
         </svg>
         <div className="absolute text-center">
-          <div className="font-display text-[46px] leading-none text-gold">{HOUSES[live].n}</div>
+          <div className="font-display text-[46px] leading-none text-gold">{HOUSES[live]?.n}</div>
           <div className="mt-1.5 text-[9.5px] uppercase tracking-[0.3em] text-gold/60">
-            Casa {HOUSES[live].n}
+            Casa {HOUSES[live]?.n}
+
           </div>
         </div>
       </div>
