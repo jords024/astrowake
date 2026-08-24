@@ -232,6 +232,41 @@ export default function Bloco12Casas() {
         Arraste para o lado
       </p>
 
+      {/* Transição para o próximo bloco */}
+      <div className="relative mx-auto mt-14 max-w-3xl px-6 md:mt-20">
+        <div
+          className="rounded-[24px] border border-gold/20 p-7 md:p-10"
+          style={{
+            background:
+              "linear-gradient(168deg, color-mix(in oklab, var(--gold) 5%, var(--background)) 0%, var(--background) 70%)",
+          }}
+        >
+          <div className="mb-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+            <Sparkles className="h-4 w-4 text-gold" />
+            <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+          </div>
+          <p className="text-center font-body text-sm font-medium uppercase tracking-[0.22em] text-gold/80">
+            O que você aprende na prática
+          </p>
+          <p className="mt-6 text-center font-display text-[1.35rem] leading-[1.45] text-foreground md:text-[1.75rem]">
+            Você aprende a reconhecer os sinais desses ciclos e transformar essa leitura em algo simples e prático:
+          </p>
+          <p className="mt-5 text-center font-display text-[1.15rem] leading-[1.55] text-muted-foreground md:text-[1.35rem]">
+            onde colocar sua energia, o que observar e quais portas podem estar abertas para você com base no seu{" "}
+            <em className="not-italic text-gold">MOMENTO ATUAL</em>
+          </p>
+          <div className="my-7 flex items-center justify-center gap-3">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-gold" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-gold/60" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-gold/30" />
+          </div>
+          <p className="text-center text-[15px] leading-[1.8] text-muted-foreground md:text-base">
+            Tudo isso sem precisar virar especialista em astrologia, apenas entender os conceitos arquetípicos dos planetas e das casas do seu mapa astral.
+          </p>
+        </div>
+      </div>
+
       {/* Painel de detalhe */}
       {detail && (
         <div
