@@ -63,15 +63,15 @@ export default function BlocoErroNuncaFoiVoce() {
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-md px-4 sm:px-6 md:max-w-lg lg:max-w-xl">
-        <div ref={imageRef} className="relative will-change-transform">
+      <div className="relative w-full px-0 md:mx-auto md:max-w-lg md:px-6 lg:max-w-xl">
+        <div ref={imageRef} className="relative w-full will-change-transform">
           <img
             src={erroAsset.url}
             alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
             className="h-auto w-full"
             loading="lazy"
             decoding="async"
-            sizes="(max-width: 767px) 100vw, 640px"
+            sizes="100vw"
             style={{
               maskImage: "radial-gradient(118% 112% at 50% 50%, #000 58%, transparent 97%)",
               WebkitMaskImage: "radial-gradient(118% 112% at 50% 50%, #000 58%, transparent 97%)",
