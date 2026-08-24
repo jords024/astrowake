@@ -82,8 +82,8 @@ export default function BlocoSemanaSeguinte() {
       </div>
 
       {/* Véus suaves para derreter a imagem no fundo preto e esconder a transição entre blocos */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-background to-transparent md:h-16" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-background to-transparent md:h-16" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-background to-transparent md:h-12" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-background to-transparent md:h-12" />
     </section>
   );
 }
