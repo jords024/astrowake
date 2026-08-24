@@ -58,7 +58,7 @@ export default function BlocoRelogioCosmico() {
     <section
       ref={sectionRef}
       aria-label="E o que você faz?"
-      className="relative isolate w-full overflow-hidden bg-background py-20 md:py-32"
+      className="relative isolate -mt-4 w-full overflow-hidden bg-background py-12 md:py-20"
     >
       <div
         ref={glowRef}
@@ -146,8 +146,8 @@ export default function BlocoRelogioCosmico() {
         </p>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent md:h-24" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent md:h-24" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-background to-transparent md:h-16" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background to-transparent md:h-16" />
     </section>
   );
 }
