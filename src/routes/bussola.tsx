@@ -54,6 +54,8 @@ function BussolaPage() {
       <BlocoTudoFlui />
       <BlocoSemanaSeguinte />
       <BlocoRelogioCosmico />
+      <Bloco12Casas />
+
     </main>
   );
 }
