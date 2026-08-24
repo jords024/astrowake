@@ -7,6 +7,7 @@ import BlocoTudoFlui from "../components/bussola/bloco-tudo-flui";
 import BlocoSemanaSeguinte from "../components/bussola/bloco-semana-seguinte";
 import BlocoRelogioCosmico from "../components/bussola/bloco-relogio-cosmico";
 import Bloco12Casas from "../components/bussola/bloco-12-casas";
+import BlocoHistoriaCrassus from "../components/bussola/bloco-historia-crassus";
 
 
 const DESCRICAO =
@@ -55,6 +56,7 @@ function BussolaPage() {
       <BlocoSemanaSeguinte />
       <BlocoRelogioCosmico />
       <Bloco12Casas />
+      <BlocoHistoriaCrassus />
 
     </main>
   );
