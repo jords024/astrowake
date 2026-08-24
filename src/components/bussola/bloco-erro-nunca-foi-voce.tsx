@@ -63,7 +63,7 @@ export default function BlocoErroNuncaFoiVoce() {
         }}
       />
 
-      <div className="relative w-full px-0 md:mx-auto md:max-w-lg md:px-6 lg:max-w-xl">
+      <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
             src={erroAsset.url}
