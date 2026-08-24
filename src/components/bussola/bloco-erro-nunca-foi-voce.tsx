@@ -68,7 +68,7 @@ export default function BlocoErroNuncaFoiVoce() {
           <img
             src={erroAsset.url}
             alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
-            className="h-auto w-full"
+            className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"
             sizes="100vw"
