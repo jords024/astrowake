@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import naoFoiAsset from "../../assets/bussola-nao-foi-falta-de-esforco.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoNaoFoiFaltaDeEsforco() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="Talvez o problema nunca tenha sido falta de esforço"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(48% 38% at 50% 40%, color-mix(in oklab, var(--gold) 20%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={naoFoiAsset}
+            alt="Talvez o problema nunca tenha sido falta de esforço. Talvez você só estivesse tentando jogar o mesmo jogo em uma fase que já tinha mudado faz tempo — uma mulher caminha por uma trilha ao entardecer, sob um mapa celeste com planetas em órbita."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"

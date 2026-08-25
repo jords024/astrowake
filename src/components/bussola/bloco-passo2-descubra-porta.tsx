@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import passo2Asset from "../../assets/bussola-passo2-descubra-porta.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoPasso2DescubraPorta() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -30,8 +30,8 @@ export default function BlocoErroNuncaFoiVoce() {
         )
         .fromTo(
           glowRef.current,
-          { yPercent: isMobile ? -6 : -12, opacity: 0.3 },
-          { yPercent: isMobile ? 6 : 12, opacity: 0.65, ease: "none" },
+          { yPercent: isMobile ? -6 : -12, opacity: 0.35 },
+          { yPercent: isMobile ? 6 : 12, opacity: 0.7, ease: "none" },
           0,
         );
 
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="Passo 2: Descubra qual porta está sendo ativada"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(50% 40% at 50% 55%, color-mix(in oklab, var(--gold) 22%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={passo2Asset}
+            alt="Passo 2: Descubra qual porta está sendo ativada. Seu mapa tem 12 casas. Cada uma representa uma área da sua vida: dinheiro, amor, carreira, casa, família, corpo, rotina, criatividade, amizades, intimidade, estudos e novos ciclos. Você olha o que está acontecendo agora e identifica quais dessas áreas estão recebendo movimento. Roda astrológica com a casa 10 (carreira) destacada em roxo com Vênus e a casa 6 (rotina) destacada em azul com a Lua. Cada movimento planetário é como uma chave girando em uma dessas portas. Sua vida responde."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"

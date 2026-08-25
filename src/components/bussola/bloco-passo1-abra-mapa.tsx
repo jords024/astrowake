@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import passo1Asset from "../../assets/bussola-passo1-abra-mapa.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoPasso1AbraMapa() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="Passo 1: Abra o seu mapa"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(50% 40% at 50% 45%, color-mix(in oklab, var(--gold) 14%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={passo1Asset}
+            alt="Passo 1: Abra o seu mapa. Você vai aprender a abrir o seu mapa com os trânsitos do momento em uma ferramenta gratuita. Eu te mostro como fazer isso passo a passo. Print de aplicativo de mapa astral com trânsitos, mostrando roda astrológica, sol em Gêmeos, lua em Libra, Marte em Leão. Ferramenta gratuita, passo a passo, pronto. Você aprende uma vez, depois pode consultar sempre que quiser."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"

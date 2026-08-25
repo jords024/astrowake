@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import lerPortasAsset from "../../assets/bussola-aprender-ler-portas.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoAprenderLerPortas() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="E dá para aprender a ler essas portas"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(48% 38% at 50% 35%, color-mix(in oklab, var(--gold) 18%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={lerPortasAsset}
+            alt="E dá para aprender a ler essas portas. O seu mapa astral não é apenas o seu signo — na verdade, o signo é só uma pequena parte de uma estrutura muito maior. O mapa é dividido em 12 casas, 12 áreas diferentes da sua vida. O que muda ao longo do tempo é o movimento dos planetas em relação a esse mapa — é isso que chamamos de trânsitos. E é justamente observando esses movimentos que você começa a perceber quais áreas estão sendo ativadas em determinado período e qual tipo de experiência aquele ciclo pode trazer."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"
