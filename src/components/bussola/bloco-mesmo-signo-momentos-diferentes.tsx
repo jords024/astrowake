@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import mesmoSignoAsset from "../../assets/bussola-mesmo-signo-momentos-diferentes.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoMesmoSignoMomentosDiferentes() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="Mesmo signo, momentos completamente diferentes"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(48% 38% at 50% 40%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={mesmoSignoAsset}
+            alt="Mesmo signo, momentos completamente diferentes. Porque duas pessoas podem ter o mesmo signo e estar vivendo experiências completamente diferentes. Mesmo signo solar Leão, mapa A e mapa B com hora e local de nascimento diferentes. Até duas pessoas nascidas no mesmo dia podem ter mapas diferentes dependendo da hora e do local de nascimento. Por isso, um horóscopo feito para milhões de pessoas nunca consegue contar a história inteira da sua vida de forma que realmente se conecte com você. Porque astrologia pessoal não começa no signo, começa no seu mapa."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"

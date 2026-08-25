@@ -63,19 +63,20 @@ export default function BlocoSemanaSeguinte() {
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-3xl px-4 sm:px-6 md:max-w-4xl lg:max-w-5xl">
+      <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-4xl md:px-6 lg:max-w-5xl">
         <div ref={imageRef} className="relative will-change-transform">
           <img
             src={semanaAsset.url}
             alt="Aí chega a semana seguinte e nada anda: as mesmas tarefas, a mesma rotina, e a sensação de que nada flui."
-            className="h-auto w-full"
+            className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"
+            sizes="100vw"
             style={{
               maskImage:
-                "radial-gradient(120% 115% at 50% 50%, #000 55%, transparent 97%)",
+                "radial-gradient(120% 115% at 50% 50%, #000 35%, transparent 78%)",
               WebkitMaskImage:
-                "radial-gradient(120% 115% at 50% 50%, #000 55%, transparent 97%)",
+                "radial-gradient(120% 115% at 50% 50%, #000 35%, transparent 78%)",
             }}
           />
         </div>

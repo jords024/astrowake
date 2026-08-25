@@ -93,6 +93,15 @@ export default function Bloco12Casas() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Avisa a barra de CTA fixa pra se esconder enquanto esse modal em tela
+  // cheia estiver aberto, evitando sobreposição no rodapé.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("bussola:casas-modal", { detail: open !== null }));
+    return () => {
+      window.dispatchEvent(new CustomEvent("bussola:casas-modal", { detail: false }));
+    };
+  }, [open]);
+
   const halo = pos(live, 84);
   const detail = open !== null ? HOUSES[open] : null;
 

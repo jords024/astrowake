@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import identificaAsset from "../../assets/bussola-como-identifica-porta-aberta.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoComoIdentificaPortaAberta() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="Como você identifica uma porta aberta pra você"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(50% 40% at 50% 55%, color-mix(in oklab, var(--gold) 20%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={identificaAsset}
+            alt="Como você identifica uma porta aberta pra você. Você não precisa aprender a prever o futuro. Também não precisa decorar astrologia. Você só precisa aprender onde olhar. Roda astrológica dourada com as 12 casas numeradas. Funciona em três passos: Abra, Identifique, Consulte. Um caminho simples para entender os ciclos da sua vida com clareza."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"

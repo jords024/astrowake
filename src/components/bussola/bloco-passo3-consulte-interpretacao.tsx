@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import passo3Asset from "../../assets/bussola-passo3-consulte-interpretacao.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoPasso3ConsulteInterpretacao() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="Passo 3: Consulte a interpretação"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(50% 40% at 50% 45%, color-mix(in oklab, var(--gold) 18%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={passo3Asset}
+            alt="Passo 3: Consulte a interpretação. A Bússola traduz o que você está vendo no mapa para a vida real. Print de aplicativo mostrando interpretação do trânsito: Casa 10, Carreira, área da sua vida em foco, Júpiter em Gêmeos sobre a Casa 10. O que está sendo movimentado: expansão, visibilidade e novas oportunidades na carreira. Onde vale colocar energia: mostrar seu trabalho, se posicionar, fazer networking. O que merece atenção: evitar prometer mais do que pode entregar. O que pode esperar: um período fértil para avançar na carreira. Informação cósmica. Direção prática. Clareza para decidir com confiança."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"

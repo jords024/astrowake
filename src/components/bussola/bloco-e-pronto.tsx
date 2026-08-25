@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import erroAsset from "../../assets/bussola-erro-nunca-foi-voce.png.asset.json";
+import prontoAsset from "../../assets/bussola-e-pronto.webp";
 
-export default function BlocoErroNuncaFoiVoce() {
+export default function BlocoEPronto() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +50,7 @@ export default function BlocoErroNuncaFoiVoce() {
   return (
     <section
       ref={sectionRef}
-      aria-label="O erro nunca foi você"
+      aria-label="E pronto"
       className="relative isolate w-full overflow-hidden bg-background"
     >
       <div
@@ -59,15 +59,15 @@ export default function BlocoErroNuncaFoiVoce() {
         className="pointer-events-none absolute inset-0 will-change-transform"
         style={{
           background:
-            "radial-gradient(48% 38% at 50% 55%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
+            "radial-gradient(50% 40% at 50% 45%, color-mix(in oklab, var(--gold) 16%, transparent) 0%, transparent 72%)",
         }}
       />
 
       <div className="relative w-screen max-w-none px-0 md:mx-auto md:w-full md:max-w-lg md:px-6 lg:max-w-xl">
         <div ref={imageRef} className="relative w-full will-change-transform">
           <img
-            src={erroAsset.url}
-            alt="O erro nunca foi você. Você só aprendeu a jogar o jogo de maneira errada: te ensinaram que a vida funciona em linha reta."
+            src={prontoAsset}
+            alt="E pronto. Você não precisa virar astrólogo. Não precisa decorar. Não precisa passar horas estudando. Você só precisa: 01 Abre — abre seu mapa com os trânsitos do momento. 02 Olha — identifica qual porta está sendo ativada agora. 03 Consulta — consulta a interpretação e recebe clareza. E volta para a sua vida."
             className="h-auto w-full min-w-full max-w-none"
             loading="lazy"
             decoding="async"
